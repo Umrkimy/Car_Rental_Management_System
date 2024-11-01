@@ -1,5 +1,6 @@
 <?php
-include("header_footer/headerUser.php");
+$title = 'Home';
+require_once("includes/headerUser.php");
 ?>
 
 <section>
@@ -93,5 +94,5 @@ include("header_footer/headerUser.php");
 </section>
 
 <?php
-include("header_footer/footerUser.php");
+require_once("includes/footerUser.php");
 ?>
