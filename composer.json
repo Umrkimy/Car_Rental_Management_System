@@ -1,9 +1,5 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^6.9",
-        "livechat/api-client-php": "@dev"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "11"
+        "phpmailer/phpmailer": "^6.9"
     }
 }
