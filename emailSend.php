@@ -28,6 +28,7 @@ try {
 
     //Attachments
 
+    
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
     $mail->Subject = 'Here is the subject';

@@ -1,6 +1,6 @@
 <?php
 $title = 'Home';
-require_once("includes/headerUser.php");
+require_once("includes/header.php");
 ?>
 
 <section>
@@ -94,5 +94,5 @@ require_once("includes/headerUser.php");
 </section>
 
 <?php
-require_once("includes/footerUser.php");
+require_once("includes/footer.php");
 ?>
