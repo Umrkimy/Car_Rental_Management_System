@@ -5,6 +5,8 @@ require_once("includes/header.php");
 session_start();
 include "db_conn.php";
 
+$error = [];
+
 if (isset($_POST['username']) && isset($_POST['password'])) {
 
     function validate($data)
@@ -19,13 +21,12 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $password = validate($_POST['password']);
 
     if (empty($username)) {
-        header("Location: userLogin.php?error=Username is required ");
-        exit();
+        $error[] ='Username is required';
     } else if (empty($password)) {
-        header("Location: userLogin.php?error=Password is required ");
-        exit();
+        $error[] ='Password is required';
     }
 
+    if (empty($error)) {
     $sql = "SELECT * FROM users WHERE user_name = '$username' AND password='$password'";
 
     $result = mysqli_query($conn, $sql);
@@ -37,18 +38,16 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             $_SESSION['user_name'] = $row['user_name'];
             $_SESSION['name'] = $row['name'];
             $_SESSION['id'] = $row['id'];
-            header("Location: userHomepage.php");
+            header("Location: users");
             exit();
         } else {
-            header("Location: userLogin.php?error=Incorrect Username or Password ");
-            exit();
+            $error[] ='Incorrect Username or Password';
         }
     } else {
-        header("Location: userLogin.php?error=Incorrect Username or Password  ");
-        exit();
+      $error[] ='Incorrect Username or Password';
     }
 }
-
+}
 ?>
 
 <body>
@@ -82,13 +81,13 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                      <div class="row">
                         <div class="col">
 
-                           <?php if (isset($_GET['error'])) { ?>
-                              <p class="alert alert-danger"> <?php echo $_GET['error']; ?> </p>
+                           <?php if (isset($error)) { foreach ($error as $err) {?>
+                              <p class="alert alert-danger"> <?php echo $err; }?> </p>
                            <?php } ?>
 
                            <label>Username</label>
                            <div class="form-group">
-                              <input type="text" class="form-control" name="username" placeholder="Username">
+                              <input type="text" class="form-control" name="username" placeholder="Username" value="<?php echo isset($username) ? $username : ''; ?>">
                            </div>
                            <label>Password</label>
                            <div class="form-group">
