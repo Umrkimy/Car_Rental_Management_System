@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="includes/clients.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -13,10 +14,10 @@
     <title>Car Rental - <?php echo $title ?> </title>
 </head>
 
-<body class="vh-100 overflow-hidden ">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+<body class="vh-100 ">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top intro">
         <div class="container">
-            <a class="navbar-brand fs-4" href="#">Car Rental</a>
+            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="#">Car Rental</a>
             <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -48,4 +49,17 @@
             </div>
         </div>
     </nav>
+
+    <script>
+        const navEl= document.querySelector('.navbar');
+
+        window.addEventListener('scroll', () => {
+            if(window.scrollY >= 56){
+                navEl.classList.add('navbar-scrolled')
+            }  else if (window.scrollY < 56) {
+                navEl.classList.remove('navbar-scrolled')
+            }
+        });
+    </script>
+
 </body>
