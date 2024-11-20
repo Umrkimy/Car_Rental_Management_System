@@ -14,9 +14,11 @@
 </head>
 
 <body class="vh-100 ">
+    
+    <!--- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top intro">
         <div class="container">
-            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="#">Car Rental</a>
+            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="index.php">Car Rental</a>
             <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -41,13 +43,14 @@
                         </li>
                     </ul>
                     <div class="d-flex flex-lg-row justify-content-center align-item-center gap-3">
-                    <a href="#login" class="text-white text-decoration-none" >Login</a>
+                    <a href="login.php" class="text-white text-decoration-none" >Login</a>
                     <a href="#signup" class="text-white text-decoration-none px-3 py-1 rounded-4 d-inline-block" style="background-color:#f94ca4 ;" >Sign up</a>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
+    <!--- Navbar -->
 
     <script>
         const navEl= document.querySelector('.navbar');

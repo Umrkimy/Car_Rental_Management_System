@@ -7,7 +7,7 @@ include "db_conn.php";
 
 $error = [];
 
-if (isset($_POST['username']) && isset($_POST['password'])) {
+if (isset($_POST['email']) && isset($_POST['password'])) {
 
    function validate($data)
    {
@@ -17,10 +17,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
       return $data;
    }
 
-   $username = validate($_POST['username']);
+   $email = validate($_POST['email']);
    $password = validate($_POST['password']);
 
-   if (empty($username)) {
+   if (empty($email)) {
       $error[] = 'Username is required';
    } elseif (empty($password)) {
       $error[] = 'Password is required';
@@ -29,17 +29,17 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
    if (empty($error)) {
 
       $sql = "
-            SELECT 'users' AS user_type, id, user_name AS username 
-            FROM users 
-            WHERE user_name = '$username' AND password = '$password'
-            UNION
-            SELECT 'clients' AS user_type, id, user_name AS username 
-            FROM clients 
-            WHERE user_name = '$username' AND password = '$password'
-            UNION
-            SELECT 'admins' AS user_type, id, user_name AS username 
-            FROM admins 
-            WHERE user_name = '$username' AND password = '$password'";
+    SELECT 'users' AS user_type, id, email, user_name AS username 
+    FROM users 
+    WHERE email = '$email' AND password = '$password'
+    UNION
+    SELECT 'clients' AS user_type, id, email, client_name AS username 
+    FROM clients 
+    WHERE email = '$email' AND password = '$password'
+    UNION
+    SELECT 'admins' AS user_type, id, email, admin_name AS username 
+    FROM admins 
+    WHERE email = '$email' AND password = '$password'";
 
       $result = mysqli_query($conn, $sql);
 
@@ -105,13 +105,16 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                               <?php }
                               } ?>
 
-                              <label>Username</label>
+                              <label>Email</label>
                               <div class="form-group">
-                                 <input type="text" class="form-control" name="username" placeholder="Username" value="<?php echo isset($username) ? $username : ''; ?>">
+                                 <input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo isset($email) ? $email : ''; ?>">
                               </div>
                               <label>Password</label>
                               <div class="form-group">
                                  <input type="password" class="form-control" name="password" placeholder="Password">
+                              </div>
+                              <div class="form-group">
+                                 <a href="forgot-password.php">Forgot your password</a><br><br>
                               </div>
                               <br>
                               <div class="form-group">
