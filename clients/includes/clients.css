@@ -8,6 +8,10 @@ body {
     
 }
 
+.gap{
+    padding-top: 56px;
+}
+
 .navbar{
     transition: 0.2s;
 }
