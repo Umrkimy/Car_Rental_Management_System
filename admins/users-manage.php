@@ -1,10 +1,10 @@
 <?php
 $title = "User Manage";
 require_once("includes/headerAdmins.php");
-include "db_conn.php";
+include "../db_conn.php";
 ?>
 
-<main class="gap">
+<main class="mt-5 pt-3">
 
 <div class="container mt-5 gap">
     <div class="row justify-content-center">
@@ -38,9 +38,9 @@ include "db_conn.php";
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $id = $row['id'];
-                                        $name = $row['name'];
+                                        $name = $row['full_name'];
                                         $user_name = $row['user_name'];
-                                        $phonenum = $row['phonenum'];
+                                        $phonenum = $row['phone_num'];
                                         $email = $row['email'];
                                         $address = $row['address'];
                                         $password = $row['password'];
@@ -69,5 +69,4 @@ include "db_conn.php";
         </div>
     </div>
 </div>
-
-</main>
+    </main>

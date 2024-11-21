@@ -44,7 +44,7 @@
                     </ul>
                     <div class="d-flex flex-lg-row justify-content-center align-item-center gap-3">
                     <a href="login.php" class="text-white text-decoration-none" >Login</a>
-                    <a href="#signup" class="text-white text-decoration-none px-3 py-1 rounded-4 d-inline-block" style="background-color:#f94ca4 ;" >Sign up</a>
+                    <a href="signup.php" class="text-white text-decoration-none px-3 py-1 rounded-4 d-inline-block" style="background-color:#f94ca4 ;" >Sign up</a>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@ require_once("includes/header.php");
 ?>
 
 <main>
-<section>
+   <section>
       <div class="container gap">
          <div class="row">
             <div class="col-md-6 mx-auto">
@@ -31,11 +31,9 @@ require_once("includes/header.php");
                         <div class="row">
                            <div class="col">
 
-                              <?php if (!empty($error)) {
-                                 foreach ($error as $err) { ?>
-                                    <p class="alert alert-danger"><?php echo $err; ?></p>
-                              <?php }
-                              } ?>
+                              <?php if (isset($_GET['error'])) { ?>
+                                 <p class="alert alert-success"> <?php echo $_GET['error']; ?> </p>
+                              <?php } ?>
 
                               <label>Email</label>
                               <div class="form-group">
@@ -54,6 +52,6 @@ require_once("includes/header.php");
             </div>
          </div>
       </div>
-   </form>
-</section>
+      </form>
+   </section>
 </main>

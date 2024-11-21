@@ -8,13 +8,43 @@ require("db_conn.php");
         $token_hash = hash("sha256", $token);
         $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
-        $sql = "UPDATE users SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $token_hash, $expiry, $email);
-        $stmt->execute();
+        $sql = "
+        SELECT 'users' AS user_type, id, email, user_name AS username 
+        FROM users 
+        WHERE email = ?
+        UNION
+        SELECT 'clients' AS user_type, id, email, client_name AS username 
+        FROM clients 
+        WHERE email = ?
+        UNION
+        SELECT 'admins' AS user_type, id, email, admin_name AS username 
+        FROM admins 
+        WHERE email = ?
+    ";
 
-        if ($conn -> affected_rows){
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $email, $email, $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $user_type = $row['user_type'];
+
+        $update_sql = "";
+        if ($user_type === 'users') {
+            $update_sql = "UPDATE users SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
+        } elseif ($user_type === 'clients') {
+            $update_sql = "UPDATE clients SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
+        } elseif ($user_type === 'admins') {
+            $update_sql = "UPDATE admins SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
+        }
+
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param("sss", $token_hash, $expiry, $email);
+        $update_stmt->execute();
+
+        if ($conn->affected_rows ) {
             $mail = require __DIR__ .  "/mailer.php";
 
             $mail->setfrom("mgeek573@gmail.com");
@@ -30,7 +60,9 @@ require("db_conn.php");
                 echo "Message could not be sent Mailer error: {$mail->ErrorInfo} ";
             }
         }
-        echo "Message sent, please check your inbox. ";
+        header("Location: forgot-password.php?error=Message sent, Pxlease check your inbox. ");
+        exit();
     }
+}
 
 ?>
