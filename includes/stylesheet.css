@@ -9,6 +9,7 @@ body {
 
 .gap{
     padding-top: 56px;
+
 }
 
 .navbar{
@@ -74,11 +75,11 @@ position: relative;
     }
 
 #footer1 {
-    background: #2d43a3;
+    background: #000000;
 }
 
 #footer2 {
-    background: #495bc2;
+    background: #000000;
 }
 
 

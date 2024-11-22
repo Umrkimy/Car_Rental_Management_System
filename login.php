@@ -44,10 +44,12 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
       $result = mysqli_query($conn, $sql);
 
       if ($result && mysqli_num_rows($result) > 1) {
-         $error[] = 'Duplicate login found. Please contact support.';
+         header("Location: duplicate-acc.php");
       } elseif ($result && mysqli_num_rows($result) === 1) {
          $row = mysqli_fetch_assoc($result);
          $_SESSION['user_name'] = $row['username'];
+         $_SESSION['client_name'] = $row['clientname'];
+         $_SESSION['admin_name'] = $row['username'];
          $_SESSION['id'] = $row['id'];
          $_SESSION['user_type'] = $row['user_type'];
 
@@ -79,7 +81,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                      <div class="row">
                         <div class="col">
                            <center>
-                              <img width="150px" src="imgs/profile.png" />
+                              <i class="bi bi-person-fill" style="display: inline-block; width: 100px; font-size: 100px;"></i>
                            </center>
                         </div>
                      </div>
@@ -113,19 +115,20 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                               <div class="form-group">
                                  <input type="password" class="form-control" name="password" placeholder="Password">
                               </div>
-                              <div class="form-group">
-                                 <a href="forgot-password.php">Forgot your password</a><br><br>
+                              <div class="form-group mt-3">
+                                 <button class="btn btn-primary btn-block form-control text-uppercase" name="Button1">Log in</button>
                               </div>
-                              <br>
-                              <div class="form-group">
-                                 <button class="btn btn-success btn-block form-control" name="Button1">Login</button>
+
+                              <div class="form-group mt-3 mb-3 d-flex justify-content-center align-items-center">
+                                 <a class="text-dark" href="forgot-password.php">Forgot password?</a>
                               </div>
-                              <br>
                            </div>
                         </div>
                   </div>
                </div>
-               <a href="index.php">&lt;&lt; Back to Home</a><br><br>
+               <div class="mt-2 mb-5">
+                  <a class="text-dark text-decoration-none" href="index.php">&lt;&lt; Back to Home</a>
+               </div>
             </div>
          </div>
       </div>
@@ -136,5 +139,5 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 </html>
 
 <?php
-include("includes/footer.php");
+require_once("includes/footer.php");
 ?>

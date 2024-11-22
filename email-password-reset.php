@@ -6,6 +6,7 @@ require("db_conn.php");
 
         $token = bin2hex(random_bytes(16));
         $token_hash = hash("sha256", $token);
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
         $sql = "
@@ -40,7 +41,7 @@ require("db_conn.php");
             $update_sql = "UPDATE admins SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
         }
 
-        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt= $conn->prepare($update_sql);
         $update_stmt->bind_param("sss", $token_hash, $expiry, $email);
         $update_stmt->execute();
 
@@ -60,7 +61,7 @@ require("db_conn.php");
                 echo "Message could not be sent Mailer error: {$mail->ErrorInfo} ";
             }
         }
-        header("Location: forgot-password.php?error=Message sent, Pxlease check your inbox. ");
+        header("Location: forgot-password.php?error=Message sent, Please check your inbox. ");
         exit();
     }
 }

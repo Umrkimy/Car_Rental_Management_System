@@ -21,7 +21,7 @@
             <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="sidebar offcanvas offcanvas-start navbar-dark bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header text-white border-bottom">
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Car Rental</h5>
                     <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -41,22 +41,37 @@
                             <a class="nav-link" href="#">Link</a>
                         </li>
                     </ul>
-                    <div class="d-flex flex-lg-row justify-content-center align-item-center gap-3">
-                    <a href="#login" class="text-white text-decoration-none" >Login</a>
-                    <a href="#signup" class="text-white text-decoration-none px-3 py-1 rounded-4 d-inline-block" style="background-color:#f94ca4 ;" >Sign up</a>
-                    </div>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle ms-2"
+                                href="#"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-person-fill" style=" width: 22px; font-size: 22px;"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </nav>
 
     <script>
-        const navEl= document.querySelector('.navbar');
+        const navEl = document.querySelector('.navbar');
 
         window.addEventListener('scroll', () => {
-            if(window.scrollY >= 56){
+            if (window.scrollY >= 56) {
                 navEl.classList.add('navbar-scrolled')
-            }  else if (window.scrollY < 56) {
+            } else if (window.scrollY < 56) {
                 navEl.classList.remove('navbar-scrolled')
             }
         });

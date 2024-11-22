@@ -21,6 +21,9 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
     $phonenum = $_POST["phonenum"];
     $address = $_POST["address"];
     $confirmpassword = $_POST["confirmpassword"];
+    $status = "Pending";
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $date = date("Y-m-d H:i:s", time())  ;
 
     $duplicate = mysqli_query($conn, "SELECT * FROM users WHERE user_name = '$username' OR email = '$email'");
     if (mysqli_num_rows($duplicate) > 0) {
@@ -29,7 +32,7 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
     } else {
         if ($password == $confirmpassword) {
 
-            $query = "INSERT INTO users (name, user_name, phonenum, email, address, password) VALUES ('$name','$username','$phonenum','$email','$address','$password')";
+            $query = "INSERT INTO users (name, user_name, phonenum, email, address, password, status, date) VALUES ('$name','$username','$phonenum','$email','$address','$password','$status','$date')";
             mysqli_query($conn, $query);
 
             header("Location: userSignup.php?success=Registration successfully");
@@ -44,117 +47,112 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
 ?>
 
 <main>
-<div class="container-fluid gap">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <center>
-                                <img width="100px" src="imgs/profile.png" />
-                            </center>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <center>
-                                <h4>User Sign Up</h4>
-                            </center>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <hr>
-                        </div>
-                    </div>
-
-                    <?php if (isset($_GET['error']) || isset($_GET['success'])) : ?>
+    <div class="container-fluid gap">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <?php if (isset($_GET['error'])) : ?>
-                                    <p class="alert alert-danger"><?php echo $_GET['error']; ?></p>
-                                <?php elseif (isset($_GET['success'])) : ?>
-                                    <p class="alert alert-success"><?php echo $_GET['success']; ?></p>
-                                <?php endif; ?>
+                                <center>
+                                    <i class="bi bi-person-fill" style="display: inline-block; width: 100px; font-size: 100px;"></i>
+                                </center>
                             </div>
                         </div>
-                    <?php endif; ?>
-
-                    <form action="userSignupQuery.php" method="post">
                         <div class="row">
-                            <div class="">
-                                <label>Full Name*</label>
-                                <div class="form-group">
-                                    <input class="form-control" id="TextBox1" name="name" placeholder="Full Name" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Contact No</label>
-                                    <div class="form-group">
-                                        <input class="form-control" id="phonenum" name="phonenum" placeholder="Contact No" type="number" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Email*</label>
-                                    <div class="form-group">
-                                        <input class="form-control" id="email" name="email" placeholder="Email" type="email" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label>Full Address</label>
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="address" name="address" placeholder="Full Address" rows="2"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <center>
-                                        <span class="badge badge-pill badge-info">Login Credentials</span>
-                                    </center>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Username*</label>
-                                    <div class="form-group">
-                                        <input class="form-control" id="user_name" name="user_name" placeholder="Username" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Password*</label>
-                                    <div class="form-group">
-                                        <input class="form-control" id="password" name="password" placeholder="Password" type="password" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Confirm Password</label>
-                                    <div class="form-group">
-                                        <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" type="password" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8 mx-auto">
-                                    <center>
-                                        <br>
-                                        <div class="form-group">
-                                            <button class="btn btn-primary btn-block btn-lg form-control" id="Button1" name="submit" type="submit">Sign Up</button>
-                                        </div>
-                                    </center>
-                                </div>
+                            <div class="col">
+                                <center>
+                                    <h4>User Sign Up</h4>
+                                </center>
                             </div>
                         </div>
-                    </form>
-                    <a href="homepage.php">
-                        << Back to Home</a><br>
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <?php if (isset($_GET['error']) || isset($_GET['success'])) : ?>
+                            <div class="row">
+                                <div class="col">
+                                    <?php if (isset($_GET['error'])) : ?>
+                                        <p class="alert alert-danger"><?php echo $_GET['error']; ?></p>
+                                    <?php elseif (isset($_GET['success'])) : ?>
+                                        <p class="alert alert-success"><?php echo $_GET['success']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Email*</label>
+                                            <input class="form-control" name="email" placeholder="Email" type="email" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Contant No*</label>
+                                            <input class="form-control" name="phonenum" placeholder="Contact No" type="number" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Full Address</label>
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="address" name="address" placeholder="Full Address" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <center>
+                                            <span class="badge badge-pill badge-info">Login Credentials</span>
+                                        </center>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Username*</label>
+                                        <div class="form-group">
+                                            <input class="form-control" id="user_name" name="user_name" placeholder="Username" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Password*</label>
+                                        <div class="form-group">
+                                            <input class="form-control" id="password" name="password" placeholder="Password" type="password" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Confirm Password</label>
+                                        <div class="form-group">
+                                            <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" type="password" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-8 mx-auto">
+                                        <center>
+                                            <br>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block btn-lg form-control" id="Button1" name="submit" type="submit">Sign Up</button>
+                                            </div>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <a href="homepage.php">
+                            << Back to Home</a><br>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 </main>
