@@ -22,7 +22,7 @@ include "../db_conn.php";
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
+                                    <th scope="col">Full Name</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Phone Number</th>
                                     <th scope="col">Email</th>

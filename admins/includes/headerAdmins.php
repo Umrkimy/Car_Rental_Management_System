@@ -69,10 +69,10 @@
                 <i class="bi bi-person-fill"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Manage</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                 <li>
-                  <a class="dropdown-item" href="#">Logout</a>
+                  <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
               </ul>
             </li>

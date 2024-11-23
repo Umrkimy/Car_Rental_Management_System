@@ -5,7 +5,9 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     overflow-x: hidden;
-    
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .gap{
@@ -65,21 +67,22 @@ position: relative;
 
 }
 
+
+footer {
+    margin-top: auto; 
+}
+
 .footerlinks {
     color: #ffffff;
     text-decoration: none !important;
 }
 
 .footerlinks:hover {
-        color: #7e9cb1;
-    }
-
-#footer1 {
-    background: #2d43a3;
+    color: #7e9cb1;
 }
 
+#footer1,
 #footer2 {
-    background: #495bc2;
+    background: #000000;
 }
-
 

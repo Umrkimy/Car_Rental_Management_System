@@ -2,6 +2,7 @@
 $title = 'Home';
 require_once("includes/headerUsers.php");
 ?>
+
 <main>
     <section>
 
@@ -61,3 +62,7 @@ require_once("includes/headerUsers.php");
 
     </section>
 </main>
+
+<?php
+require_once("includes/footerUsers.php");
+?>

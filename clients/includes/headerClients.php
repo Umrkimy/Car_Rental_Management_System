@@ -52,10 +52,10 @@
                                 <i class="bi bi-person-fill" style=" width: 22px; font-size: 22px;"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                                <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="logout.php">Logout</a>
                                 </li>
                             </ul>
                         </li>

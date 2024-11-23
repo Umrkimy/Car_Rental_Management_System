@@ -6,43 +6,58 @@ session_start();
 include "db_conn.php";
 
 $error = [];
+$success = [];
 
-if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email"])) {
-    $name = $_POST["name"];
-    $username = $_POST["user_name"];
-    $password = $_POST["password"];
-    $email = $_POST["email"];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if (empty($name) || empty($username) || empty($password) || empty($email)) {
-        header("Location: userSignup.php?error=Please fill in all required fields");
-        exit();
-    }
+    $name = $_POST["name"] ?? '';
+    $username = $_POST["user_name"] ?? '';
+    $password = $_POST["password"] ?? '';
+    $email = $_POST["email"] ?? '';
+    $phonenum = $_POST["phonenum"] ?? '';
+    $address = $_POST["address"] ?? '';
+    $confirmpassword = $_POST["confirmpassword"] ?? '';
+    $role = $_POST["role"] ?? '';
 
-    $phonenum = $_POST["phonenum"];
-    $address = $_POST["address"];
-    $confirmpassword = $_POST["confirmpassword"];
-    $status = "Pending";
-    date_default_timezone_set('Asia/Kuala_Lumpur');
-    $date = date("Y-m-d H:i:s", time())  ;
-
-    $duplicate = mysqli_query($conn, "SELECT * FROM users WHERE user_name = '$username' OR email = '$email'");
-    if (mysqli_num_rows($duplicate) > 0) {
-        header("Location: userSignup.php?error=Username or email is already taken");
-        exit();
-    } else {
-        if ($password == $confirmpassword) {
-
-            $query = "INSERT INTO users (name, user_name, phonenum, email, address, password, status, date) VALUES ('$name','$username','$phonenum','$email','$address','$password','$status','$date')";
-            mysqli_query($conn, $query);
-
-            header("Location: userSignup.php?success=Registration successfully");
-            exit();
+    if (empty($error)) {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE user_name = ? OR email = ?");
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $error[] = "Username or email is already taken.";
         } else {
-            header("Location: userSignup.php?error=Password does not match");
-            exit();
+            if ($password === $confirmpassword) {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                
+                if ($role == 'client') {
+                    $stmt = $conn->prepare("INSERT INTO clients (full_name, client_name, phone_num, email, address, password, status, date) 
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                } else {
+                    $stmt = $conn->prepare("INSERT INTO users (full_name, user_name, phone_num, email, address, password, status, date) 
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                }
+
+                date_default_timezone_set('Asia/Kuala_Lumpur');
+                $date = date("Y-m-d H:i:s");
+
+                $status = "Pending";
+
+                $stmt->bind_param("ssssssss", $name, $username, $phonenum, $email, $address, $hashedPassword, $status, $date);
+
+                if ($stmt->execute()) {
+                    $success[] = "Account has been created successfully. Please login";
+
+                } else {
+                    $error[] = "There was an error while processing your request.";
+                }
+            } else {
+                $error[] = "Passwords do not match.";
+            }
         }
     }
-} else {
 }
 ?>
 
@@ -72,17 +87,16 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
                             </div>
                         </div>
 
-                        <?php if (isset($_GET['error']) || isset($_GET['success'])) : ?>
-                            <div class="row">
-                                <div class="col">
-                                    <?php if (isset($_GET['error'])) : ?>
-                                        <p class="alert alert-danger"><?php echo $_GET['error']; ?></p>
-                                    <?php elseif (isset($_GET['success'])) : ?>
-                                        <p class="alert alert-success"><?php echo $_GET['success']; ?></p>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
+                        <?php if (!empty($success)) {
+                            foreach ($success as $msg) { ?>
+                                <p class="alert alert-success"><?php echo $msg; ?></p>
+                            <?php }
+                        } ?>
+                        <?php if (!empty($error)) {
+                            foreach ($error as $err) { ?>
+                                <p class="alert alert-danger"><?php echo $err; ?></p>
+                            <?php }
+                        } ?>
 
                         <form action="" method="post">
                             <div class="row">
@@ -95,7 +109,7 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Contant No*</label>
+                                            <label>Contact No*</label>
                                             <input class="form-control" name="phonenum" placeholder="Contact No" type="number" required>
                                         </div>
                                     </div>
@@ -119,22 +133,35 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
                                     <div class="col-md-4">
                                         <label>Username*</label>
                                         <div class="form-group">
-                                            <input class="form-control" id="user_name" name="user_name" placeholder="Username" />
+                                            <input class="form-control" id="user_name" name="user_name" placeholder="Username" required />
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label>Password*</label>
                                         <div class="form-group">
-                                            <input class="form-control" id="password" name="password" placeholder="Password" type="password" />
+                                            <input class="form-control" id="password" name="password" placeholder="Password" type="password" required />
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label>Confirm Password</label>
                                         <div class="form-group">
-                                            <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" type="password" />
+                                            <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" type="password" required />
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Sign Up As</label>
+                                            <select class="form-control" name="role" required>
+                                                <option value="user">User</option>
+                                                <option value="client">Client</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="row">
                                     <div class="col-8 mx-auto">
                                         <center>
@@ -147,12 +174,14 @@ if (isset($_POST["name"], $_POST["user_name"], $_POST["password"], $_POST["email
                                 </div>
                             </div>
                         </form>
-                        <a href="homepage.php">
-                            << Back to Home</a><br>
+                        <a href="index.php"> << Back to Home</a><br>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </main>
+
+<?php
+require_once("includes/footer.php");
+?>

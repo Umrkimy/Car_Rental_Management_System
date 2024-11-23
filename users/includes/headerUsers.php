@@ -1,7 +1,12 @@
+<?php 
+session_start();
+
+$usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
+?>
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,8 +19,8 @@
     <title>Car Rental - <?php echo $title ?> </title>
 </head>
 
-<body class="vh-100 ">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top ">
+<body class="vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand fs-4 fw-bold text-uppercase" href="#">Car Rental</a>
             <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -35,28 +40,29 @@
                             <a class="nav-link" href="#">Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Cars</a>
+                            <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link" href="#">Contact Us</a>
                         </li>
                     </ul>
+
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a
-                                class="nav-link dropdown-toggle ms-2"
+                                class="nav-link dropdown-toggle ms-2 d-flex align-items-center"
                                 href="#"
                                 role="button"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <i class="bi bi-person-fill" style=" width: 22px; font-size: 22px;"></i>
+                                <i class="bi bi-person-fill me-2" style="font-size: 22px;"></i> 
+                                <span><?php echo htmlspecialchars($usernametop); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </li>
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -76,5 +82,7 @@
             }
         });
     </script>
-
 </body>
+
+</html>
+

@@ -1,3 +1,4 @@
+<body>
 <footer >
     <div id="footer1" class="container-fluid">
         <div class="row">
@@ -19,3 +20,4 @@
     </div>
 
 </footer>
+</body>
