@@ -1,5 +1,5 @@
 <?php
-$title = "User Update";
+$title = "Client Update";
 require_once("includes/headerAdmins.php");
 include "../db_conn.php";
 
@@ -7,48 +7,54 @@ $id = @$_GET['updateid'];
 $message = "";
 $name = $clientname = $email = $phonenum = $address = "";
 
-$sql = "SELECT * FROM clients WHERE id='$id'";
-$result = mysqli_query($conn, $sql);
+if ($id) {
+    $stmt = $conn->prepare("SELECT * FROM clients WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-if (mysqli_num_rows($result) == 1) {
-    $row = mysqli_fetch_assoc($result);
-    $name = $row['full_name'];
-    $email = $row['email'];
-    $phonenum = $row['phone_num'];
-    $clientname = $row['client_name'];
-    $address = $row['address'];
-} else {
-    $message = '<p class="alert alert-danger">User not found.</p>';
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $name = $row['full_name'];
+        $email = $row['email'];
+        $phonenum = $row['phone_num'];
+        $clientname = $row['client_name'];
+        $address = $row['address'];
+    } else {
+        $message = '<p class="alert alert-danger">Client not found.</p>';
+    }
+    $stmt->close();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $clientname = $_POST["client_name"];
+    $name = trim($_POST["name"]);
+    $clientname = trim($_POST["client_name"]);
     $password = $_POST["password"];
-    $email = $_POST["email"];
-    $phonenum = $_POST["phonenum"];
-    $address = $_POST["address"];
+    $email = trim($_POST["email"]);
+    $phonenum = trim($_POST["phonenum"]);
+    $address = trim($_POST["address"]);
     $confirmpassword = $_POST["confirmpassword"];
 
-    $duplicate = mysqli_query($conn, "SELECT * FROM clients WHERE (client_name = '$clientname' OR email = '$email') AND id != '$id'");
-    if (mysqli_num_rows($duplicate) > 0) {
-        $message = '<p class="alert alert-danger">Clientname or email is already taken.</p>';
-    } else {
+    $stmt = $conn->prepare("SELECT * FROM clients WHERE (client_name = ? OR email = ?) AND id != ?");
+    $stmt->bind_param("ssi", $clientname, $email, $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($password == $confirmpassword) {
-            $query = "UPDATE clients SET 
-                full_name='$name', 
-                client_name='$clientname', 
-                password='$password', 
-                email='$email', 
-                phone_num='$phonenum', 
-                address='$address' 
-                WHERE id='$id'";
-            if (mysqli_query($conn, $query)) {
+    if ($result->num_rows > 0) {
+        $message = '<p class="alert alert-danger">Client name or email is already taken.</p>';
+    } else {
+        if ($password === $confirmpassword) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $stmt = $conn->prepare("UPDATE clients SET full_name = ?, client_name = ?, password = ?, email = ?, phone_num = ?, address = ? WHERE id = ?");
+            $stmt->bind_param("ssssssi", $name, $clientname, $hashedPassword, $email, $phonenum, $address, $id);
+
+            if ($stmt->execute()) {
                 $message = '<p class="alert alert-success">Updated successfully.</p>';
             } else {
-                $message = '<p class="alert alert-danger">Failed to update user.</p>';
+                $message = '<p class="alert alert-danger">Failed to update client. Please try again.</p>';
             }
+            $stmt->close();
         } else {
             $message = '<p class="alert alert-danger">Passwords do not match.</p>';
         }
@@ -65,12 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="row">
                             <div class="col text-center">
                                 <i class="bi bi-person-fill" style="font-size: 100px;"></i>
-                                <h4>Admin Update User</h4>
+                                <h4>Admin Update Client</h4>
                                 <hr>
                             </div>
                         </div>
 
-                        
                         <div class="row">
                             <div class="col">
                                 <?= $message ?>
@@ -81,20 +86,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <div class="form-group">
                                 <label>Full Name</label>
-                                <input class="form-control" name="name" value="<?= htmlspecialchars($name) ?>" >
+                                <input class="form-control" name="name" value="<?= htmlspecialchars($name) ?>" required>
                             </div>
 
                             <div class="row">
-                            <div class="col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email*</label>
-                                        <input class="form-control" name="email" placeholder="Email" type="email" value="<?= htmlspecialchars($email) ?>"required>
+                                        <input class="form-control" name="email" placeholder="Email" type="email" value="<?= htmlspecialchars($email) ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Contant No*</label>
-                                        <input class="form-control" name="phonenum" placeholder="Contact No" type="number" value="<?= htmlspecialchars($phonenum) ?>"required>
+                                        <label>Contact No*</label>
+                                        <input class="form-control" name="phonenum" placeholder="Contact No" type="number" value="<?= htmlspecialchars($phonenum) ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="row mt-2">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Clientname*</label>
+                                        <label>Client Name*</label>
                                         <input class="form-control" name="client_name" value="<?= htmlspecialchars($clientname) ?>" required>
                                     </div>
                                 </div>
@@ -134,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </form>
 
                         <br>
-                        <a href="clients-manage.php"><< Back to Clients Management</a>
+                        <a href="clients-manage.php">&laquo; Back to Clients Management</a>
                     </div>
                 </div>
             </div>

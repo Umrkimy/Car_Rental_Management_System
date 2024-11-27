@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<main>
+<main class="darkbody">
     <div class="container-fluid gap">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label>Confirm Password</label>
+                                        <label>Confirm Password*</label>
                                         <div class="form-group">
                                             <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" type="password" required />
                                         </div>
@@ -153,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <div class="row mt-3">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Sign Up As</label>
+                                            <label>Sign Up As*</label>
                                             <select class="form-control" name="role" required>
                                                 <option value="user">User</option>
                                                 <option value="client">Client</option>

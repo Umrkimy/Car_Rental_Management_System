@@ -37,13 +37,13 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Cars</a>
+                            <a class="nav-link" href="cars.php">Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">About</a>
+                            <a class="nav-link" href="about.php">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Contact Us</a>
+                            <a class="nav-link" href="contact">Contact</a>
                         </li>
                     </ul>
 

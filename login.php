@@ -41,25 +41,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($error)) {
 
         $sql = "
-            SELECT 'users' AS user_type, id, email, user_name AS username, password 
-            FROM users 
-            WHERE email = ? 
-            UNION
-            SELECT 'clients' AS user_type, id, email, client_name AS username, password 
-            FROM clients 
-            WHERE email = ? 
-            UNION
-            SELECT 'admins' AS user_type, id, email, admin_name AS username, password 
-            FROM admins 
-            WHERE email = ?";
+    SELECT 'users' AS user_type, id, email, user_name AS username, password 
+    FROM users 
+    WHERE email = ? 
+    UNION
+    SELECT 'clients' AS user_type, id, email, client_name AS username, password 
+    FROM clients 
+    WHERE email = ? 
+    UNION
+    SELECT 'admins' AS user_type, id, email, admin_name AS username, password 
+    FROM admins 
+    WHERE email = ?";
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sss", $email, $email, $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result && mysqli_num_rows($result) === 1) {
-            $row = mysqli_fetch_assoc($result);
+        if ($result && mysqli_num_rows($result) > 1) {
+            header("Location: duplicate-acc.php");
+            exit();
+        } elseif ($result && mysqli_num_rows($result) === 1) {
+            $row = $result->fetch_assoc();
 
             if (password_verify($password, $row['password'])) {
                 $_SESSION['user_name'] = $row['username'];
@@ -75,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
                 exit();
             } else {
-                $error[] = 'Incorrect username or password';
+                $error[] = 'Incorrect password';
             }
         } else {
             $error[] = 'Incorrect username or password';
@@ -84,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<main>
+<main class="darkbody">
     <div class="container gap mb-4">
         <div class="row">
             <div class="col-md-6 mx-auto">

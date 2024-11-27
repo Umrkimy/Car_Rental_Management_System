@@ -7,18 +7,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'approve') {
         $status = 'Approved';
-    } elseif ($action === 'disapprove') {
-        $status = 'Disapproved';
+    } elseif ($action === 'reject') {
+        $status = 'Rejected';
     } else {
         echo "Invalid action.";
         exit();
     }
 
-    $sql = "UPDATE users SET status='$status' WHERE id='$id'";
+    $sql = "UPDATE clients SET status='$status' WHERE id='$id'";
     if (mysqli_query($conn, $sql)) {
         header("Location: index.php");
     } else {
-        header("Location: users-status.php");
+        header("Location: clients-status.php");
     }
 }
 ?>

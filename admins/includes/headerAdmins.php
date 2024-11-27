@@ -144,6 +144,12 @@
                 <span>Rejected</span>
               </a>
             </li>
+            <li>
+              <a href="cars.php" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-car-front"></i></span>
+                <span>Cars</span>
+              </a>
+            </li>
             <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
             <li>
               <div class="text-muted small fw-bold text-uppercase px-3 mb-3">

@@ -1,3 +1,8 @@
+<?php 
+session_start();
+$usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
+?>
+
 <!DOCTYPE html>
 
 <head>
@@ -32,13 +37,13 @@
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#">Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#">Contact</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -49,7 +54,8 @@
                                 role="button"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <i class="bi bi-person-fill" style=" width: 22px; font-size: 22px;"></i>
+                                <i class="bi bi-person-fill me-2" style="font-size: 22px;"></i> 
+                                <span><?php echo htmlspecialchars($usernametop); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="profile.php">Profile</a></li>

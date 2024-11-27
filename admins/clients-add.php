@@ -6,36 +6,43 @@ include "../db_conn.php";
 $message = ""; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   
-    $name = $_POST["name"];
-    $clientname = $_POST["client_name"];
-    $password = $_POST["password"];
-    $confirmpassword = $_POST["confirmpassword"];
-    $email = $_POST["email"];
-    $phonenum = $_POST["phonenum"];
-    $address = $_POST["address"];
+    $name = trim($_POST["name"]);
+    $clientname = trim($_POST["client_name"]);
+    $password = trim($_POST["password"]);
+    $confirmpassword = trim($_POST["confirmpassword"]);
+    $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+    $phonenum = trim($_POST["phonenum"]);
+    $address = trim($_POST["address"]);
     $status = "Pending";
     date_default_timezone_set('Asia/Kuala_Lumpur');
-    $date = date("Y-m-d H:i:s", time())  ;
+    $date = date("Y-m-d H:i:s");
 
-    
-    if (empty($clientname) || empty($password) || empty($email ) || empty($phonenum)) {
+    if (empty($clientname) || empty($password) || empty($email) || empty($phonenum)) {
         $message = '<p class="alert alert-danger">Please fill in all required fields.</p>';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = '<p class="alert alert-danger">Invalid email format.</p>';
     } elseif ($password !== $confirmpassword) {
         $message = '<p class="alert alert-danger">Passwords do not match.</p>';
     } else {
-        
-        $duplicate = mysqli_query($conn, "SELECT * FROM clients WHERE client_name = '$clientname' OR email = '$email'");
-        if (mysqli_num_rows($duplicate) > 0) {
-            $message = '<p class="alert alert-danger">clientname or email is already taken.</p>';
-        } else {
+        $stmt = $conn->prepare("SELECT * FROM clients WHERE client_name = ? OR email = ?");
+        $stmt->bind_param("ss", $clientname, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            $query = "INSERT INTO clients (full_name, client_name, phone_num, email, address, password, status, date) VALUES ('$name', '$clientname', '$phonenum', '$email', '$address', '$password', '$status', '$date')";
-            if (mysqli_query($conn, $query)) {
+        if ($result->num_rows > 0) {
+            $message = '<p class="alert alert-danger">Clientname or email is already taken.</p>';
+        } else {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $stmt = $conn->prepare("INSERT INTO clients (full_name, client_name, phone_num, email, address, password, status, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssss", $name, $clientname, $phonenum, $email, $address, $hashedPassword, $status, $date);
+
+            if ($stmt->execute()) {
                 $message = '<p class="alert alert-success">Client added successfully.</p>';
             } else {
-                $message = '<p class="alert alert-danger">Failed to add Client. Please try again.</p>';
+                $message = '<p class="alert alert-danger">Failed to add client. Please try again.</p>';
             }
+            $stmt->close();
         }
     }
 }
@@ -76,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Contant No*</label>
+                                        <label>Contact No*</label>
                                         <input class="form-control" name="phonenum" placeholder="Contact No" type="number" required>
                                     </div>
                                 </div>
@@ -95,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Clientname*</label>
-                                        <input class="form-control" name="client_name" placeholder="clientname" required>
+                                        <input class="form-control" name="client_name" placeholder="Clientname" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -118,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </form>
 
                         <div class="mt-3">
-                        <a href="clients-manage.php"><< Back to Clients management</a>
+                            <a href="clients-manage.php"><< Back to Clients management</a>
                         </div>
                     </div>
                 </div>
