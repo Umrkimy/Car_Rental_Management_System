@@ -37,18 +37,11 @@ if (isset($_GET['bookingid'])) {
         $deposit = $total_price * 0.1;
         $total = $total_price + $deposit;
 
+        $_SESSION['payment']['days_rented'] = $days_rented;
+        $_SESSION['payment']['total_price'] = $total_price;
+        $_SESSION['payment']['deposit'] = $deposit;
+        $_SESSION['payment']['total'] = $total;
     }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $_SESSION['booking']['days_rented'] = $days_rented;
-        $_SESSION['booking']['total_price'] = $total_price;
-        $_SESSION['booking']['deposit'] = $deposit;
-        $_SESSION['booking']['total'] = $total;
-
-        header("Location: booking-details.php?bookingid=" . $id);
-        exit();
 }
 
 ?>
@@ -80,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </div>
 
 <div class="card shadow-lg mt-4 mb-5" style="width: 100%; max-width: 700px; margin: 0 auto;">
@@ -122,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <strong>Estimated Total:</strong>
             <span class="fw-bold text-decoration-none">RM<?php echo $total; ?></span>
         </div>
-        <form action="" method="POST" class="mt-3">
+        <form action="booking-details.php?bookingid=<?php echo $id ?>" method="POST" class="mt-3">
             <button type="submit" class="btn btn-warning w-100">Confirm Booking</button>
         </form>
     </div>

@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <div class="col">
                                                 
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo isset($email) ? $email : ''; ?>" required>
+                                                    <input type="email" class="form-control" name="email" placeholder="Email" value="<?php echo isset($email) ? $email : ''; ?>" required>
                                                 </div>
                                             
                                                 <div class="form-group mt-3">

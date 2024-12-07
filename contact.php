@@ -50,7 +50,7 @@ require_once("includes/header.php");
                                     <div class="icon mr-3">
                                         <span class="icon-mobile-phone"></span>
                                     </div>
-                                    <p><span>Phone:</span> <a href="tel://1234567920">+ 1235 2355 98</a></p>
+                                    <p><span>Phone:</span> <a href="tel://01161310512">+ 1235 2355 98</a></p>
                                 </div>
                             </div>
                             <div class="col-md-12">

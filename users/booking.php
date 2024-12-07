@@ -20,6 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         unset($_SESSION['booking']['pickup_date']);
         unset($_SESSION['booking']['drop_location']);
         unset($_SESSION['booking']['drop_date']);
+
+        unset($_SESSION['payment']['days_rented']);
+        unset($_SESSION['payment']['total_price']);
+        unset($_SESSION['payment']['deposit']);
+        unset($_SESSION['payment']['total']);
+
+        unset($_SESSION['info']['full_name']);
+        unset($_SESSION['info']['user_name']);
+        unset($_SESSION['info']['ic_no']);
+        unset($_SESSION['info']['driver_no']);
+        unset($_SESSION['info']['phone']);
+        unset($_SESSION['info']['email']);
+        unset($_SESSION['info']['status']);
+
         
         $_SESSION['booking'] = [
             'pickup_location' => $_POST['pickup_location'],
