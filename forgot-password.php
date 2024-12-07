@@ -3,7 +3,7 @@ $title = 'Forgot your password';
 require_once("includes/header.php");
 ?>
 
-<main>
+<main class="darkbody">
    <section>
       <div class="container gap">
          <div class="row">

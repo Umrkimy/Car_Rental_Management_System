@@ -1,11 +1,20 @@
 body {
     background-blend-mode: overlay;
-    background-color: rgba(0, 0, 0, 0.2);
     overflow-x: hidden;
     min-height: 100vh;  
     display: flex;
     flex-direction: column;
     color: #ffffff;
+}
+
+.darkbody{
+    background-blend-mode: overlay;
+    overflow-x: hidden;
+    min-height: 100vh;  
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .gap{
@@ -73,6 +82,15 @@ position: relative;
     filter: brightness(0.6);
 }
 
+.bg-img3{
+    background-position: 50% 50%;
+    object-position: center 15%;
+    height: 600px;
+    width: 100vw;
+    object-fit: cover;
+    filter: brightness(0.6);
+}
+
 
 .overlay {
     position: absolute;
@@ -91,7 +109,7 @@ position: relative;
 }
 
 .home-link {
-    color: rgb(33, 37, 41);
+    color: whitesmoke;
     text-decoration: none;
     transition: color 0.3s ease; 
 }

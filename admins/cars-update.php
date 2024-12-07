@@ -8,8 +8,11 @@ $message = "";
 if (isset($_GET['updateid'])) {
     $id = $_GET['updateid'];
 
-    $sql = "SELECT * FROM cars WHERE id='$id'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM cars WHERE id=?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
@@ -17,45 +20,60 @@ if (isset($_GET['updateid'])) {
         $price = $row['price'];
         $seats = $row['seats'];
         $trans = $row['trans'];
+        $clientname = $row['client_name'];
         $image = $row['image'];
-        
     } else {
         echo '<div class="alert alert-danger text-center">Car not found.</div>';
         exit();
     }
 
     if (isset($_POST['save'])) {
-        $name = $_POST['name'];
-        $price = $_POST['price'];
-        $seats = $_POST['seats'];
-        $trans = $_POST['trans'];
+        $name = mysqli_real_escape_string($conn, $_POST['name']);
+        $price = mysqli_real_escape_string($conn, $_POST['price']);
+        $seats = mysqli_real_escape_string($conn, $_POST['seats']);
+        $trans = mysqli_real_escape_string($conn, $_POST['trans']);
+        $clientname = mysqli_real_escape_string($conn, $_POST['clientname']);
 
-        $imagefilename = $_FILES['file']['name'];
-        $imagefileerror = $_FILES['file']['error'];
-        $imagefiletemp = $_FILES['file']['tmp_name'];
-        $filename_separate = explode('.', $imagefilename);
-        $filename_extension = strtolower(end($filename_separate));
+        $updated_image = $image;
 
-        $allowed_extensions = array('jpeg', 'jpg', 'png');
+        if (isset($_FILES['file']) && $_FILES['file']['error'] === 0) {
+            $imagefilename = $_FILES['file']['name'];
+            $imagefiletemp = $_FILES['file']['tmp_name'];
+            $filename_separate = explode('.', $imagefilename);
+            $filename_extension = strtolower(end($filename_separate));
+            $allowed_extensions = array('jpeg', 'jpg', 'png');
 
-        if ($imagefilename && in_array($filename_extension, $allowed_extensions)) {
-            $upload_image = 'imgs/' . $imagefilename;
-            move_uploaded_file($imagefiletemp, $upload_image);
-        } else {
-            $upload_image = $image; 
+            if (in_array($filename_extension, $allowed_extensions)) {
+                if (!is_dir('../imgs/')) {
+                    mkdir('../imgs/', 0777, true);
+                }
+
+                $unique_filename = uniqid('car_', true) . '.' . $filename_extension;
+                $upload_image = '../imgs/' . $unique_filename;
+
+                if (move_uploaded_file($imagefiletemp, $upload_image)) {
+                    $updated_image = $upload_image;
+                } else {
+                    $message = '<div class="alert alert-danger text-center">Failed to upload the new image. Keeping the current image.</div>';
+                }
+            } else {
+                $message = '<div class="alert alert-danger text-center">Invalid file type. Allowed: jpeg, jpg, png.</div>';
+            }
         }
 
-        $price_with_RM = 'RM ' . $price;
+        $price_with_RM = 'RM ' . number_format($price, 2);
 
         $sql = "UPDATE cars SET 
-                name='$name', 
-                price='$price_with_RM', 
-                seats='$seats', 
-                trans='$trans', 
-                image='$upload_image' 
-                WHERE id='$id'";
-
-        $result = mysqli_query($conn, $sql);
+                name=?, 
+                price=?, 
+                seats=?, 
+                trans=?,
+                client_name=?, 
+                image=? 
+                WHERE id=?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssissss", $name, $price_with_RM, $seats, $trans, $clientname, $updated_image, $id);
+        $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
             $message = '<div class="alert alert-success text-center">Car updated successfully.</div>';
@@ -68,7 +86,6 @@ if (isset($_GET['updateid'])) {
     exit();
 }
 ?>
-
 
 <style>
     img {
@@ -87,15 +104,15 @@ if (isset($_GET['updateid'])) {
                     <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group mb-2">
                             <label for="name">Name</label>
-                            <input type="text" id="name" name="name" class="form-control" value="<?= $name ?>" required>
+                            <input type="text" id="name" name="name" class="form-control" value="<?= htmlspecialchars($name) ?>" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="price">Price (Daily)</label>
-                            <input type="number" id="price" name="price" class="form-control" value="<?= str_replace('RM ', '', $price) ?>" required>
+                            <input type="number" id="price" name="price" class="form-control" value="<?= htmlspecialchars(str_replace('RM ', '', $price)) ?>" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="seats">Seats</label>
-                            <input type="number" id="seats" name="seats" class="form-control" value="<?= $seats ?>" required>
+                            <input type="number" id="seats" name="seats" class="form-control" value="<?= htmlspecialchars($seats) ?>" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="trans">Transmission</label>
@@ -103,6 +120,10 @@ if (isset($_GET['updateid'])) {
                                 <option value="Manual" <?= $trans == "Manual" ? "selected" : "" ?>>Manual</option>
                                 <option value="Automatic" <?= $trans == "Automatic" ? "selected" : "" ?>>Automatic</option>
                             </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="name">Client Name</label>
+                            <input type="text" id="name" name="clientname" placeholder="Client Name" class="form-control" value="<?= htmlspecialchars($clientname) ?>" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="file">Image (leave blank to keep current)</label>
@@ -114,7 +135,7 @@ if (isset($_GET['updateid'])) {
                 </div>
                 <div class="col-md-6 text-center">
                     <h2>Current Car Image</h2>
-                    <img src="<?= $image ?>" alt="Car Image" class="img-fluid mt-3">
+                    <img src="<?= htmlspecialchars($image) ?>" alt="Car Image" class="img-fluid mt-3">
                 </div>
             </div>
         </div>

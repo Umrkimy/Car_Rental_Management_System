@@ -20,41 +20,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $role = $_POST["role"] ?? '';
 
     if (empty($error)) {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE user_name = ? OR email = ?");
-        $stmt->bind_param("ss", $username, $email);
+        
+        if ($role == 'client') {
+            
+            $stmt = $conn->prepare("SELECT * FROM clients WHERE email = ?");
+        } else {
+            
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        }
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows > 0) {
-            $error[] = "Username or email is already taken.";
+            $error[] = "Email is already taken.";
         } else {
-            if ($password === $confirmpassword) {
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-                
-                if ($role == 'client') {
-                    $stmt = $conn->prepare("INSERT INTO clients (full_name, client_name, phone_num, email, address, password, status, date) 
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                } else {
-                    $stmt = $conn->prepare("INSERT INTO users (full_name, user_name, phone_num, email, address, password, status, date) 
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                }
-
-                date_default_timezone_set('Asia/Kuala_Lumpur');
-                $date = date("Y-m-d H:i:s");
-
-                $status = "Pending";
-
-                $stmt->bind_param("ssssssss", $name, $username, $phonenum, $email, $address, $hashedPassword, $status, $date);
-
-                if ($stmt->execute()) {
-                    $success[] = "Account has been created successfully. Please login";
-
-                } else {
-                    $error[] = "There was an error while processing your request.";
-                }
+            
+            $stmt = $conn->prepare("SELECT * FROM users WHERE user_name = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $error[] = "Username is already taken.";
             } else {
-                $error[] = "Passwords do not match.";
+                if ($password === $confirmpassword) {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                    if ($role == 'client') {
+                        $stmt = $conn->prepare("INSERT INTO clients (full_name, client_name, phone_num, email, address, password, status, date) 
+                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    } else {
+                        $stmt = $conn->prepare("INSERT INTO users (full_name, user_name, phone_num, email, address, password, status, date) 
+                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    }
+
+                    date_default_timezone_set('Asia/Kuala_Lumpur');
+                    $date = date("Y-m-d H:i:s");
+
+                    $status = "Pending";
+
+                    $stmt->bind_param("ssssssss", $name, $username, $phonenum, $email, $address, $hashedPassword, $status, $date);
+
+                    if ($stmt->execute()) {
+                        $success[] = "Account has been created successfully. Please login";
+                    } else {
+                        $error[] = "There was an error while processing your request.";
+                    }
+                } else {
+                    $error[] = "Passwords do not match.";
+                }
             }
         }
     }
@@ -103,22 +117,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Email*</label>
                                             <input class="form-control" name="email" placeholder="Email" type="email" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Contact No*</label>
                                             <input class="form-control" name="phonenum" placeholder="Contact No" type="number" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <label>Full Address</label>
-                                        <div class="form-group">
-                                            <textarea class="form-control" id="address" name="address" placeholder="Full Address" rows="2"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -131,19 +135,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label>Username*</label>
                                         <div class="form-group">
                                             <input class="form-control" id="user_name" name="user_name" placeholder="Username" required />
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label>Password*</label>
                                         <div class="form-group">
                                             <input class="form-control" id="password" name="password" placeholder="Password" type="password" required />
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label>Confirm Password*</label>
                                         <div class="form-group">
                                             <input class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" type="password" required />
                                         </div>
@@ -154,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <div class="col">
                                         <div class="form-group">
                                             <label>Sign Up As*</label>
-                                            <select class="form-control" name="role" required>
+                                            <select class="form-control mt-2" name="role" required>
                                                 <option value="user">User</option>
                                                 <option value="client">Client</option>
                                             </select>
@@ -174,7 +175,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 </div>
                             </div>
                         </form>
-                        <a href="index.php"> << Back to Home</a><br>
+                        <div class="mt-2">
+                                <a class="text-dark text-decoration-none" href="index.php">&lt;&lt; Back to Home</a>
+                            </div>
                     </div>
                 </div>
             </div>

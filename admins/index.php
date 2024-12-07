@@ -4,6 +4,31 @@ require_once("includes/headerAdmins.php");
 include "../db_conn.php";
 
 $message = "";
+
+
+$user_count_sql = "SELECT COUNT(*) AS user_count FROM users";
+$user_count_result = mysqli_query($conn, $user_count_sql);
+$user_count = 0;
+if ($user_count_result) {
+  $row = mysqli_fetch_assoc($user_count_result);
+  $user_count = $row['user_count']; 
+}
+
+$client_count_sql = "SELECT COUNT(*) AS client_count FROM clients";
+$client_count_result = mysqli_query($conn, $client_count_sql);
+$client_count = 0;
+if ($client_count_result) {
+  $row = mysqli_fetch_assoc($client_count_result);
+  $client_count = $row['client_count']; 
+}
+
+$car_count_sql = "SELECT COUNT(*) AS car_count FROM cars";  
+$car_count_result = mysqli_query($conn, $car_count_sql);
+$car_count = 0;
+if ($car_count_result) {
+  $row = mysqli_fetch_assoc($car_count_result);
+  $car_count = $row['car_count']; 
+}
 ?>
 
 <main class="mt-5 pt-3">
@@ -13,40 +38,35 @@ $message = "";
         <h4>Dashboard</h4>
       </div>
     </div>
+
     <div class="row">
       <div class="col-md-3 mb-3">
         <div class="card bg-primary text-white h-100">
-          <div class="card-body py-5">Primary Card</div>
-          <div class="card-footer d-flex">
-            View Details
-            <span class="ms-auto">
-              <i class="bi bi-chevron-right"></i>
-            </span>
+          <div class="card-body py-5">
+            <h5>User Count</h5>
+            <p class="fs-2"><?php echo $user_count; ?></p>
           </div>
         </div>
       </div>
-      <div class="col-md-3 mb-3">
-        <div class="card bg-warning text-dark h-100">
-          <div class="card-body py-5">Warning Card</div>
-          <div class="card-footer d-flex">
-            View Details
-            <span class="ms-auto">
-              <i class="bi bi-chevron-right"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
+
+       <div class="col-md-3 mb-3">
         <div class="card bg-success text-white h-100">
-          <div class="card-body py-5">Success Card</div>
-          <div class="card-footer d-flex">
-            View Details
-            <span class="ms-auto">
-              <i class="bi bi-chevron-right"></i>
-            </span>
+          <div class="card-body py-5">
+            <h5>Client Count</h5>
+            <p class="fs-2"><?php echo $client_count; ?></p>
           </div>
         </div>
       </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white h-100">
+          <div class="card-body py-5">
+            <h5>Car Count</h5>
+            <p class="fs-2"><?php echo $car_count; ?></p>
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-3 mb-3">
         <div class="card bg-danger text-white h-100">
           <div class="card-body py-5">Danger Card</div>

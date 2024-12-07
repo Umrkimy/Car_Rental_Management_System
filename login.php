@@ -138,12 +138,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                                         <div class="row">
                                             <div class="col">
-                                                <label>Email</label>
+                                                
                                                 <div class="form-group">
                                                     <input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo isset($email) ? $email : ''; ?>" required>
                                                 </div>
-                                                <label>Password</label>
-                                                <div class="form-group">
+                                            
+                                                <div class="form-group mt-3">
                                                     <input type="password" class="form-control" name="password" placeholder="Password" required>
                                                 </div>
 
@@ -162,6 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                 </div>
                             </div>
+                            </form>
                             <div class="mt-2">
                                 <a class="text-dark text-decoration-none" href="index.php">&lt;&lt; Back to Home</a>
                             </div>

@@ -22,7 +22,7 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
 <body class="vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="#">Car Rental</a>
+            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="index.php">Car Rental</a>
             <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,7 +34,7 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
                 <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
                     <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link" href="cars.php">Cars</a>
@@ -43,7 +43,7 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
                             <a class="nav-link" href="about.php">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="contact">Contact</a>
+                            <a class="nav-link" href="contact.php">Contact</a>
                         </li>
                     </ul>
 

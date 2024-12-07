@@ -7,7 +7,7 @@ require_once("includes/headerUsers.php");
 <body>
     <div>
         <div style="position: relative;">
-            <img src="imgs/bg2.jpg" class="bg-img2 w-100" alt="Background image">
+            <img src="../imgs/bg2.jpg" class="bg-img2 w-100" alt="Background image">
             <div class="overlay"></div>
             <div class="container">
                 <div class="row no-gutters align-items-end justify-content-start">
@@ -19,7 +19,7 @@ require_once("includes/headerUsers.php");
                                         <i class="bi bi-chevron-right"></i>
                                     </a>
                                     </div>
-                                <a class="text-decoration-none text-dark">About us 
+                                <a class="text-decoration-none text-light">About us 
                                         <i class="bi bi-chevron-right"></i>
                                     </a>
                             </ol>
@@ -36,7 +36,7 @@ require_once("includes/headerUsers.php");
         <div class="row g-0">
             <div class="col-md-6">
                 <div class="about-image" style="
-                    background-image: url('imgs/bg2.jpg');
+                    background-image: url('../imgs/bg2.jpg');
                     background-size: cover;
                     background-position: center;
                     height: 100%;
@@ -48,9 +48,9 @@ require_once("includes/headerUsers.php");
                     
                     <span class="subheading text-secondary fw-bold">About Us</span>
                     
-                    <h2 class="mb-4 text-dark fw-bold">Welcome to Carbook</h2>
+                    <h2 class="mb-4 text-dark fw-bold">Welcome to Car Rental</h2>
                     <p class="text-muted">
-                        Nestled in a serene environment, Carbook is where stories of effortless journeys begin. 
+                        Nestled in a serene environment, Car Rental is where stories of effortless journeys begin. 
                         A small river named Duden flows by, creating a picturesque, inspiring backdrop for a journey 
                         that promises comfort and style.
                     </p>
@@ -67,4 +67,9 @@ require_once("includes/headerUsers.php");
 </section>
 </body>
 </main>
+
+<?php
+$title = "About Us";
+require_once("includes/footerUsers.php");
+?>
 

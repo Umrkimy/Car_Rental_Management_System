@@ -15,8 +15,8 @@ require_once("includes/headerUsers.php");
             </div>
             <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="4000">
-                        <img src="imgs/bg.jpg" class="bg-img" alt="...">
+                    <div class="carousel-item active" data-bs-interval="2000">
+                        <img src="../imgs/bg.jpg" class="bg-img" alt="...">
                         <div class="carousel-caption text-white d-flex flex-column h-100 align-items-center justify-content-center bottom-0 ">
                             <h1 class="fs-1 text-uppercase intro">Rent a Car with Ease</h1>
                             <p class="p-1 fs-5 intro">
@@ -26,8 +26,8 @@ require_once("includes/headerUsers.php");
                             </p>
                         </div>
                     </div>
-                    <div class="carousel-item ">
-                        <img src="imgs/gtr.jpg" class="bg-img" alt="...">
+                    <div class="carousel-item " >
+                        <img src="../imgs/gtr.jpg" class="bg-img" alt="...">
                         <div class="carousel-caption text-white d-flex flex-column h-100 align-items-center justify-content-center bottom-0 ">
                             <h1 class="fs-1 text-uppercase intro">Rent a Car with Ease</h1>
                             <p class="p-1 fs-5 intro">
@@ -38,7 +38,7 @@ require_once("includes/headerUsers.php");
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="imgs/bg.jpg" class="bg-img" alt="...">
+                        <img src="../imgs/gtr2.jpg" class="bg-img" alt="...">
                         <div class="carousel-caption text-white d-flex flex-column h-100 align-items-center justify-content-center bottom-0 ">
                             <h1 class="fs-1 text-uppercase intro">Rent a Car with Ease</h1>
                             <p class="p-1 fs-5 intro">

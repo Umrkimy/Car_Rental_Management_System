@@ -17,10 +17,6 @@ require("db_conn.php");
         SELECT 'clients' AS user_type, id, email, client_name AS username 
         FROM clients 
         WHERE email = ?
-        UNION
-        SELECT 'admins' AS user_type, id, email, admin_name AS username 
-        FROM admins 
-        WHERE email = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -37,8 +33,8 @@ require("db_conn.php");
             $update_sql = "UPDATE users SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
         } elseif ($user_type === 'clients') {
             $update_sql = "UPDATE clients SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
-        } elseif ($user_type === 'admins') {
-            $update_sql = "UPDATE admins SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
+        } else {
+            
         }
 
         $update_stmt= $conn->prepare($update_sql);

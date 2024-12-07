@@ -32,7 +32,6 @@ require_once("includes/header.php");
         </div>
     </div>
 
-        <!-- Contact Us Section -->
         <section class="ftco-section contact-section text-dark mt-5 pt-3">
             <div class="container">
                 <div class="row d-flex mb-5 contact-info">
@@ -69,16 +68,16 @@ require_once("includes/header.php");
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Your Name">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <input type="text" class="form-control" placeholder="Your Email">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <input type="text" class="form-control" placeholder="Subject">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
                             </div>
                         </form>
