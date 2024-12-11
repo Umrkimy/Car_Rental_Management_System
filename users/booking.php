@@ -11,11 +11,25 @@ include "../db_conn.php";
 
 if (isset($_GET['bookingid'])) {
     $id = $_GET['bookingid'];
+
+    $sql = "SELECT * FROM cars WHERE id=?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        $state = $row['state'];
+        $city = $row['city'];
+    }
+
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['pickup_location']) && !empty($_POST['pickup_date']) && !empty($_POST['drop_location']) && !empty($_POST['drop_date'])) {
        
+        unset($_SESSION['booking']['state']);
+        unset($_SESSION['booking']['city']);
         unset($_SESSION['booking']['pickup_location']);
         unset($_SESSION['booking']['pickup_date']);
         unset($_SESSION['booking']['drop_location']);
@@ -36,6 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         
         $_SESSION['booking'] = [
+            'state' => $_POST['state'],
+            'city' => $_POST['city'],
             'pickup_location' => $_POST['pickup_location'],
             'pickup_date' => $_POST['pickup_date'],
             'drop_location' => $_POST['drop_location'],
@@ -47,6 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } else {
         $_SESSION['booking'] = [
+            'state' => $_POST['state'],
+            'city' => $_POST['city'],
             'pickup_location' => $_POST['pickup_location'],
             'pickup_date' => $_POST['pickup_date'],
             'drop_location' => $_POST['drop_location'],
@@ -92,6 +110,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form action="" method="POST">
         <div class="row">
            
+        <div class="col-12 mb-4 text-dark">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" id="state" name="state" placeholder="State" class="form-control" value="<?php echo htmlspecialchars($state); ?>" readonly style="background-color: #e9ecef;">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" id="city" name="city" placeholder="City" class="form-control" value="<?php echo htmlspecialchars($city); ?>" readonly style="background-color: #e9ecef;">
+            </div>
+        </div>
+    
+</div>
+
+
             <div class="col-12 mb-4 text-dark">
                 <h5 class="text-uppercase text-dark">Pick Up</h5>
                 <div class="border border-warning p-4 rounded">

@@ -61,7 +61,7 @@ include "db_conn.php";
 
         <div class="container text-dark mt-5">
             <div class="row">
-                <center><h1> Most recent Cars </h1> </center>
+            <center><h1 class="fs-1 text-uppercase  ">Most Recent Car</h1></center>
                 <?php
                 if (isset($conn) && $conn) {
                     $sql = "SELECT * FROM cars ORDER BY id DESC LIMIT 3";
@@ -81,7 +81,7 @@ include "db_conn.php";
                                 $trans = htmlspecialchars($row['trans']);
 
                                 echo '
-                                <div class="col-md-4 col-sm-6 mb-4 mt-3">
+                                <div class="col-md-4 col-sm-6 mb-5 mt-3 intro">
                                     <div class="card border-0 shadow-sm hover-shadow h-100">
                                         <img src="' . str_replace('../', '', $image) . '" class="img-fluid rounded-start" alt="' . $name . '" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
@@ -90,7 +90,7 @@ include "db_conn.php";
                                             <p class="mb-1">Price (Daily): <strong>' . $price . '</strong></p>
                                             <p class="mb-1">Seats: <strong>' . $seats . '</strong></p>
                                             <p class="mb-1">Transmission: <strong>' . $trans . '</strong></p>
-                                            <a href="booking.php?bookingid=' . $id . '" class="btn btn-success text-white shadow-none mt-2">Book Now</a>
+                                            <a href="javascript:void(0);" class="btn btn-success text-white shadow-none mt-2" onclick="alert(\'You need to log in first before you can book.\');">Book Now</a>
                                         </div>
                                     </div>
                                 </div>';
@@ -107,6 +107,7 @@ include "db_conn.php";
                 ?>
             </div>
         </div>
+        
     </section>
 </main>
 

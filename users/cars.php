@@ -77,8 +77,13 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                     </div>
                 </div>
                 <div class="col-lg-9">
+
                     <?php
-                    $sql = "SELECT * FROM cars WHERE 1=1";
+                    $itemsPerPage = 6;
+                    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+                    $offset = ($page - 1) * $itemsPerPage;
+
+                    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM cars WHERE 1=1";
                     $params = [];
                     $types = "";
 
@@ -95,49 +100,69 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                         $types .= "i";
                     }
 
+                    $sql .= " LIMIT ? OFFSET ?";
+                    $params[] = $itemsPerPage;
+                    $params[] = $offset;
+                    $types .= "ii";
+
                     $stmt = mysqli_prepare($conn, $sql);
-
-                    if ($params) {
-                        mysqli_stmt_bind_param($stmt, $types, ...$params);
-                    }
-
+                    mysqli_stmt_bind_param($stmt, $types, ...$params);
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
+
+
+                    $totalRowsResult = mysqli_query($conn, "SELECT FOUND_ROWS() as total");
+                    $totalRows = mysqli_fetch_assoc($totalRowsResult)['total'];
+                    $totalPages = ceil($totalRows / $itemsPerPage);
                     ?>
 
-            <div class="container text-dark mt-5">
-            <div class="row"> 
-             <?php
+                    <div class="container text-dark mt-5">
+                        <div class="row">
+                            <?php
 
-                    if ($result && mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $name = str_replace(' ', '_', $row['name']);
-                            $Name = $row['name'];
-                            $id = $row['id'];
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $name = str_replace(' ', '_', $row['name']);
+                                    $id = $row['id'];
+                                    $isAvailable = true;
 
-                            $isAvailable = true;
-                            if ($pickup && $dropoff) {
-                                $availabilityQuery = "
-                            SELECT * FROM bookings 
-                            WHERE name=? 
-                            AND (
-                                (? BETWEEN pickup_date AND dropoff_date) OR 
-                                (? BETWEEN pickup_date AND dropoff_date) OR
-                                (pickup_date BETWEEN ? AND ?) OR 
-                                (dropoff_date BETWEEN ? AND ?)
-                            )
-                        ";
-                                $availabilityStmt = mysqli_prepare($conn, $availabilityQuery);
-                                mysqli_stmt_bind_param($availabilityStmt, "isssssss", $id, $Name, $pickup, $dropoff, $pickup, $dropoff, $pickup, $dropoff);
-                                mysqli_stmt_execute($availabilityStmt);
-                                $availabilityResult = mysqli_stmt_get_result($availabilityStmt);
+                                    $bookingQuery = "SELECT cars_name FROM bookings WHERE id = ?";
+                                    $bookingStmt = mysqli_prepare($conn, $bookingQuery);
+                                    mysqli_stmt_bind_param($bookingStmt, "i", $id);
+                                    mysqli_stmt_execute($bookingStmt);
+                                    $bookingResult = mysqli_stmt_get_result($bookingStmt);
 
-                                if ($availabilityResult && mysqli_num_rows($availabilityResult) > 0) {
-                                    $isAvailable = false;
-                                }
-                            }
-                            if ($isAvailable) {
-                                echo '
+                                    if ($bookingRow = mysqli_fetch_assoc($bookingResult)) {
+                                        $carsName = $bookingRow['cars_name'];
+                                    } else {
+                                        $carsName = null;
+                                    }
+
+                                    if ($pickup && $dropoff) {
+                                        $availabilityQuery = "
+SELECT * FROM bookings 
+WHERE cars_name = ? 
+AND (
+(? BETWEEN pickup_date AND dropoff_date) OR 
+(? BETWEEN pickup_date AND dropoff_date) OR
+(pickup_date BETWEEN ? AND ?) OR 
+(dropoff_date BETWEEN ? AND ?)
+)
+";
+
+                                        $availabilityStmt = mysqli_prepare($conn, $availabilityQuery);
+
+                                        mysqli_stmt_bind_param($availabilityStmt, "sssssss", $carsName, $pickup, $dropoff, $pickup, $dropoff, $pickup, $dropoff);
+
+                                        mysqli_stmt_execute($availabilityStmt);
+                                        $availabilityResult = mysqli_stmt_get_result($availabilityStmt);
+
+                                        if ($availabilityResult && mysqli_num_rows($availabilityResult) > 0) {
+                                            $isAvailable = false;
+                                        }
+                                    }
+                                    if ($isAvailable) {
+                                        echo '
     <div class="col-md-4 col-sm-6 mb-4 ">
         <div class="card border-0 shadow-sm hover-shadow h-100">
             <div class="row g-0">
@@ -151,22 +176,48 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                          <p class="mb-1">Price (Daily): <strong>' . htmlspecialchars($row['price']) . ' </strong></p>
                              <p class="mb-1">Seats: <strong>' . htmlspecialchars($row['seats']) . ' </strong></p>
                          <p class="mb-1">Transmission: <strong>' . htmlspecialchars($row['trans']) . '</strong></p>
+                         <p class="mb-1">State: <strong>' . htmlspecialchars($row['state']) . '</strong></p>
+                         <p class="mb-1">City: <strong>' . htmlspecialchars($row['city']) . '</strong></p>
                         <a href="booking.php?bookingid=' . urlencode($id) . '" class="btn btn-success text-white shadow-none mt-2">Book Now</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>';
+                                    }
+                                }
+                            } else {
+                                echo '<p class="text-center">No Cars available at the moment.</p>';
                             }
-                        }
-                    } else {
-                        echo '<p class="text-center">No Cars available at the moment.</p>';
-                    }
-                    ?>
-                    </div> 
+                            ?>
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <?php if ($page > 1): ?>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>">Previous</a>
+                                        </li>
+                                    <?php endif; ?>
+
+                                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                        <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>"><?php echo $i; ?></a>
+                                        </li>
+                                    <?php endfor; ?>
+
+                                    <?php if ($page < $totalPages): ?>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>">Next</a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </nav>
+                        </div>
+
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 </main>
 

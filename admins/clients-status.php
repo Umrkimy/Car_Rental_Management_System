@@ -63,7 +63,7 @@ if (isset($_GET['infoid'])) {
                                         <form method="POST" action="clients-approve.php">
                                             <input type="hidden" name="id" value="' . $id . '">
                                             <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
-                                            <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                                            <button type="submit" name="action" value="rejected" class="btn btn-danger">Reject</button>
                                         </form>
                                     </td>
                                 </tr>';

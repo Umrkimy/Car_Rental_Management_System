@@ -12,6 +12,7 @@ if (isset($_GET['bookingid'])) {
     $total_in_sen = $total * 100;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $payment_method = "Online Transaction";
         $status = "Paid";
     
         $_SESSION['info'] = [
@@ -21,7 +22,8 @@ if (isset($_GET['bookingid'])) {
             'driver_no' => $_POST['driver_no'],
             'phone' => $_POST['phone'],
             'email' => $_POST['email'],
-            'status' => $status
+            'status' => $status,
+            'payment_method' => $payment_method,
         ];
     }
 

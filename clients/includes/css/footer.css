@@ -1,0 +1,110 @@
+.wrapper>* {
+    flex: 0 0 auto;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.py-8 {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+}
+
+.footer-link-01 li+li {
+    padding-top: 0.8rem;
+}
+
+.footer-title-01 {
+    font-size: 16px;
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+
+.footer-title-01 {
+    font-size: 16px;
+    margin: 0 0 20px;
+    font-weight: 600
+}
+
+.footer-link-01 li+li {
+    padding-top: .8rem
+}
+
+@media (max-width: 991.98px) {
+    .footer-link-01 li+li {
+        padding-top: .6rem
+    }
+}
+
+.footer-link-01 a {
+    position: relative;
+    display: inline-block;
+    vertical-align: top
+}
+
+.footer-link-01 a:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    width: 0;
+    height: 1px;
+    transition: ease all .35s;
+    background: currentColor
+}
+
+.footer-link-01 a:hover:after {
+    left: 0;
+    right: auto;
+    width: 100%
+}
+
+.footer .footer-socila-icon a {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #F84E77;
+    color: #ffffff;
+    border-radius: 50%;
+    margin-right: 8px;
+    font-size: 15px;
+}
+
+.footer .footer-socila-icon a:hover {
+    background: #1baaa0;
+}
+
+.footer .footer-links {
+    margin: 0;
+}
+
+.footer .footer-links li+li {
+    padding-top: 10px;
+}
+
+.footer .footer-links li a {
+    position: relative;
+}
+
+.footer .footer-links li a:after {
+    content: "";
+    position: absolute;
+    width: 0px;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    transition: ease all 0.35s;
+    background: #F84E77;
+}
+
+.footer .footer-links li a:hover:after {
+    width: 100%;
+    left: 0;
+    right: auto;
+}

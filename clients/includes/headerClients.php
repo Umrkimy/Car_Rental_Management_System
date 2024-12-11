@@ -1,6 +1,8 @@
 <?php 
 session_start();
 $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
+$idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
+
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +14,8 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="includes/clients.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="includes/css/clients.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -22,7 +25,7 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
 <body class="vh-100 ">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top intro">
         <div class="container">
-            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="#">Car Rental</a>
+            <a class="navbar-brand fs-4 fw-bold text-uppercase" href="index.php">Car Rental</a>
             <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,16 +37,16 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
                 <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
                     <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Cars</a>
+                            <a class="nav-link" href="manage.php">Manage Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">About</a>
+                            <a class="nav-link" href="about.php">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="contact.php">Contact</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -58,11 +61,11 @@ $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
                                 <span><?php echo htmlspecialchars($usernametop); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                                <li><a class="dropdown-item" href="billing.php">Billing</a></li>
                                 <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                                <li>
-                                    <a class="dropdown-item" href="logout.php">Logout</a>
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                             </ul>
                         </li>
                     </ul>

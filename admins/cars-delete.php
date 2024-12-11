@@ -1,14 +1,26 @@
 <?php
 include "../db_conn.php";
 
-if(isset($_GET['deleteid'])){
+if (isset($_GET['deleteid'])) {
     $id = $_GET['deleteid'];
 
-    $sql = "DELETE FROM cars WHERE id=$id";
+    $sql = "SELECT image FROM cars WHERE id = $id";
     $result = mysqli_query($conn, $sql);
-    if($result){
+
+    if ($result && $row = mysqli_fetch_assoc($result)) {
+        $imagePath = $row['image'];
+        
+        if (file_exists($imagePath)) {
+            unlink($imagePath);  
+        }
+    }
+
+    $sql = "DELETE FROM cars WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
         header("Location: cars.php");
-        exit; 
+        exit;
     } else {
         die(mysqli_error($conn));
     }

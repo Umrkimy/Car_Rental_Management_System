@@ -1,5 +1,5 @@
 <?php
-$title = 'Contact';
+$title = 'Home';
 require_once("includes/headerClients.php");
 ?>
 
@@ -51,7 +51,7 @@ require_once("includes/headerClients.php");
                                     <div class="icon mr-3">
                                         <span class="icon-mobile-phone"></span>
                                     </div>
-                                    <p><span>Phone:</span> <a href="tel://1234567920">+60 1161310512</a></p>
+                                    <p><span>Phone:</span> <a href="tel://01161310512">+60 1161310512</a></p>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -66,19 +66,19 @@ require_once("includes/headerClients.php");
                     </div>
                     <div class="col-md-8 block-9 mb-md-5">
                         <form action="../email-support.php" method="POST" class="bg-light p-5 contact-form">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="name" placeholder="Your Name" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <input type="email" class="form-control" name="email" placeholder="Your Email" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="subject" placeholder="Subject" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <textarea name="message" id="" cols="30" rows="7" class="form-control" placeholder="Message" required></textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group ">
                                 <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
                             </div>
                         </form>

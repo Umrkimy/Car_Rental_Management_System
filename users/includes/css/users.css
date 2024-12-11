@@ -13,7 +13,7 @@ body {
     min-height: 100vh;  
     display: flex;
     flex-direction: column;
-    color: #ffffff;
+    color:#69707a;
     background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -91,6 +91,15 @@ position: relative;
     filter: brightness(0.6);
 }
 
+.bg-img4{
+    background-position: 50% 50%;
+    object-position: center 15%;
+    height: 300px;
+    width: 100vw;
+    object-fit: cover;
+    filter: brightness(0.6);
+}
+
 
 .overlay {
     position: absolute;
@@ -103,7 +112,7 @@ position: relative;
 
 .text-overlay {
     position: absolute;
-
+    bottom: 10px; 
     left: 50px; 
     z-index: 2;
 }

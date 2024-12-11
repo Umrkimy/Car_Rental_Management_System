@@ -5,73 +5,36 @@ $title = "Booking Confirmation";
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
 
-date_default_timezone_set('Asia/Kuala_Lumpur');
-$date = date("Y-m-d ");
+if (isset($_GET['receiptid'])) {
+    $id = $_GET['receiptid'];
 
-$invoice_no = uniqid("INV");
-
-if (isset($_GET['bookingid'])) {
-    $id = $_GET['bookingid'];
-
-    $sql = "SELECT * FROM cars WHERE id = ?";
+    $sql = "SELECT * FROM bookings WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
     if ($row = mysqli_fetch_assoc($result)) {
-        $cars_name = $row['name'];
+        $cars_name = $row['cars_name'];
         $clientname = $row['client_name'];
-        $price_string = $row['price'];
-    }
+        $full_name = $row['full_name'];
+        $email = $row['email'];
+        $phone = $row['phone_num'];
+        $invoice_no = $row['invoice_no'];
+        $date = $row['invoice_date'];
+        $days_rented = $row['days_rented'];
+        $deposit_rm = $row['deposit'];
+        $total = $row['total'];
+        $status = $row['status'];
 
-    $state = $_SESSION['booking']['state'] ?? null;
-    $city = $_SESSION['booking']['city'] ?? null;
-    $pickup_date = $_SESSION['booking']['pickup_date'] ?? null;
-    $pickup_location = $_SESSION['booking']['pickup_location'] ?? null;
-    $drop_date = $_SESSION['booking']['drop_date'] ?? null;
-    $drop_location = $_SESSION['booking']['drop_location'] ?? null;
+        $total_without_rm = (float)str_replace(['RM', ',', ' '], '', $total);
+        $deposit_without_rm = (float)str_replace(['RM', ',', ' '], '', $deposit_rm);
 
-    $days_rented = $_SESSION['payment']['days_rented'] ?? null;
-    $total_price = $_SESSION['payment']['total_price'] ?? null;
-    $deposit = $_SESSION['payment']['deposit'] ?? null;
-    $total = $_SESSION['payment']['total'] ?? null;
+        $price_withour_rm = $total_without_rm / $days_rented;
+        $total_price = $total_without_rm - $deposit_without_rm;
 
-    $total_price_rm = 'RM ' . number_format($total_price, 2);
-    $deposit_rm = 'RM ' . number_format($deposit, 2);
-    $total_rm = 'RM ' . number_format($total, 2);
-
-    $full_name = $_SESSION['info']['full_name'] ?? null;
-    $user_name = $_SESSION['info']['user_name'] ?? null;
-    $ic_no = $_SESSION['info']['ic_no'] ?? null;
-    $driver_no = $_SESSION['info']['driver_no'] ?? null;
-    $phone = $_SESSION['info']['phone'] ?? null;
-    $email = $_SESSION['info']['email'] ?? null;
-    $status = $_SESSION['info']['status'] ?? null;
-    $payment_method = $_SESSION['info']['payment_method'] ?? null;
-
-    $sql = "SELECT id FROM bookings ORDER BY id DESC LIMIT 1";
-    $result = mysqli_query($conn, $sql);
-
-    if ($result) {
-    $row = mysqli_fetch_assoc($result);
-    $latest_id = $row['id'];
-    }
-
-    if (!isset($_SESSION['inserted_booking'])) {
-        $sql = "INSERT INTO bookings (state, city, full_name, user_name, client_name, email, phone_num, cars_name, ic_no, driver_no, days_rented, deposit, total, status, pickup_location, dropoff_location, pickup_date, dropoff_date, invoice_no, invoice_date, payment_method) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssssssssissssssssss", 
-            $state, $city, $full_name, $user_name, $clientname, $email, $phone, 
-            $cars_name, $ic_no, $driver_no, $days_rented, $deposit_rm, 
-            $total_rm, $status, $pickup_location, $drop_location, 
-            $pickup_date, $drop_date, $invoice_no, $date, $payment_method);
-
-        if (mysqli_stmt_execute($stmt)) {
-            $_SESSION['inserted_booking'] = true;
-        }
+        $price = 'RM ' . number_format($price_withour_rm, 2);
+        $total_price_rm = 'RM ' . number_format($total_price, 2);
     }
 }
 ?>
@@ -111,7 +74,15 @@ if (isset($_GET['bookingid'])) {
                 <div class="card">
                     <div class="card-body">
                         <div class="invoice-title">
-                            <h4 class="float-end font-size-15"> <span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                            <h4 class="float-end font-size-15">
+                                <span class="badge <?php if ($status === 'Cancelled') {
+                                 echo 'bg-danger';
+                                } elseif ($status === 'Pending') {
+                                echo 'bg-secondary';
+                                } else {
+                                echo 'bg-success';
+                                    } ?> font-size-12 ms-2"><?php echo htmlspecialchars($status); ?></span>
+                            </h4>
                             <div class="mb-4">
                                 <h2 class="mb-1 text-muted">Car rental</h2>
                             </div>
@@ -170,7 +141,7 @@ if (isset($_GET['bookingid'])) {
                                                     <p class="text-muted mb-0">Rented by <?php echo htmlspecialchars($clientname) ?></p>
                                                 </div>
                                             </td>
-                                            <td><?php echo htmlspecialchars($price_string) ?></td>
+                                            <td><?php echo htmlspecialchars($price) ?></td>
                                             <td><?php echo htmlspecialchars($days_rented) ?></td>
                                             <td class="text-end"><?php echo $total_price_rm ?></td>
                                         </tr>
@@ -186,7 +157,7 @@ if (isset($_GET['bookingid'])) {
                                         <tr>
                                             <th scope="row" colspan="4" class="border-0 text-end">Total</th>
                                             <td class="border-0 text-end">
-                                                <h6 class="m-0 fw-semibold"><?php echo $total_rm ?></h6>
+                                                <h6 class="m-0 fw-semibold"><?php echo $total ?></h6>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -195,7 +166,7 @@ if (isset($_GET['bookingid'])) {
                             <div class="d-print-none mt-4">
                                 <div class="float-end">
                                     <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                                    <form action="../email-receipt.php?bookingid=<?php echo $latest_id ?>" method="POST" class="mt-3" style="display: inline;">
+                                    <form action="../email-receipt.php?bookingid=<?php echo $id ?>" method="POST" class="mt-3" style="display: inline;">
                                         <button type="submit" class="btn btn-primary w-md">Send</button>
                                     </form>
                                 </div>

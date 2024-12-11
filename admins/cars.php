@@ -11,6 +11,8 @@ if (isset($_POST['save'])) {
     $seats = mysqli_real_escape_string($conn, $_POST['seats']);
     $trans = mysqli_real_escape_string($conn, $_POST['trans']);
     $clientname = mysqli_real_escape_string($conn, $_POST['clientname']);
+    $state = mysqli_real_escape_string($conn, $_POST['state']);
+    $city = mysqli_real_escape_string($conn, $_POST['city']);
 
     $image = $_FILES['file'];
 
@@ -33,10 +35,10 @@ if (isset($_POST['save'])) {
         if (move_uploaded_file($imagefiletemp, $upload_image)) {
             $price_with_RM = 'RM ' . number_format($price, 2);
 
-            $sql = "INSERT INTO cars (name, price, seats, trans, client_name, image) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO cars (name, price, seats, trans, client_name, image, state, city) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, "ssisss", $name, $price_with_RM, $seats, $trans, $clientname,$upload_image);
+            mysqli_stmt_bind_param($stmt, "ssisssss", $name, $price_with_RM, $seats, $trans, $clientname, $upload_image, $state, $city);
 
             if (mysqli_stmt_execute($stmt)) {
                 $message = '<div class="alert alert-success text-center">Data inserted successfully.</div>';
@@ -57,6 +59,7 @@ if (isset($_POST['save'])) {
         width: 125px;
     }
 </style>
+
 <main class="mt-5 pt-3">
     <div class="card">
         <div class="card-header text-center">
@@ -91,6 +94,15 @@ if (isset($_POST['save'])) {
                             <input type="text" id="name" name="clientname" placeholder="Client Name" class="form-control" required>
                         </div>
                         <div class="form-group mb-2">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" placeholder="State" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" placeholder="City" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-2">
                             <label for="file">Image</label>
                             <input type="file" id="file" name="file" class="form-control" required>
                         </div>
@@ -110,6 +122,8 @@ if (isset($_POST['save'])) {
                                 <th>Seats</th>
                                 <th>Transmission</th>
                                 <th>Client Name</th>
+                                <th>State</th>
+                                <th>City</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -126,6 +140,8 @@ if (isset($_POST['save'])) {
                                     $seats = $row['seats'];
                                     $trans = $row['trans'];
                                     $clientname = $row['client_name'];
+                                    $state = $row['state'];
+                                    $city = $row['city'];
 
                                     echo '<tr>
                                     <td>' . $id . '</td>
@@ -135,6 +151,8 @@ if (isset($_POST['save'])) {
                                     <td>' . $seats . '</td>
                                     <td>' . $trans . '</td>
                                     <td>' . $clientname . '</td>
+                                    <td>' . $state . '</td>
+                                    <td>' . $city . '</td>
                                     <td>
                                         <a href="cars-update.php?updateid=' . $id . '" class="btn btn-primary btn-sm">Update</a>
                                         <a href="cars-delete.php?deleteid=' . $id . '" class="btn btn-danger btn-sm">Delete</a>

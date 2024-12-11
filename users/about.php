@@ -69,7 +69,6 @@ require_once("includes/headerUsers.php");
 </main>
 
 <?php
-$title = "About Us";
 require_once("includes/footerUsers.php");
 ?>
 

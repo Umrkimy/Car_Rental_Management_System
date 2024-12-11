@@ -140,11 +140,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <div class="col">
                                                 
                                                 <div class="form-group">
-                                                    <input type="email" class="form-control" name="email" placeholder="Email" value="<?php echo isset($email) ? $email : ''; ?>" required>
+                                                    <input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo isset($email) ? $email : ''; ?>" required>
                                                 </div>
                                             
                                                 <div class="form-group mt-3">
-                                                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                                    <input type="password" class="form-control" name="password" type="password" placeholder="Password" required>
                                                 </div>
 
                                                 <div class="form-group mt-3 mb-3 d-flex justify-content-center align-items-center">

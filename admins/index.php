@@ -32,12 +32,13 @@ if ($car_count_result) {
 ?>
 
 <main class="mt-5 pt-3">
+<head><link href="includes/css/card.css" rel="stylesheet" /></head>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <h4>Dashboard</h4>
       </div>
-    </div>
+</div>
 
     <div class="row">
       <div class="col-md-3 mb-3">

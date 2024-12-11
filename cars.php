@@ -1,5 +1,5 @@
 <?php
-$title = "About Us";
+$title = "Cars";
 require_once("includes/header.php");
 include "db_conn.php";
 
@@ -10,153 +10,215 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
 ?>
 
 <main>
-<body>
-    <div>
-        <div style="position: relative;">
-            <img src="imgs/bg2.jpg" class="bg-img2 w-100" alt="Background image">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row no-gutters align-items-end justify-content-start">
-                    <div class="col-md-9 ftco-animate pb-5 text-overlay">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb fs-10 fw-bold text-uppercase">
-                                <div class="mr-5">
-                                    <a href="index.php" class="text-decoration-none home-link">Home 
-                                        <i class="bi bi-chevron-right"></i>
-                                    </a>
+
+    <body>
+        <div>
+            <div style="position: relative;">
+                <img src="imgs/bg4.jpg" class="bg-img2 w-100" alt="Background image">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row no-gutters align-items-end justify-content-start">
+                        <div class="col-md-9 ftco-animate pb-5 text-overlay">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb fs-10 fw-bold text-uppercase">
+                                    <div class="mr-5">
+                                        <a href="index.php" class="text-decoration-none home-link">Home
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
                                     </div>
-                                <a class="text-decoration-none text-light">Cars
+                                    <a class="text-decoration-none text-light">Cars
                                         <i class="bi bi-chevron-right"></i>
                                     </a>
-                            </ol>
-                        </nav>
-                        <h1 class="fst-italic text-capitalize text-white">Cars</h1>
+                                </ol>
+                            </nav>
+                            <h1 class="fst-italic text-capitalize text-white">Cars</h1>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container text-dark mt-5">
-    <div class="row">
-        <div class="col-lg-3 mb-4">
-            <div class="bg-white rounded shadow p-3">
-                <h4 class="mt-2">FILTERS</h4>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#filterDropdown" aria-controls="filterDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse show" id="filterDropdown">
-                    <form method="GET" action="">
-                        <div class="mb-3">
-                            <input type="text" name="search" class="form-control" placeholder="Search Cars" value="<?php echo htmlspecialchars($search); ?>">
+        <div class="container text-dark mt-5">
+            <div class="row">
+                <div class="col-lg-3 mb-5">
+                    <div class="bg-white rounded shadow p-3">
+                        <h4 class="mt-2">FILTERS</h4>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#filterDropdown" aria-controls="filterDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse show" id="filterDropdown">
+                            <form method="GET" action="">
+                                <div class="mb-3">
+                                    <input type="text" name="search" class="form-control" placeholder="Search Cars" value="<?php echo htmlspecialchars($search); ?>">
+                                </div>
+                                <div class="border bg-light p-3 rounded mb-3">
+                                    <h5 class="mb-3" style="font-size: 18px;">CHECK AVAILABILITY</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Pick-up date</label>
+                                        <input type="date" name="pickup" class="form-control shadow-none" value="<?php echo htmlspecialchars($pickup); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Drop-off date</label>
+                                        <input type="date" name="dropoff" class="form-control shadow-none" value="<?php echo htmlspecialchars($dropoff); ?>">
+                                    </div>
+                                </div>
+                                <div class="border bg-light p-3 rounded mb-3">
+                                    <h5 class="mb-3" style="font-size: 18px;">Cars Specs</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Seats</label>
+                                        <input type="number" name="seats" class="form-control shadow-none" value="<?php echo htmlspecialchars($seats); ?>">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-dark w-100">Check</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="border bg-light p-3 rounded mb-3">
-                            <h5 class="mb-3" style="font-size: 18px;">CHECK AVAILABILITY</h5>
-                            <div class="mb-3">
-                                <label class="form-label">Pick-up date</label>
-                                <input type="date" name="pickup" class="form-control shadow-none" value="<?php echo htmlspecialchars($pickup); ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Drop-off date</label>
-                                <input type="date" name="dropoff" class="form-control shadow-none" value="<?php echo htmlspecialchars($dropoff); ?>">
-                            </div>
-                        </div>
-                        <div class="border bg-light p-3 rounded mb-3">
-                            <h5 class="mb-3" style="font-size: 18px;">Cars Specs</h5>
-                            <div class="mb-3">
-                                <label class="form-label">Seats</label>
-                                <input type="number" name="seats" class="form-control shadow-none" value="<?php echo htmlspecialchars($seats); ?>">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-dark w-100">Check</button>
-                        </div>
-                    </form>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+
+                    <?php
+                    $itemsPerPage = 6;
+                    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+                    $offset = ($page - 1) * $itemsPerPage;
+
+                    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM cars WHERE 1=1";
+                    $params = [];
+                    $types = "";
+
+                    if ($search) {
+                        $sql .= " AND (id LIKE ? OR name LIKE ?)";
+                        $params[] = "%$search%";
+                        $params[] = "%$search%";
+                        $types .= "ss";
+                    }
+
+                    if ($seats) {
+                        $sql .= " AND seats >= ?";
+                        $params[] = $seats;
+                        $types .= "i";
+                    }
+
+                    $sql .= " LIMIT ? OFFSET ?";
+                    $params[] = $itemsPerPage;
+                    $params[] = $offset;
+                    $types .= "ii";
+
+                    $stmt = mysqli_prepare($conn, $sql);
+                    mysqli_stmt_bind_param($stmt, $types, ...$params);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+
+
+                    $totalRowsResult = mysqli_query($conn, "SELECT FOUND_ROWS() as total");
+                    $totalRows = mysqli_fetch_assoc($totalRowsResult)['total'];
+                    $totalPages = ceil($totalRows / $itemsPerPage);
+                    ?>
+
+                    <div class="container text-dark mt-5">
+                        <div class="row">
+                            <?php
+
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $name = str_replace(' ', '_', $row['name']);
+                                    $id = $row['id'];
+                                    $isAvailable = true;
+
+                                    $bookingQuery = "SELECT cars_name FROM bookings WHERE id = ?";
+                                    $bookingStmt = mysqli_prepare($conn, $bookingQuery);
+                                    mysqli_stmt_bind_param($bookingStmt, "i", $id);
+                                    mysqli_stmt_execute($bookingStmt);
+                                    $bookingResult = mysqli_stmt_get_result($bookingStmt);
+
+                                    if ($bookingRow = mysqli_fetch_assoc($bookingResult)) {
+                                        $carsName = $bookingRow['cars_name'];
+                                    } else {
+                                        $carsName = null;
+                                    }
+
+                                    if ($pickup && $dropoff) {
+                                        $availabilityQuery = "
+SELECT * FROM bookings 
+WHERE cars_name = ? 
+AND (
+(? BETWEEN pickup_date AND dropoff_date) OR 
+(? BETWEEN pickup_date AND dropoff_date) OR
+(pickup_date BETWEEN ? AND ?) OR 
+(dropoff_date BETWEEN ? AND ?)
+)
+";
+
+                                        $availabilityStmt = mysqli_prepare($conn, $availabilityQuery);
+
+                                        mysqli_stmt_bind_param($availabilityStmt, "sssssss", $carsName, $pickup, $dropoff, $pickup, $dropoff, $pickup, $dropoff);
+
+                                        mysqli_stmt_execute($availabilityStmt);
+                                        $availabilityResult = mysqli_stmt_get_result($availabilityStmt);
+
+                                        if ($availabilityResult && mysqli_num_rows($availabilityResult) > 0) {
+                                            $isAvailable = false;
+                                        }
+                                    }
+                                    if ($isAvailable) {
+                                        echo '
+    <div class="col-md-4 col-sm-6 mb-4 ">
+        <div class="card border-0 shadow-sm hover-shadow h-100">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <img src="' . htmlspecialchars(str_replace('../', '', $row['image'])) . '" class="img-fluid rounded-start" alt="' . htmlspecialchars($row['name']) . '" style="height: 200px; object-fit: cover;">
+                </div>
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
+                        <p class="text-muted mb-1">Rented by: <strong>' . htmlspecialchars($row['client_name']) . '</strong></p>
+                         <p class="mb-1">Price (Daily): <strong>' . htmlspecialchars($row['price']) . ' </strong></p>
+                             <p class="mb-1">Seats: <strong>' . htmlspecialchars($row['seats']) . ' </strong></p>
+                         <p class="mb-1">Transmission: <strong>' . htmlspecialchars($row['trans']) . '</strong></p>
+                         <p class="mb-1">State: <strong>' . htmlspecialchars($row['state']) . '</strong></p>
+                         <p class="mb-1">City: <strong>' . htmlspecialchars($row['city']) . '</strong></p>
+                        <a href="javascript:void(0);" class="btn btn-success text-white shadow-none mt-2" onclick="alert(\'You need to log in first before you can book.\');">Book Now</a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-9">
-            <?php
-            $sql = "SELECT * FROM cars WHERE 1=1";
-            $params = [];
-            $types = "";
+    </div>';
+                                    }
+                                }
+                            } else {
+                                echo '<p class="text-center">No Cars available at the moment.</p>';
+                            }
+                            ?>
 
-            if ($search) {
-                $sql .= " AND (id LIKE ? OR name LIKE ?)";
-                $params[] = "%$search%";
-                $params[] = "%$search%";
-                $types .= "ss";
-            }
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <?php if ($page > 1): ?>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>">Previous</a>
+                                        </li>
+                                    <?php endif; ?>
 
-            if ($seats) {
-                $sql .= " AND seats >= ?";
-                $params[] = $seats;
-                $types .= "i";
-            }
+                                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                        <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>"><?php echo $i; ?></a>
+                                        </li>
+                                    <?php endfor; ?>
 
-            $stmt = mysqli_prepare($conn, $sql);
+                                    <?php if ($page < $totalPages): ?>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>">Next</a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </nav>
+                        </div>
 
-            if ($params) {
-                mysqli_stmt_bind_param($stmt, $types, ...$params);
-            }
-
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $name = str_replace(' ', '_', $row['name']); 
-                    $Name = $row['name'];
-
-                    $isAvailable = true;
-                    if ($pickup && $dropoff) {
-                        $availabilityQuery = "
-                            SELECT * FROM cars 
-                            WHERE name=? 
-                            AND (
-                                (? BETWEEN pickup_date AND dropoff_date) OR 
-                                (? BETWEEN pickup_date AND dropoff_date) OR
-                                (pickup_date BETWEEN ? AND ?) OR 
-                                (dropoff_date BETWEEN ? AND ?)
-                            )
-                        ";
-                        $availabilityStmt = mysqli_prepare($conn, $availabilityQuery);
-                        mysqli_stmt_bind_param($availabilityStmt, "sssssss", $Name, $pickup, $dropoff, $pickup, $dropoff, $pickup, $dropoff);
-                        mysqli_stmt_execute($availabilityStmt);
-                        $availabilityResult = mysqli_stmt_get_result($availabilityStmt);
-
-                        if ($availabilityResult && mysqli_num_rows($availabilityResult) > 0) {
-                            $isAvailable = false;
-                        }
-                    }
-                    if ($isAvailable) {
-                        echo '
-                        <div class="card mb-4 border-0 shadow">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <img src="' . htmlspecialchars(ltrim($row['image'], './')) . '" class="img-fluid rounded-start" alt="' . htmlspecialchars($row['name']) . '">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
-                                        <h6 class="mb-4">Price: ' . htmlspecialchars($row['price']) . '</h6>
-                                        <h6 class="mb-2">Seats: ' . htmlspecialchars($row['seats']) . '</h6>
-                                        <h6 class="mb-2">Transmission: ' . htmlspecialchars($row['trans']) . '</h6>
-                                        <a href="booking.php?name=' . urlencode($name) . '&pickup=' . urlencode($pickup) . '&dropoff=' . urlencode($dropoff) . '" class="btn btn-success text-white shadow-none">Book Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>';
-                    }
-                }
-            } else {
-                echo '<p class="text-center">No Cars available at the moment.</p>';
-            }
-            ?>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-</body>
+        </div>
 </main>
 
 <?php require_once("includes/footer.php"); ?>

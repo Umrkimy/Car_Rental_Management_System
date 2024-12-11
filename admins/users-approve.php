@@ -7,8 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'approve') {
         $status = 'Approved';
-    } elseif ($action === 'disapprove') {
-        $status = 'Disapproved';
+    } elseif ($action === 'reject') {
+        $status = 'Rejected';
     } else {
         echo "Invalid action.";
         exit();

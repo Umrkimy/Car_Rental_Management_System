@@ -1,6 +1,7 @@
 <?php
 $title = 'Home';
 require_once("includes/headerUsers.php");
+include "../db_conn.php";
 ?>
 
 <main>
@@ -59,6 +60,55 @@ require_once("includes/headerUsers.php");
                 </button>
             </div>
             <!-- Carousel -->
+
+            <div class="container text-dark mt-5">
+            <div class="row">
+            <center><h1 class="fs-1 text-uppercase  ">Most Recent Car</h1></center>
+                <?php
+                if (isset($conn) && $conn) {
+                    $sql = "SELECT * FROM cars ORDER BY id DESC LIMIT 3";
+                    $stmt = mysqli_prepare($conn, $sql);
+
+                    if ($stmt && mysqli_stmt_execute($stmt)) {
+                        $result = mysqli_stmt_get_result($stmt);
+
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $id = htmlspecialchars($row['id']);
+                                $name = htmlspecialchars($row['name']);
+                                $image = htmlspecialchars($row['image']);
+                                $client_name = htmlspecialchars($row['client_name']);
+                                $price = htmlspecialchars($row['price']);
+                                $seats = htmlspecialchars($row['seats']);
+                                $trans = htmlspecialchars($row['trans']);
+
+                                echo '
+                                <div class="col-md-4 col-sm-6 mb-5 mt-3 intro">
+                                    <div class="card border-0 shadow-sm hover-shadow h-100">
+                                        <img src="' . $image . '" class="img-fluid rounded-start" alt="' . $name . '" style="height: 200px; object-fit: cover;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">' . $name . '</h5>
+                                            <p class="text-muted mb-1">Rented by: <strong>' . $client_name . '</strong></p>
+                                            <p class="mb-1">Price (Daily): <strong>' . $price . '</strong></p>
+                                            <p class="mb-1">Seats: <strong>' . $seats . '</strong></p>
+                                            <p class="mb-1">Transmission: <strong>' . $trans . '</strong></p>
+                                            <a href="javascript:void(0);" class="btn btn-success text-white shadow-none mt-2" onclick="alert(\'You need to log in first before you can book.\');">Book Now</a>
+                                        </div>
+                                    </div>
+                                </div>';
+                            }
+                        } else {
+                            echo '<p class="text-center">No cars available at the moment.</p>';
+                        }
+                    } else {
+                        echo '<p class="text-center text-danger">Failed to retrieve car data. Please try again later.</p>';
+                    }
+                } else {
+                    echo '<p class="text-center text-danger">Database connection not available.</p>';
+                }
+                ?>
+            </div>
+        </div>
 
     </section>
 </main>

@@ -36,7 +36,7 @@ require_once("includes/headerClients.php");
         <div class="row g-0">
             <div class="col-md-6">
                 <div class="about-image" style="
-                    background-image: url('imgs/bg2.jpg');
+                    background-image: url('../imgs/bg2.jpg');
                     background-size: cover;
                     background-position: center;
                     height: 100%;
@@ -48,9 +48,9 @@ require_once("includes/headerClients.php");
                     
                     <span class="subheading text-secondary fw-bold">About Us</span>
                     
-                    <h2 class="mb-4 text-dark fw-bold">Welcome to Carbook</h2>
+                    <h2 class="mb-4 text-dark fw-bold">Welcome to Car Rental</h2>
                     <p class="text-muted">
-                        Nestled in a serene environment, Carbook is where stories of effortless journeys begin. 
+                        Nestled in a serene environment, Car Rental is where stories of effortless journeys begin. 
                         A small river named Duden flows by, creating a picturesque, inspiring backdrop for a journey 
                         that promises comfort and style.
                     </p>
@@ -71,3 +71,4 @@ require_once("includes/headerClients.php");
 <?php
 require_once("includes/footerClients.php");
 ?>
+

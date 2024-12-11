@@ -22,6 +22,8 @@ if (isset($_GET['updateid'])) {
         $trans = $row['trans'];
         $clientname = $row['client_name'];
         $image = $row['image'];
+        $state = $row['state'];
+        $city = $row['city'];
     } else {
         echo '<div class="alert alert-danger text-center">Car not found.</div>';
         exit();
@@ -33,6 +35,8 @@ if (isset($_GET['updateid'])) {
         $seats = mysqli_real_escape_string($conn, $_POST['seats']);
         $trans = mysqli_real_escape_string($conn, $_POST['trans']);
         $clientname = mysqli_real_escape_string($conn, $_POST['clientname']);
+        $state = mysqli_real_escape_string($conn, $_POST['state']);
+        $city = mysqli_real_escape_string($conn, $_POST['city']);
 
         $updated_image = $image;
 
@@ -69,10 +73,12 @@ if (isset($_GET['updateid'])) {
                 seats=?, 
                 trans=?,
                 client_name=?, 
-                image=? 
+                image=?, 
+                state=?,
+                city=?
                 WHERE id=?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "ssissss", $name, $price_with_RM, $seats, $trans, $clientname, $updated_image, $id);
+        mysqli_stmt_bind_param($stmt, "ssisssssi", $name, $price_with_RM, $seats, $trans, $clientname, $updated_image, $state, $city, $id);
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
@@ -92,6 +98,7 @@ if (isset($_GET['updateid'])) {
         width: 300px;
     }
 </style>
+
 <main class="mt-5 pt-3">
     <div class="card">
         <div class="card-header text-center">
@@ -122,8 +129,16 @@ if (isset($_GET['updateid'])) {
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <label for="name">Client Name</label>
-                            <input type="text" id="name" name="clientname" placeholder="Client Name" class="form-control" value="<?= htmlspecialchars($clientname) ?>" required>
+                            <label for="clientname">Client Name</label>
+                            <input type="text" id="clientname" name="clientname" class="form-control" value="<?= htmlspecialchars($clientname) ?>" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" class="form-control" value="<?= htmlspecialchars($state) ?>" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" class="form-control" value="<?= htmlspecialchars($city) ?>" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="file">Image (leave blank to keep current)</label>
