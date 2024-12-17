@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"] ?? '';
     $confirmpassword = $_POST["confirmpassword"] ?? '';
 
-    if (isset($idtop) && is_numeric($idtop)) {  
+    if (isset($idtop) && is_numeric($idtop)) {
         $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
 
@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <main>
+
     <head>
         <link href="includes/css/settings.css" rel="stylesheet" />
     </head>
@@ -99,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="row">
                 <div class="col-lg-8">
                     <?= $message ?>
-                    
+
                     <div class="card mb-4">
                         <div class="card-header">Change Password</div>
                         <div class="card-body">

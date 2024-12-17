@@ -18,7 +18,7 @@ if (isset($_GET['bookingid'])) {
         $name = $row['name'];
 
         $price_string = $row['price']; 
-        $price = (float)str_replace('RM', '', $price_string); 
+        $price = (float)str_replace(',', '', str_replace('RM', '', $price_string));
 
         $image = $row['image'];
     }

@@ -138,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label>Status*</label>
                                 <select class="form-control" name="status" required>
                                     <option value="Pending" <?= $status == "Pending" ? "selected" : "" ?>>Pending</option>
-                                    <option value="Paid" <?= $status == "Paid" ? "selected" : "" ?>>Paid</option>
+                                    <option value="Confirmed" <?= $status == "Confirmed" ? "selected" : "" ?>>Confirmed</option>
                                     <option value="Cancelled" <?= $status == "Cancelled" ? "selected" : "" ?>>Cancelled</option>
                                 </select>
                             </div>

@@ -19,6 +19,8 @@ if (isset($_GET['bookingid'])) {
         $phonenum = $row['phone_num'];
         $fullname = $row['full_name'];
         $email = $row['email'];
+        $ic_no = $row['ic_no'];
+        $driver_no = $row['driver_no'];
     }
 }
 
@@ -68,12 +70,12 @@ if (isset($_GET['bookingid'])) {
 
             <div class="mb-3">
                 <label for="ic_no" class="form-label">Passport or IC No.<span class="text-danger">*</span></label>
-                <input type="text" name="ic_no" id="ic_no" class="form-control" required>
+                <input type="text" name="ic_no" id="ic_no" class="form-control" value="<?= htmlspecialchars($ic_no) ?>" required>
             </div>
 
             <div class="mb-3">
                 <label for="driver_no" class="form-label">Driver License No.<span class="text-danger">*</span></label>
-                <input type="text" name="driver_no" id="driver_no" class="form-control" required>
+                <input type="text" name="driver_no" id="driver_no" class="form-control" value="<?= htmlspecialchars($driver_no) ?>" required>
             </div>
 
             <div class="mb-3">
@@ -85,11 +87,19 @@ if (isset($_GET['bookingid'])) {
                 <label for="email" class="form-label">Email Address<span class="text-danger">*</span></label>
                 <input type="email" name="email" id="email" class="form-control" value="<?= htmlspecialchars($email) ?>" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="user_name" class="form-label">Username<span class="text-danger">*</span></label>
                 <input type="text" name="user_name" id="user_name" class="form-control" value="<?= htmlspecialchars($user_name) ?>" required>
             </div>
 
+            <div class="mb-4">
+                <label class="form-label fw-bold">Payment Method<span class="text-danger">*</span></label><br>
+                <input type="radio" id="cash" name="payment_method" value="Cash" required>
+                <label for="cash">Cash</label><br>
+                <input type="radio" id="online" name="payment_method" value="Online Transaction" required>
+                <label for="online">Online Transaction</label><br>
+            </div>
+            
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

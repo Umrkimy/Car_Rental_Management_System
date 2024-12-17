@@ -48,10 +48,10 @@ include "../db_conn.php";
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-primary">
                         <div class="card-body">
-                            <div class="small text-muted">Current monthly bill</div>
-                            <div class="h3">$20.00</div>
+                            <div class="small text-muted">Card 1</div>
+                            <div class="h3">Card 1</div>
                             <a class="text-arrow-icon small" href="#!">
-                                Switch to yearly billing
+                            Card 1
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -63,10 +63,10 @@ include "../db_conn.php";
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-secondary">
                         <div class="card-body">
-                            <div class="small text-muted">Next payment due</div>
-                            <div class="h3">July 15</div>
+                            <div class="small text-muted">Card 2</div>
+                            <div class="h3">Card 2</div>
                             <a class="text-arrow-icon small text-secondary" href="#!">
-                                View payment history
+                               Card 2
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -78,10 +78,10 @@ include "../db_conn.php";
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-success">
                         <div class="card-body">
-                            <div class="small text-muted">Current plan</div>
-                            <div class="h3 d-flex align-items-center">Freelancer</div>
+                            <div class="small text-muted">Card 3</div>
+                            <div class="h3 d-flex align-items-center">Card 3</div>
                             <a class="text-arrow-icon small text-success" href="#!">
-                                Upgrade plan
+                            Card 3
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -126,11 +126,15 @@ include "../db_conn.php";
                                                 <td>' . htmlspecialchars(($row['total'])) . '</td>
                                                 <td>
                                                 <span class="badge bg-' .
-                                                    ($row['status'] === 'Paid' ? 'success' : ($row['status'] === 'Cancelled' ? 'danger' : 'secondary'))
+                                                    ($row['status'] === 'Confirmed' ? 'success' : ($row['status'] === 'Cancelled' ? 'danger' : 'secondary'))
                                                 . '">' . htmlspecialchars($row['status']) . '</span>
                                                 </td>
                                                 <td >
-                                                <a href="billing-receipt.php?receiptid=' . $id . '" class=""><i class="bi bi-three-dots text-secondary"></i></a>
+                                                <a href="billing-receipt.php?receiptid=' . $id . '" class=""><i class="bi bi-three-dots text-secondary"></i></a>';
+                                                if ($row['status'] === 'Pending') {
+                                                    echo ' <a href="cancel-billing.php?invoiceid=' . $id . '" class="btn btn-danger btn-sm ms-2">Cancel</a>';
+                                                }
+                                                echo'
                                                 </td>
                                             </tr>';
                                     }

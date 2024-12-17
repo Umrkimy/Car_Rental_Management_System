@@ -53,9 +53,9 @@ include "../db_conn.php";
                                             <td>' . $status . '</td>
 
                                             <td>
-                                            <a href="clients-info.php?infoid=' . $id . '" class="btn btn-success">View</a>
-                                                <a href="clients-update.php?updateid=' . $id . '" class="btn btn-primary">Update</a>
-                                                <a href="clients-delete.php?deleteid=' . $id . '" class="btn btn-danger mt-1">Delete</a>
+                                            <a title="View" href="clients-info.php?infoid=' . $id . '" class="ms-3"><i class="bi  bi-eye-fill"></i></a>
+                                                <a title="Update" href="clients-update.php?updateid=' . $id . '" class="ms-3"><i class="bi text-warning bi-pencil-fill"></i></a>
+                                                <a title="Delete" href="clients-delete.php?deleteid=' . $id . '" class="ms-3"><i class="bi text-danger bi-trash-fill"></i></a>
                                             </td>
                                         </tr>';
                                         }

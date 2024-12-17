@@ -20,7 +20,7 @@ require("db_conn.php");
     ";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $email, $email, $email);
+    $stmt->bind_param("ss", $email, $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -58,6 +58,9 @@ require("db_conn.php");
             }
         }
         header("Location: forgot-password.php?error=Message sent, Please check your inbox. ");
+        exit();
+    } else{
+        header("Location: forgot-password.php?error=Email not found.");
         exit();
     }
 }

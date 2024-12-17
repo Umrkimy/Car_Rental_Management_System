@@ -3,7 +3,7 @@ $title = "Login";
 require_once("includes/header.php");
 require __DIR__ . "/vendor/autoload.php";
 
-session_start();
+require_once "config.php";
 include "db_conn.php";
 
 $error = [];
@@ -59,7 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = $stmt->get_result();
 
         if ($result && mysqli_num_rows($result) > 1) {
-            header("Location: duplicate-acc.php");
+            $row = $result->fetch_assoc();
+            if ($row['user_type'] == 'users') {
+                header("Location: duplicate-acc.php?email=" . urlencode($email));
+            } elseif ($row['user_type'] == 'clients') {
+                header("Location: duplicate-acc.php?email=" . urlencode($email));
+            }
             exit();
         } elseif ($result && mysqli_num_rows($result) === 1) {
             $row = $result->fetch_assoc();
@@ -68,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['user_name'] = $row['username'];
                 $_SESSION['id'] = $row['id'];
                 $_SESSION['user_type'] = $row['user_type'];
+                $_SESSION['status'] = $row['status'];
 
                 if ($row['user_type'] == 'users') {
                     header("Location: users");

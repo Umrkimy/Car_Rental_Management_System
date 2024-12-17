@@ -2,7 +2,7 @@
 $title = "Sign Up";
 require_once("includes/header.php");
 
-session_start();
+require_once "config.php";
 include "db_conn.php";
 
 $error = [];

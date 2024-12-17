@@ -1,8 +1,10 @@
 <?php 
-session_start();
+require_once "../config.php";
 
 $usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
 $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
+
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +20,7 @@ $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <title>Car Rental - <?php echo $title ?> </title>
+    <title>Car Rental - <?php echo $title; ?></title>
 </head>
 
 <body class="vh-100">
@@ -36,16 +38,16 @@ $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
                 <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
                     <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="cars.php">Cars</a>
+                            <a class="nav-link <?php echo $current_page == 'cars.php' ? 'active' : ''; ?>" href="cars.php">Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="about.php">About</a>
+                            <a class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>" href="about.php">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="contact.php">Contact</a>
+                            <a class="nav-link <?php echo $current_page == 'contact.php' ? 'active' : ''; ?>" href="contact.php">Contact</a>
                         </li>
                     </ul>
 
@@ -88,4 +90,3 @@ $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
 </body>
 
 </html>
-

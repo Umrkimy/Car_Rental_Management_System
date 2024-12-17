@@ -4,6 +4,7 @@ ob_start();
 $title = "Booking Confirmation";
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
+require '../vendor/autoload.php';
 
 date_default_timezone_set('Asia/Kuala_Lumpur');
 $date = date("Y-m-d ");
@@ -50,24 +51,47 @@ if (isset($_GET['bookingid'])) {
     $status = $_SESSION['info']['status'] ?? null;
     $payment_method = $_SESSION['info']['payment_method'] ?? null;
 
+    $stripe_id = $_SESSION['api']['stripe_id'] ?? null;
+    
     $sql = "SELECT id FROM bookings ORDER BY id DESC LIMIT 1";
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
-    $row = mysqli_fetch_assoc($result);
-    $latest_id = $row['id'];
+        $row = mysqli_fetch_assoc($result);
+        $latest_id = $row['id'];
     }
 
     if (!isset($_SESSION['inserted_booking'])) {
-        $sql = "INSERT INTO bookings (state, city, full_name, user_name, client_name, email, phone_num, cars_name, ic_no, driver_no, days_rented, deposit, total, status, pickup_location, dropoff_location, pickup_date, dropoff_date, invoice_no, invoice_date, payment_method) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO bookings (state, city, full_name, user_name, client_name, email, phone_num, cars_name, ic_no, driver_no, days_rented, deposit, total, status, pickup_location, dropoff_location, pickup_date, dropoff_date, invoice_no, invoice_date, payment_method, stripe_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssssssssissssssssss", 
-            $state, $city, $full_name, $user_name, $clientname, $email, $phone, 
-            $cars_name, $ic_no, $driver_no, $days_rented, $deposit_rm, 
-            $total_rm, $status, $pickup_location, $drop_location, 
-            $pickup_date, $drop_date, $invoice_no, $date, $payment_method);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "ssssssssssisssssssssss",
+            $state,
+            $city,
+            $full_name,
+            $user_name,
+            $clientname,
+            $email,
+            $phone,
+            $cars_name,
+            $ic_no,
+            $driver_no,
+            $days_rented,
+            $deposit_rm,
+            $total_rm,
+            $status,
+            $pickup_location,
+            $drop_location,
+            $pickup_date,
+            $drop_date,
+            $invoice_no,
+            $date,
+            $payment_method,
+            $stripe_id
+        );
 
         if (mysqli_stmt_execute($stmt)) {
             $_SESSION['inserted_booking'] = true;
@@ -111,7 +135,7 @@ if (isset($_GET['bookingid'])) {
                 <div class="card">
                     <div class="card-body">
                         <div class="invoice-title">
-                            <h4 class="float-end font-size-15"> <span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                            <h4 class="float-end font-size-15"> <span class="badge bg-secondaryb font-size-12 ms-2">Pending</span></h4>
                             <div class="mb-4">
                                 <h2 class="mb-1 text-muted">Car rental</h2>
                             </div>
@@ -142,6 +166,28 @@ if (isset($_GET['bookingid'])) {
                                     <div class="mt-4">
                                         <h5 class="font-size-15 mb-1">Invoice Date:</h5>
                                         <p><?php echo $date ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="py-2">
+                            <h5 class="font-size-16 mb-3">Pickup and Dropoff Details</h5>
+                            <div class="row">
+                                <div class="col-sm-6 ">
+                                    <div class="text-muted">
+                                        <h5 class="font-size-16 mb-1">Pickup Location:</h5>
+                                        <p class="mb-3"><?php echo htmlspecialchars($pickup_location) ?></p>
+                                        <h5 class="font-size-16 mb-1">Pickup Date:</h5>
+                                        <p class="mb-1"><?php echo htmlspecialchars($pickup_date) ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-muted text-sm-end">
+                                        <h5 class="font-size-16 mb-1">Dropoff Location:</h5>
+                                        <p class="mb-3"><?php echo htmlspecialchars($drop_location) ?></p>
+                                        <h5 class="font-size-16 mb-1">Dropoff Date:</h5>
+                                        <p class="mb-1"><?php echo htmlspecialchars($drop_date) ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +226,7 @@ if (isset($_GET['bookingid'])) {
                                             <td class="text-end"><?php echo $total_price_rm ?></td>
                                         </tr>
                                         <tr>
-                                            <th scope="row" colspan="4" class="border-0 text-end">Tax</th>
+                                            <th scope="row" colspan="4" class="border-0 text-end">Deposit</th>
                                             <td class="border-0 text-end"><?php echo $deposit_rm ?></td>
                                         </tr>
                                         <tr>

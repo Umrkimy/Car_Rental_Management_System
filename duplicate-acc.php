@@ -1,27 +1,13 @@
 <?php
 $title = "Login";
 require_once("includes/header.php");
-session_start();
-include "db_conn.php";
+require_once "config.php";
 
-$sql = "
-    SELECT 'users' AS user_type, id, email, user_name AS username, password 
-    FROM users 
-    UNION
-    SELECT 'clients' AS user_type, id, email, client_name AS username, password 
-    FROM clients
-";
-
-$stmt = $conn->prepare($sql);
-if ($stmt) {
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result && $row = $result->fetch_assoc()) {
-        $_SESSION['user_name'] = $row['username'];
-        $_SESSION['id'] = $row['id'];
-        $_SESSION['user_type'] = $row['user_type'];
-    }
+if (isset($_GET['email'])) {
+    $email = $_GET['email'];
+} else {
+    header("Location: index.php"); 
+    exit();
 }
 ?>
 
@@ -41,10 +27,11 @@ if ($stmt) {
                             <p class="text-center">Choose the type of account you want to log in to:</p>
                             
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <a href="users" class="btn btn-primary btn-lg">
+                                
+                                <a href="duplicate-users.php?email=<?php echo urlencode($email); ?>" class="btn btn-primary btn-lg">
                                     <i class="bi bi-person-badge"></i> Login as User
                                 </a>
-                                <a href="clients" class="btn btn-success btn-lg">
+                                <a href="duplicate-clients.php?email=<?php echo urlencode($email); ?>" class="btn btn-success btn-lg">
                                     <i class="bi bi-briefcase"></i> Login as Client
                                 </a>
                             </div>

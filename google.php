@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . "/vendor/autoload.php";
 
-session_start();
+require_once "config.php";
 include "db_conn.php";
 
 $google = new Google\Client();

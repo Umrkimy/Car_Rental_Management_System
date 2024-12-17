@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </tr>
                 </tbody>
             </table>
-            <p><strong>Sub Total:</strong>RM $total_price<br><strong>Deposit:</strong> $deposit<br><strong>Total:</strong> $total</p>
+            <p><strong>Sub Total:</strong>RM $total_price<br><strong>Deposit:</strong> $deposit<br><strong>Total: $total</p> </strong>
             <hr>
             <p style="text-align: center;">Thank you for renting with us!</p>
         </div>
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         try {
             $mail->send();
-            echo "<script>alert('Receipt sent successfully'); window.location.href='users';</script>";
+            echo "<script>alert('Receipt sent successfully'); window.location.href='users/billing.php';</script>";
             exit();
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer error: {$mail->ErrorInfo}";

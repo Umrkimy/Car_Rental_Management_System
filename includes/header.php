@@ -1,3 +1,7 @@
+<?php 
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,18 +34,18 @@
                     <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
-                    <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
+                <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="cars.php">Cars</a>
+                            <a class="nav-link <?php echo $current_page == 'cars.php' ? 'active' : ''; ?>" href="cars.php">Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="about.php">About</a>
+                            <a class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>" href="about.php">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="contact.php">Contact</a>
+                            <a class="nav-link <?php echo $current_page == 'contact.php' ? 'active' : ''; ?>" href="contact.php">Contact</a>
                         </li>
                     </ul>
                     <div class="d-flex flex-lg-row justify-content-center align-item-center gap-3">

@@ -21,13 +21,16 @@ if (isset($_GET['bookingid'])) {
     if ($row = mysqli_fetch_assoc($result)) {
         $state = $row['state'];
         $city = $row['city'];
+        $cars_name = $row['name'];
     }
 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['pickup_location']) && !empty($_POST['pickup_date']) && !empty($_POST['drop_location']) && !empty($_POST['drop_date'])) {
-       
+        $pickup_date = $_POST['pickup_date'];
+        $drop_date = $_POST['drop_date'];
+
         unset($_SESSION['booking']['state']);
         unset($_SESSION['booking']['city']);
         unset($_SESSION['booking']['pickup_location']);
@@ -48,34 +51,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         unset($_SESSION['info']['email']);
         unset($_SESSION['info']['status']);
 
-        
-        $_SESSION['booking'] = [
-            'state' => $_POST['state'],
-            'city' => $_POST['city'],
-            'pickup_location' => $_POST['pickup_location'],
-            'pickup_date' => $_POST['pickup_date'],
-            'drop_location' => $_POST['drop_location'],
-            'drop_date' => $_POST['drop_date'],
-        ];
+            if (strtotime($pickup_date) >= strtotime($drop_date)) {
+                $error_message = "Pick-up date and time must be earlier than drop date and time.";
+            } else {
 
-        header("Location: booking-price.php?bookingid=" . $id);
-            exit();
-
-    } else {
-        $_SESSION['booking'] = [
-            'state' => $_POST['state'],
-            'city' => $_POST['city'],
-            'pickup_location' => $_POST['pickup_location'],
-            'pickup_date' => $_POST['pickup_date'],
-            'drop_location' => $_POST['drop_location'],
-            'drop_date' => $_POST['drop_date'],
-        ];
-        
-        header("Location: booking-price.php?bookingid=" . $id);
-            exit();
-
+                $check_sql = "SELECT * FROM bookings 
+                          WHERE cars_name = ? 
+                          AND status != 'cancelled' 
+                          AND (pickup_date < ? AND dropoff_date > ?)";
+                $check_stmt = mysqli_prepare($conn, $check_sql);
+                mysqli_stmt_bind_param($check_stmt, "sss", $cars_name, $drop_date, $pickup_date);
+                mysqli_stmt_execute($check_stmt);
+                $check_result = mysqli_stmt_get_result($check_stmt);
+    
+                if (mysqli_num_rows($check_result) > 0) {
+                    $error_message = "The selected car is already booked for the chosen dates. Please select a different time.";
+                } else {
+    
+                    $_SESSION['booking'] = [
+                        'state' => $_POST['state'],
+                        'city' => $_POST['city'],
+                        'pickup_location' => $_POST['pickup_location'],
+                        'pickup_date' => $pickup_date,
+                        'drop_location' => $_POST['drop_location'],
+                        'drop_date' => $drop_date,
+                    ];
+    
+                    header("Location: booking-price.php?bookingid=" . $id);
+                    exit();
+                }
+            }
+        }
     }
-}
 
 ?>
 
@@ -106,7 +113,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 
-<div class="container mt-5">
+<div class="container mt-3">
+    <?php if (!empty($error_message)): ?>
+        <div class="alert alert-danger"><?php echo $error_message; ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="container mt-3">
     <form action="" method="POST">
         <div class="row">
            
@@ -123,7 +136,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     
 </div>
-
 
             <div class="col-12 mb-4 text-dark">
                 <h5 class="text-uppercase text-dark">Pick Up</h5>

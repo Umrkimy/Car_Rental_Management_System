@@ -2,10 +2,34 @@
 $title = 'Home';
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
+
+$user_count_sql = "SELECT COUNT(*) AS user_count FROM users";
+$user_count_result = mysqli_query($conn, $user_count_sql);
+$user_count = 0;
+if ($user_count_result) {
+    $row = mysqli_fetch_assoc($user_count_result);
+    $user_count = $row['user_count'];
+}
+
+$client_count_sql = "SELECT COUNT(*) AS client_count FROM clients";
+$client_count_result = mysqli_query($conn, $client_count_sql);
+$client_count = 0;
+if ($client_count_result) {
+    $row = mysqli_fetch_assoc($client_count_result);
+    $client_count = $row['client_count'];
+}
+
+$car_count_sql = "SELECT COUNT(*) AS car_count FROM cars";
+$car_count_result = mysqli_query($conn, $car_count_sql);
+$car_count = 0;
+if ($car_count_result) {
+    $row = mysqli_fetch_assoc($car_count_result);
+    $car_count = $row['car_count'];
+}
 ?>
 
 <main>
-    <section>
+    <section class="bg-light">
 
         <!-- Carousel -->
         <div id="carouselExampleIndicators" class="carousel slide">
@@ -27,7 +51,7 @@ include "../db_conn.php";
                             </p>
                         </div>
                     </div>
-                    <div class="carousel-item " >
+                    <div class="carousel-item ">
                         <img src="../imgs/gtr.jpg" class="bg-img" alt="...">
                         <div class="carousel-caption text-white d-flex flex-column h-100 align-items-center justify-content-center bottom-0 ">
                             <h1 class="fs-1 text-uppercase intro">Rent a Car with Ease</h1>
@@ -62,27 +86,29 @@ include "../db_conn.php";
             <!-- Carousel -->
 
             <div class="container text-dark mt-5">
-            <div class="row">
-            <center><h1 class="fs-1 text-uppercase  ">Most Recent Car</h1></center>
-                <?php
-                if (isset($conn) && $conn) {
-                    $sql = "SELECT * FROM cars ORDER BY id DESC LIMIT 3";
-                    $stmt = mysqli_prepare($conn, $sql);
+                <div class="row">
+                    <center>
+                        <h1 class="fs-1 text-uppercase  ">Most Recent Car</h1>
+                    </center>
+                    <?php
+                    if (isset($conn) && $conn) {
+                        $sql = "SELECT * FROM cars ORDER BY id DESC LIMIT 3";
+                        $stmt = mysqli_prepare($conn, $sql);
 
-                    if ($stmt && mysqli_stmt_execute($stmt)) {
-                        $result = mysqli_stmt_get_result($stmt);
+                        if ($stmt && mysqli_stmt_execute($stmt)) {
+                            $result = mysqli_stmt_get_result($stmt);
 
-                        if ($result && mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $id = htmlspecialchars($row['id']);
-                                $name = htmlspecialchars($row['name']);
-                                $image = htmlspecialchars($row['image']);
-                                $client_name = htmlspecialchars($row['client_name']);
-                                $price = htmlspecialchars($row['price']);
-                                $seats = htmlspecialchars($row['seats']);
-                                $trans = htmlspecialchars($row['trans']);
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $id = htmlspecialchars($row['id']);
+                                    $name = htmlspecialchars($row['name']);
+                                    $image = htmlspecialchars($row['image']);
+                                    $client_name = htmlspecialchars($row['client_name']);
+                                    $price = htmlspecialchars($row['price']);
+                                    $seats = htmlspecialchars($row['seats']);
+                                    $trans = htmlspecialchars($row['trans']);
 
-                                echo '
+                                    echo '
                                 <div class="col-md-4 col-sm-6 mb-5 mt-3 intro">
                                     <div class="card border-0 shadow-sm hover-shadow h-100">
                                         <img src="' . $image . '" class="img-fluid rounded-start" alt="' . $name . '" style="height: 200px; object-fit: cover;">
@@ -92,25 +118,49 @@ include "../db_conn.php";
                                             <p class="mb-1">Price (Daily): <strong>' . $price . '</strong></p>
                                             <p class="mb-1">Seats: <strong>' . $seats . '</strong></p>
                                             <p class="mb-1">Transmission: <strong>' . $trans . '</strong></p>
-                                            <a href="javascript:void(0);" class="btn btn-success text-white shadow-none mt-2" onclick="alert(\'You need to log in first before you can book.\');">Book Now</a>
+                                            <a href="booking.php" class="btn btn-success text-white shadow-none mt-2" >Book Now</a>
                                         </div>
                                     </div>
                                 </div>';
+                                }
+                            } else {
+                                echo '<p class="text-center">No cars available at the moment.</p>';
                             }
                         } else {
-                            echo '<p class="text-center">No cars available at the moment.</p>';
+                            echo '<p class="text-center text-danger">Failed to retrieve car data. Please try again later.</p>';
                         }
                     } else {
-                        echo '<p class="text-center text-danger">Failed to retrieve car data. Please try again later.</p>';
+                        echo '<p class="text-center text-danger">Database connection not available.</p>';
                     }
-                } else {
-                    echo '<p class="text-center text-danger">Database connection not available.</p>';
-                }
-                ?>
+                    ?>
+                </div>
+            </div>
+
+    </section>
+
+    <section class="text-dark ">
+
+        <link href="includes/css/counter.css" rel="stylesheet" />
+
+        <div class="counter-wrapper">
+            <div class="counter">
+                <h1 class="count" data-target="<?php echo $user_count; ?>">0</h1>
+                <p>Happy Users</p>
+            </div>
+            <div class="counter">
+                <h1 class="count" data-target="<?php echo $client_count; ?>">0</h1>
+                <p>Happy Clients</p>
+            </div>
+            <div class="counter">
+                <h1 class="count" data-target="<?php echo $car_count; ?>">0</h1>
+                <p>Total Cars</p>
             </div>
         </div>
 
+        <script src="includes/js/counter.js"></script>
+
     </section>
+
 </main>
 
 <?php

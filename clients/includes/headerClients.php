@@ -1,8 +1,10 @@
 <?php 
-session_start();
-$usernametop = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Guest";
+require_once "../config.php";
+$clientnametop = isset($_SESSION['client_name']) ? $_SESSION['client_name'] : "Guest";
 $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
+$statustop = isset($_SESSION['status']) ? $_SESSION['status'] : "Pending";
 
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
 <!DOCTYPE html>
@@ -35,18 +37,18 @@ $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
                     <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
-                    <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
+                <ul class="navbar-nav justify-content-center align-items-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="manage.php">Manage Cars</a>
+                            <a class="nav-link <?php echo $current_page == 'manage.php' ? 'active' : ''; ?>" href="manage.php">Manage</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="about.php">About</a>
+                            <a class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>" href="about.php">About</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="contact.php">Contact</a>
+                            <a class="nav-link <?php echo $current_page == 'contact.php' ? 'active' : ''; ?>" href="contact.php">Contact</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -58,7 +60,7 @@ $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="bi bi-person-fill me-2" style="font-size: 22px;"></i> 
-                                <span><?php echo htmlspecialchars($usernametop); ?></span>
+                                <span><?php echo htmlspecialchars($clientnametop); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>

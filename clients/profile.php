@@ -125,23 +125,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <div>
-                                        <label class="small mb-1" for="full_name">Full name</label>
-                                        <input class="form-control" id="full_name" name="full_name" type="text" placeholder="Enter your full name" value="<?= htmlspecialchars($name) ?>">
+                                        <label class="small mb-1" for="full_name">Full name <span class="text-danger">*</span></label>
+                                        <input class="form-control" id="full_name" name="full_name" type="text" placeholder="Enter your full name" value="<?= htmlspecialchars($name) ?>" required>
                                     </div>
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="ic_no">IC/Passport No</label>
-                                        <input class="form-control" id="ic_no" name="ic_no" type="text" placeholder="Enter your IC/Passport No" value="<?= htmlspecialchars($ic_no) ?>">
+                                        <label class="small mb-1" for="ic_no">IC/Passport No<span class="text-danger">*</span></label>
+                                        <input class="form-control" id="ic_no" name="ic_no" type="text" placeholder="Enter your IC/Passport No" value="<?= htmlspecialchars($ic_no) ?>" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="driver_no">Driver License No</label>
-                                        <input class="form-control" id="driver_no" name="driver_no" type="text" placeholder="Enter your Driver License No" value="<?= htmlspecialchars($driver_no) ?>">
+                                        <label class="small mb-1" for="driver_no">Driver License No<span class="text-danger">*</span></label>
+                                        <input class="form-control" id="driver_no" name="driver_no" type="text" placeholder="Enter your Driver License No" value="<?= htmlspecialchars($driver_no) ?>" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="email">Email address</label>
                                     <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email address" value="<?= htmlspecialchars($email) ?>">
+                                </div>
+                                <div class="mb-3 ">
+                                    <label for="file">Driver Lisense photo</label>
+                                    <input type="file" id="file" name="file" class="form-control" required>
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <div class="mb-3">

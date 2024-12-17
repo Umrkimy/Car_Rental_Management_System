@@ -23,8 +23,8 @@ include "../db_conn.php";
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Full Name</th>
                                     <th scope="col">Username</th>
+                                    <th scope="col">Cars Name</th>
                                     <th scope="col">Phone Number</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Status</th>
@@ -39,8 +39,8 @@ include "../db_conn.php";
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $id = $row['id'];
-                                        $name = $row['full_name'];
                                         $user_name = $row['user_name'];
+                                        $cars_name = $row['cars_name'];
                                         $phonenum = $row['phone_num'];
                                         $email = $row['email'];
                                         $status = $row['status'];
@@ -48,16 +48,16 @@ include "../db_conn.php";
 
                                         echo '<tr>
                                             <td>' . $id . '</td>
-                                            <td>' . $name . '</td>
                                             <td>' . $user_name . '</td>
+                                            <td>' . $cars_name . '</td>
                                             <td>' . $phonenum . '</td>
                                             <td>' . $email . '</td>
                                             <td>' . $status . '</td>
                                             <td>' . $invoice_no . '</td>
                                             <td>
-                                            <a href="bookings-info.php?infoid=' . $id . '" class="btn btn-success">View</a>
-                                                <a href="bookings-update.php?updateid=' . $id . '" class="btn btn-primary">Update</a>
-                                                <a href="bookings-delete.php?deleteid=' . $id . '" class="btn btn-danger mt-1">Delete</a>
+                                            <a title="View" href="bookings-info.php?infoid=' . $id . '" class="ms-3"><i class=" bi bi-eye-fill"></i></a>
+                                                <a title="Update" href="bookings-update.php?updateid=' . $id . '" class="ms-3"><i class="text-warning bi bi-pencil-fill"></i></a>
+                                                <a title="Delete" href="bookings-delete.php?deleteid=' . $id . '" class="ms-3"><i class="text-danger bi bi-trash-fill"></i></a>
                                             </td>
                                         </tr>';
                                     }
