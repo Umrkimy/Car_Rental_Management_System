@@ -5,7 +5,7 @@ if (!isset($_SESSION['booking'])) {
     $_SESSION['booking'] = [];
 }
 
-$title = "Cars";
+$title = "Booking";
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
 

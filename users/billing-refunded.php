@@ -26,6 +26,10 @@ if (isset($_GET['receiptid'])) {
         $deposit_rm = $row['deposit'];
         $total = $row['total'];
         $status = $row['status'];
+        $stripe_id = $row['stripe_id'];
+        $refund_id = $row['refund_id'];
+        $refund_date = $row['refund_date'];
+        $refund_total = $row['refund_total'];
 
         $pickup_location = $row['pickup_location'];
         $pickup_date = $row['pickup_date'];
@@ -59,12 +63,12 @@ if (isset($_GET['receiptid'])) {
                                         <i class="bi bi-chevron-right"></i>
                                     </a>
                                 </div>
-                                <a class="text-decoration-none text-light">Receipt
+                                <a class="text-decoration-none text-light">Refunded Receipt
                                     <i class="bi bi-chevron-right"></i>
                                 </a>
                             </ol>
                         </nav>
-                        <h1 class="fst-italic text-capitalize text-white">Receipt</h1>
+                        <h1 class="fst-italic text-capitalize text-white">Refunded Receipt</h1>
                     </div>
                 </div>
             </div>
@@ -81,7 +85,7 @@ if (isset($_GET['receiptid'])) {
                         <div class="invoice-title">
                             <h4 class="float-end font-size-15">
                                 <span class="badge <?php if ($status === 'Cancelled') {
-                                 echo 'bg-danger';
+                                  echo 'bg-danger';
                                 } elseif ($status === 'Pending') {
                                 echo 'bg-secondary';
                                 } elseif ($status === 'Refunded') {
@@ -114,39 +118,16 @@ if (isset($_GET['receiptid'])) {
                             <div class="col-sm-6">
                                 <div class="text-muted text-sm-end">
                                     <div>
-                                        <h5 class="font-size-15 mb-1">Invoice No:</h5>
-                                        <p>#<?php echo $invoice_no ?></p>
+                                        <h5 class="font-size-15 mb-1">Refunded ID:</h5>
+                                        <p>#<?php echo $refund_id ?></p>
                                     </div>
                                     <div class="mt-4">
-                                        <h5 class="font-size-15 mb-1">Invoice Date:</h5>
-                                        <p><?php echo $date ?></p>
+                                        <h5 class="font-size-15 mb-1">Refund Date:</h5>
+                                        <p><?php echo htmlspecialchars($refund_date) ?></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="py-2">
-                            <h5 class="font-size-16 mb-3">Pickup and Dropoff Details</h5>
-                            <div class="row">
-                                <div class="col-sm-6 ">
-                                    <div class="text-muted">
-                                        <h5 class="font-size-16 mb-1">Pickup Location:</h5>
-                                        <p class="mb-3"><?php echo htmlspecialchars($pickup_location) ?></p>
-                                        <h5 class="font-size-16 mb-1">Pickup Date:</h5>
-                                        <p class="mb-1"><?php echo htmlspecialchars($pickup_date) ?></p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-muted text-sm-end">
-                                        <h5 class="font-size-16 mb-1">Dropoff Location:</h5>
-                                        <p class="mb-3"><?php echo htmlspecialchars($dropoff_location) ?></p>
-                                        <h5 class="font-size-16 mb-1">Dropoff Date:</h5>
-                                        <p class="mb-1"><?php echo htmlspecialchars($dropoff_date) ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
 
                         <h5 class="font-size-15">Order Summary</h5>
 
@@ -176,17 +157,17 @@ if (isset($_GET['receiptid'])) {
                                     </tr>
 
                                     <tr>
-                                        <th scope="row" colspan="4" class="text-end">Sub Total</th>
-                                        <td class="text-end"><?php echo $total_price_rm ?></td>
+                                        <th scope="row" colspan="4" class="text-end">Total</th>
+                                        <td class="text-end"><?php echo $total ?></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="4" class="border-0 text-end">Deposit</th>
-                                        <td class="border-0 text-end"><?php echo $deposit_rm ?></td>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Sub total</th>
+                                        <td class="border-0 text-end"><?php echo $total_price_rm ?></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Refunded Total</th>
                                         <td class="border-0 text-end">
-                                            <h6 class="m-0 fw-semibold"><?php echo $total ?></h6>
+                                            <h6 class="m-0 fw-semibold"><?php echo $deposit_rm ?></h6>
                                         </td>
                                     </tr>
                                 </tbody>

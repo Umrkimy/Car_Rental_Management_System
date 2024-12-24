@@ -117,7 +117,7 @@ if (isset($_POST['save'])) {
                             <tr>
                                 <th>#</th>
                                 <th>Image</th>
-                                <th>Name</th>
+                                <th>Car Name</th>
                                 <th>Price</th>
                                 <th>Seats</th>
                                 <th>Transmission</th>

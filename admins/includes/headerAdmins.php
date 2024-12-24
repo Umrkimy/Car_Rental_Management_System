@@ -46,17 +46,6 @@
         </button>
         <div class="collapse navbar-collapse" id="topNavBar">
           <form class="d-flex ms-auto my-3 my-lg-0">
-            <div class="input-group">
-              <input
-                class="form-control"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-primary" type="submit">
-                <i class="bi bi-search"></i>
-              </button>
-            </div>
           </form>
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
@@ -70,8 +59,7 @@
                 <i class="bi bi-person-fill"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+                <li><a class="dropdown-item" href="../auto-refund.php">Auto Refund</a></li>
                 <li>
                   <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
@@ -140,7 +128,7 @@
               </div>
             </li>
             <li>
-              <a href="#" class="nav-link px-3">
+              <a href="rejected.php" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-book-fill"></i></span>
                 <span>Rejected</span>
               </a>
@@ -161,12 +149,6 @@
               <a href="bookings.php" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-calendar"></i></span>
                 <span>Bookings</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link px-3">
-                <span class="me-2"><i class="bi bi-table"></i></span>
-                <span>Tables</span>
               </a>
             </li>
           </ul>

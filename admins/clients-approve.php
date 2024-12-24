@@ -5,8 +5,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $action = $_POST['action'];
 
-    if ($action === 'approve') {
-        $status = 'Approved';
+    if ($action === 'verified') {
+        $status = 'Verified';
     } elseif ($action === 'reject') {
         $status = 'Rejected';
     } else {

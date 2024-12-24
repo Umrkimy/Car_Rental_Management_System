@@ -4,7 +4,7 @@ require_once("includes/headerClients.php");
 include "../db_conn.php";
 
 $message = "";
-$name = $username = $email = $phonenum = $address = $ic_no = $driver_no = "";
+$name = $username = $email = $phonenum = $address = $ic_no = $driver_no = $bank = $status = "";
 
 if (isset($idtop) && $idtop) {
     $stmt = $conn->prepare("SELECT * FROM clients WHERE id = ?");
@@ -14,6 +14,7 @@ if (isset($idtop) && $idtop) {
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
+        $status = $row['status'];
         $name = $row['full_name'];
         $email = $row['email'];
         $phonenum = $row['phone_num'];
@@ -21,7 +22,9 @@ if (isset($idtop) && $idtop) {
         $ic_no = $row['ic_no'];
         $driver_no = $row['driver_no'];
         $date = $row['date'];
-
+        $bank_no = $row['bank_no'];
+        $bank = isset($row['bank_type']) ? $row['bank_type'] : '';
+        $address = $row['address'];
     } else {
         $message = '<p class="alert alert-danger">User not found.</p>';
     }
@@ -30,15 +33,53 @@ if (isset($idtop) && $idtop) {
     $message = '<p class="alert alert-danger">Invalid user ID.</p>';
 }
 
+if ($status === "Unverified") {
+    $message = '<p class="alert alert-warning">You need to verify your account before you can insert your cars.</p>';
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = trim($_POST["full_name"]);
-    $username = trim($_POST["user_name"]);
-    $email = trim($_POST["email"]);
-    $phonenum = trim($_POST["phone_num"]);
-    $ic_no = trim($_POST["ic_no"]);
-    $driver_no = trim($_POST["driver_no"]);
+    $name = isset($_POST["full_name"]) ? trim($_POST["full_name"]) : '';
+    $username = isset($_POST["user_name"]) ? trim($_POST["user_name"]) : '';
+    $email = isset($_POST["email"]) ? trim($_POST["email"]) : '';
+    $phonenum = isset($_POST["phone_num"]) ? trim($_POST["phone_num"]) : '';
+    $ic_no = isset($_POST["ic_no"]) ? trim($_POST["ic_no"]) : '';
+    $driver_no = isset($_POST["driver_no"]) ? trim($_POST["driver_no"]) : '';
+    $bank_no = isset($_POST["bank_no"]) ? trim($_POST["bank_no"]) : '';
+    $bank = isset($_POST["bank_type"]) ? trim($_POST["bank_type"]) : '';
+    $address = isset($_POST["address"]) ? trim($_POST["address"]) : '';
+    $status = "Pending";
 
+    // Image handling
+    $image = isset($_FILES['file']) ? $_FILES['file'] : null;
+    $upload_image = null;
 
+    if ($image && $image['error'] === UPLOAD_ERR_OK) {
+        $imagefilename = $image['name'];
+        $filename_separate = explode('.', $imagefilename);
+        $filename_extension = strtolower(end($filename_separate));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($filename_extension, $allowed_extensions)) {
+            if (!is_dir('../imgs/driver/')) {
+                mkdir('../imgs/driver/', 0777, true);
+            }
+
+            $unique_filename = uniqid('driver', true) . '.' . $filename_extension;
+            $upload_image = '../imgs/driver/' . $unique_filename;
+
+            if (!move_uploaded_file($image['tmp_name'], $upload_image)) {
+                $message = '<p class="alert alert-danger">Failed to upload image. Please try again.</p>';
+                $upload_image = null;
+            }
+        } else {
+            $message = '<p class="alert alert-danger">Invalid image type. Only JPG, JPEG, PNG, and GIF are allowed.</p>';
+        }
+    } else {
+        
+        $upload_image = $row['driver_img'];
+    }
+
+    
     if (empty($name) || empty($username) || empty($email) || empty($phonenum)) {
         $message = '<p class="alert alert-danger">All fields are required.</p>';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -52,8 +93,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             $message = '<p class="alert alert-danger">Username or email is already taken.</p>';
         } else {
-            $stmt = $conn->prepare("UPDATE clients SET full_name = ?, client_name = ?, email = ?, phone_num = ?, ic_no = ?, driver_no = ? WHERE id = ?");
-            $stmt->bind_param("ssssssi", $name, $username, $email, $phonenum, $ic_no, $driver_no, $idtop);
+            $stmt = $conn->prepare("UPDATE clients SET full_name = ?, client_name = ?, email = ?, phone_num = ?, ic_no = ?, driver_no = ?, bank_no = ?, bank_type = ?, driver_img = ?, address = ?, status = ? WHERE id = ?");
+            $stmt->bind_param("sssssssssssi", $name, $username, $email, $phonenum, $ic_no, $driver_no, $bank_no, $bank, $upload_image, $address, $status, $idtop);
 
             if ($stmt->execute()) {
                 $message = '<p class="alert alert-success">Profile updated successfully.</p>';
@@ -64,12 +105,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
 ?>
 
 <main>
+
     <head>
         <link href="includes/css/profile.css" rel="stylesheet" />
     </head>
+
     <body>
         <div>
             <div style="position: relative;">
@@ -110,6 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <li class="list-group-item text-muted d-flex justify-content-between">Profile <strong><?= htmlspecialchars($username) ?></strong></li>
                         <li class="list-group-item d-flex justify-content-between"><strong>Joined</strong><span><?= htmlspecialchars(date('Y-m-d', strtotime($date))) ?></span></li>
                         <li class="list-group-item d-flex justify-content-between"><strong>Real name</strong><span><?= htmlspecialchars($name) ?></span></li>
+                        <li class="list-group-item d-flex justify-content-between"><strong>Status</strong><span><?= htmlspecialchars($status) ?></span></li>
                     </ul>
                 </div>
 
@@ -118,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
                             <?= $message ?>
-                            <form method="POST">
+                            <form method="POST" enctype="multipart/form-data">
                                 <div class="mb-3">
                                     <label class="small mb-1" for="user_name">Username</label>
                                     <input class="form-control" id="user_name" name="user_name" type="text" placeholder="Enter your username" value="<?= htmlspecialchars($username) ?>">
@@ -139,13 +184,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <input class="form-control" id="driver_no" name="driver_no" type="text" placeholder="Enter your Driver License No" value="<?= htmlspecialchars($driver_no) ?>" required>
                                     </div>
                                 </div>
+                                <div class="mb-3 ">
+                                    <label for="file">Driver License photo<span class="text-danger">*</span></label>
+                                    <input type="file" id="file" name="file" class="form-control" >
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="bank_no">Bank Account No<span class="text-danger">*</span></label>
+                                    <input class="form-control" id="bank_no" name="bank_no" type="text" placeholder="Enter your Bank Account No" value="<?= htmlspecialchars($bank_no) ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="bank">Bank<span class="text-danger">*</span></label>
+                                    <select class="form-control" id="bank" name="bank_type" required>
+                                        <option value="">Select your bank</option>
+                                        <option value="Maybank" <?= (isset($bank) && $bank == 'Maybank') ? 'selected' : '' ?>>Maybank</option>
+                                        <option value="CIMB" <?= (isset($bank) && $bank == 'CIMB') ? 'selected' : '' ?>>CIMB</option>
+                                        <option value="Bank Islam" <?= (isset($bank) && $bank == 'Bank Islam') ? 'selected' : '' ?>>Bank Islam</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="address">Address <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="address" name="address" placeholder="Enter your address" required><?= htmlspecialchars($address) ?></textarea>
+                                </div>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="email">Email address</label>
                                     <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email address" value="<?= htmlspecialchars($email) ?>">
-                                </div>
-                                <div class="mb-3 ">
-                                    <label for="file">Driver Lisense photo</label>
-                                    <input type="file" id="file" name="file" class="form-control" required>
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <div class="mb-3">

@@ -24,7 +24,7 @@ $userinfo = $oauth->userinfo->get();
 
 $email = $userinfo->email;
 $username = $userinfo->name;
-$status = "Pending";
+$status = "Unverified";
 
 date_default_timezone_set('Asia/Kuala_Lumpur');
 $date = date("Y-m-d H:i:s");

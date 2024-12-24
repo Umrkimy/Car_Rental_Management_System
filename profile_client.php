@@ -138,7 +138,7 @@ if (isset($_GET['clientname'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="d-flex align-items-center mb-3">Cars</h5>
-                                <div class="col-lg-9">
+                                <div class="">
 
                                     <?php
                                     $itemsPerPage = 4;

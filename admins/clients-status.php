@@ -16,7 +16,7 @@ if (isset($_GET['infoid'])) {
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h1 class="text-center my-3">User Info</h1>
+            <h1 class="text-center my-3">Client Info</h1>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -24,13 +24,15 @@ if (isset($_GET['infoid'])) {
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Username</th>
+                            <th scope="col">Clientname</th>
                             <th scope="col">Email</th>
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
+                            <th scope="col">IC/Passport No</th>
+                            <th scope="col">Driver License No</th>
+                            <th scope="col">Bank Acc NO</th>
+                            <th scope="col">Bank Type</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Password</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,9 +45,12 @@ if (isset($_GET['infoid'])) {
                                 $email = $row['email'];
                                 $phonenum = $row['phone_num'];
                                 $clientname = $row['client_name'];
+                                $ic_no = $row['ic_no'];
+                                $driver_no = $row['driver_no'];
+                                $driver_img = $row['driver_img'];
+                                $bank_no = $row['bank_no'];
+                                $bank_type = $row['bank_type'];
                                 $status = $row['status'];
-                                $date = $row['date'];
-                                $password = $row['password'];
 
                                 echo '<tr>
                                     <td>' . $id . '</td>
@@ -53,25 +58,35 @@ if (isset($_GET['infoid'])) {
                                     <td>' . $email . '</td>
                                     <td>' . $name . '</td>
                                     <td>' . $phonenum . '</td>
+                                    <td>' . $ic_no . '</td>
+                                    <td>' . $driver_no . '</td>
+                                    <td>' . $bank_no . '</td>
+                                    <td>' . $bank_type . '</td>
                                     <td>' . $status . '</td>
-                                    <td>' . $date . '</td>
-                                    <td>' . $password . '</td>
                                 </tr>';
 
                                 echo '<tr>
-                                    <td colspan="8" class="text-center">
+                                    <td colspan="10" class="text-center">
                                         <form method="POST" action="clients-approve.php">
                                             <input type="hidden" name="id" value="' . $id . '">
-                                            <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+                                            <button type="submit" name="action" value="verified" class="btn btn-success">Approve</button>
                                             <button type="submit" name="action" value="rejected" class="btn btn-danger">Reject</button>
                                         </form>
                                     </td>
                                 </tr>';
+
+                                echo '</tbody></table>'; 
+
+                                
+                                echo '<div class="text-center mt-4">
+                                        <h4>Driver License Image</h4>
+                                        <img src="' . $driver_img . '" alt="Driver License Image" style="max-width: 500px; height: auto; border: 1px solid #ddd; padding: 5px;"/>
+                                      </div>';
                             } else {
-                                echo '<tr><td colspan="8" class="text-center">No booking found with this ID.</td></tr>';
+                                echo '<tr><td colspan="10" class="text-center">No booking found with this ID.</td></tr>';
                             }
                         } else {
-                            echo '<tr><td colspan="8" class="text-center">Error fetching booking details: ' . mysqli_error($conn) . '</td></tr>';
+                            echo '<tr><td colspan="10" class="text-center">Error fetching booking details: ' . mysqli_error($conn) . '</td></tr>';
                         }
                         ?>
                     </tbody>
@@ -81,4 +96,3 @@ if (isset($_GET['infoid'])) {
     </div>
 </div>
 </main>
-

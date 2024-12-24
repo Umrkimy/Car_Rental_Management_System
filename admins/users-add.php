@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $phonenum = trim($_POST["phonenum"]);
     $address = trim($_POST["address"]);
-    $status = "Pending";
+    $status = "Unverified";
     date_default_timezone_set('Asia/Kuala_Lumpur');
     $date = date("Y-m-d H:i:s");
 

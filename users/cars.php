@@ -157,7 +157,7 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                         <div class="col-md-12">
                             <div class="card-body">
                                 <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
-                                <p class="text-muted mb-1">Rented by: <a href="profile_client.php?clientname=' . htmlspecialchars($row['client_name']) . '"> <strong>' . htmlspecialchars($row['client_name']) . '</strong></a> </p>
+                                <p class="text-muted mb-1">Renter: <a href="profile_client.php?clientname=' . htmlspecialchars($row['client_name']) . '"> <strong>' . htmlspecialchars($row['client_name']) . '</strong></a> </p>
                                 <p class="mb-1">Price (Daily): <strong>' . htmlspecialchars($row['price']) . ' </strong></p>
                                 <p class="mb-1">Seats: <strong>' . htmlspecialchars($row['seats']) . ' </strong></p>
                                 <p class="mb-1">Transmission: <strong>' . htmlspecialchars($row['trans']) . '</strong></p>

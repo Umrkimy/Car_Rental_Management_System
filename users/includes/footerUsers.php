@@ -13,7 +13,7 @@
                             <h4 class="text-white footer-title-01">Car Rental</h4>
                             <ul class="list-unstyled footer-link-01 m-0">
                                 <li><a class="text-white text-opacity-75" href="cars.php">Cars</a></li>
-                                <li><a class="text-white text-opacity-75" href="#">Blog</a></li>
+                                
                             </ul>
                         </div>
                         <div class="col-6 col-lg-4">
@@ -28,7 +28,7 @@
                             <h5 class="text-white footer-title-01">Need Help?</h5>
                             <ul class="list-unstyled footer-link-01 m-0">
                                 <li><a class="text-white text-opacity-75" href="contact.php">Contact Us</a></li>
-                                <li><a class="text-white text-opacity-75" href="#">FAQs</a></li>
+                                
 
                             </ul>
                         </div>
@@ -64,8 +64,6 @@
                 <div class="col-md-6 text-center text-md-end py-1">
                     <ul class="nav justify-content-center justify-content-md-end list-unstyled footer-link-01 m-0">
                         <li class="p-0 mx-3 ms-md-0 me-md-3"><a href="#" class="text-white text-opacity-75">Privace &amp; Policy</a></li>
-                        <li class="p-0 mx-3 ms-md-0 me-md-3"><a href="#" class="text-white text-opacity-75">Faq's</a></li>
-                        <li class="p-0 mx-3 ms-md-0 me-md-3"><a href="#" class="text-white text-opacity-75">Get a Quote</a></li>
                     </ul>
                 </div>
             </div>

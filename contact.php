@@ -64,20 +64,20 @@ require_once("includes/header.php");
                         </div>
                     </div>
                     <div class="col-md-8 block-9 mb-md-5">
-                        <form action="email-support.php" class="bg-light p-5 contact-form">
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control" placeholder="Your Name">
+                        <form action="email-support.php" method="POST" class="bg-light p-5 contact-form">
+                        <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="name" placeholder="Your Name" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" placeholder="Your Email">
+                                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" placeholder="Subject">
+                                <input type="text" class="form-control" name="subject" placeholder="Subject" required>
                             </div>
                             <div class="form-group mb-3">
-                                <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+                                <textarea name="message" id="" cols="30" rows="7" class="form-control" placeholder="Message" required></textarea>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group ">
                                 <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
                             </div>
                         </form>

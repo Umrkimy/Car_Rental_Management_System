@@ -1,22 +1,18 @@
 <?php
-$title = "Clients Manage";
+$title = "Rejected";
 require_once("includes/headerAdmins.php");
 include "../db_conn.php";
 ?>
 
 <main class="mt-5 pt-3">
-
     <div class="container mt-3 gap">
         <div class="row justify-content-center">
             <div class="col-md-13 mb-4">
                 <div class="card ">
                     <div class="card-header">
-                        <h2 class="card-title">Clients</h2>
+                        <h2 class="card-title">Rejected Clients</h2>
                     </div>
                     <div class="card-body">
-                        <div class="container mb-3">
-                            <a href="clients-add.php" class="btn btn-dark">Add Client</a>
-                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered ">
                                 <thead>
@@ -32,7 +28,7 @@ include "../db_conn.php";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * FROM clients";
+                                    $sql = "SELECT * FROM clients WHERE status = 'Rejected'";
                                     $result = mysqli_query($conn, $sql);
                                     if ($result) {
                                         while ($row = mysqli_fetch_assoc($result)) {
@@ -43,7 +39,6 @@ include "../db_conn.php";
                                             $email = $row['email'];
                                             $status = $row['status'];
 
-
                                             echo '<tr>
                                             <td>' . $id . '</td>
                                             <td>' . $name . '</td>
@@ -51,9 +46,8 @@ include "../db_conn.php";
                                             <td>' . $phonenum . '</td>
                                             <td>' . $email . '</td>
                                             <td>' . $status . '</td>
-
                                             <td>
-                                            <a title="View" href="clients-info.php?infoid=' . $id . '" class="ms-3"><i class="bi  bi-eye-fill"></i></a>
+                                            <a title="View" href="clients-info.php?infoid=' . $id . '" class="ms-3"><i class="bi bi-eye-fill"></i></a>
                                                 <a title="Update" href="clients-update.php?updateid=' . $id . '" class="ms-3"><i class="bi text-warning bi-pencil-fill"></i></a>
                                                 <a title="Delete" href="clients-delete.php?deleteid=' . $id . '" class="ms-3"><i class="bi text-danger bi-trash-fill"></i></a>
                                             </td>

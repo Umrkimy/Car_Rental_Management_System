@@ -1,7 +1,7 @@
 <?php
 ob_start();
 
-$title = "Booking Confirmation";
+$title = "Receipt";
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
 require '../vendor/autoload.php';

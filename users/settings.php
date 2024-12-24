@@ -124,10 +124,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 <div class="col-lg-4">
                     <div class="card mb-4">
+                    <form action="settings-delete.php" method="POST" class="">
                         <div class="card-header">Delete Account</div>
                         <div class="card-body">
                             <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below.</p>
                             <button class="btn btn-danger-soft text-danger" type="button">I understand, delete my account</button>
+                            </form>
                         </div>
                     </div>
                 </div>

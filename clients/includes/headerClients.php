@@ -1,8 +1,15 @@
 <?php 
 require_once "../config.php";
-$clientnametop = isset($_SESSION['client_name']) ? $_SESSION['client_name'] : "Guest";
+
+if (isset($_SESSION['user_name'])) {
+    $clientnametop = $_SESSION['user_name'];
+} elseif (isset($_SESSION['client_name'])) {
+    $clientnametop = $_SESSION['client_name'];
+} else {
+    $clientnametop = "Guest";
+}
 $idtop = isset($_SESSION['id']) ? $_SESSION['id'] : "0";
-$statustop = isset($_SESSION['status']) ? $_SESSION['status'] : "Pending";
+$statustop = isset($_SESSION['status']) ? $_SESSION['status'] : "Unverified";
 
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -42,10 +49,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <a class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php">Home</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link <?php echo $current_page == 'manage.php' ? 'active' : ''; ?>" href="manage.php">Manage</a>
+                            <a class="nav-link <?php echo $current_page == 'manage.php' ? 'active' : ''; ?>" href="manage.php">Cars</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>" href="about.php">About</a>
+                            <a class="nav-link <?php echo $current_page == 'about.php' ? 'active' : ''; ?>" href="booking.php">Booking</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link <?php echo $current_page == 'contact.php' ? 'active' : ''; ?>" href="contact.php">Contact</a>

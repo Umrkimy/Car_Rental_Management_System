@@ -1,5 +1,5 @@
 <?php
-$title = 'Profile';
+$title = 'Profile Client';
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
 
@@ -75,7 +75,6 @@ if (isset($_GET['clientname'])) {
                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Clients</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Client Profile</li>
                     </ol>
                 </nav>
@@ -138,7 +137,7 @@ if (isset($_GET['clientname'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="d-flex align-items-center mb-3">Cars</h5>
-                                <div class="col-lg-9">
+                                <div class="">
 
                                     <?php
                                     $itemsPerPage = 4;

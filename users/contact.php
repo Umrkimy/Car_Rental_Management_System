@@ -1,5 +1,5 @@
 <?php
-$title = 'Home';
+$title = 'Contact';
 require_once("includes/headerUsers.php");
 ?>
 

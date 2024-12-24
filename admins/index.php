@@ -28,7 +28,18 @@ $car_count = 0;
 if ($car_count_result) {
   $row = mysqli_fetch_assoc($car_count_result);
   $car_count = $row['car_count']; 
+
+  $rejected_count_sql = "SELECT COUNT(*) AS rejected_count FROM clients WHERE status = 'rejected'";
+$rejected_count_result = mysqli_query($conn, $rejected_count_sql);
+$rejected_count = 0;
+
+if ($rejected_count_result) {
+  $row = mysqli_fetch_assoc($rejected_count_result);
+  $rejected_count = $row['rejected_count']; 
 }
+}
+
+
 ?>
 
 <main class="mt-5 pt-3">
@@ -70,15 +81,13 @@ if ($car_count_result) {
 
       <div class="col-md-3 mb-3">
         <div class="card bg-danger text-white h-100">
-          <div class="card-body py-5">Danger Card</div>
-          <div class="card-footer d-flex">
-            View Details
-            <span class="ms-auto">
-              <i class="bi bi-chevron-right"></i>
-            </span>
+          <div class="card-body py-5">
+            <h5>Rejected Clients count</h5>
+            <p class="fs-2"><?php echo $rejected_count; ?></p>
           </div>
         </div>
       </div>
+
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">

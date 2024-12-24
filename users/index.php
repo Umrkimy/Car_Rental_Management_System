@@ -114,11 +114,12 @@ if ($car_count_result) {
                                         <img src="' . $image . '" class="img-fluid rounded-start" alt="' . $name . '" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
                                             <h5 class="card-title">' . $name . '</h5>
-                                            <p class="text-muted mb-1">Rented by: <strong>' . $client_name . '</strong></p>
+                                            <p class="text-muted mb-1">Renter: <a href="profile_client.php?clientname=' . htmlspecialchars($row['client_name']) . '"> <strong>' . htmlspecialchars($row['client_name']) . '</strong></a> </p>
                                             <p class="mb-1">Price (Daily): <strong>' . $price . '</strong></p>
                                             <p class="mb-1">Seats: <strong>' . $seats . '</strong></p>
                                             <p class="mb-1">Transmission: <strong>' . $trans . '</strong></p>
-                                            <a href="booking.php" class="btn btn-success text-white shadow-none mt-2" >Book Now</a>
+                                            <a href="booking.php?bookingid=' . $id . '" class="btn btn-success text-white shadow-none mt-2">Book Now</a>
+                                            
                                         </div>
                                     </div>
                                 </div>';
@@ -138,7 +139,42 @@ if ($car_count_result) {
 
     </section>
 
-    <section class="text-dark ">
+    <section class="ftco-section ftco-about my-5">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="about-image" style="
+                    background-image: url('../imgs/bg2.jpg');
+                    background-size: cover;
+                    background-position: center;
+                    height: 100%;
+                    min-height: 400px;">
+                </div>
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="content-wrapper p-4">
+                    
+                    <span class="subheading text-secondary fw-bold">About Us</span>
+                    
+                    <h2 class="mb-4 text-dark fw-bold">Welcome to Car Rental</h2>
+                    <p class="text-muted">
+                        Nestled in a serene environment, Car Rental is where stories of effortless journeys begin. 
+                        A small river named Duden flows by, creating a picturesque, inspiring backdrop for a journey 
+                        that promises comfort and style.
+                    </p>
+                    <p class="text-muted">
+                        Here, your experience is our priority. We combine the charm of a classic narrative with the precision 
+                        of modern innovation. Whether you're exploring new destinations or simply seeking convenience, 
+                        Carbook is your companion for every journey.
+                    </p>
+                    <a href="#" class="btn btn-primary px-5 py-3 mt-3">Explore Vehicles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+
+    <section class="text-dark bg-light">
 
         <link href="includes/css/counter.css" rel="stylesheet" />
 
