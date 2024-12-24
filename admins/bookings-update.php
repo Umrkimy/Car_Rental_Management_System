@@ -33,6 +33,8 @@ if ($id) {
         $dropoffLocation = $row['dropoff_location'];
         $pickupDate = $row['pickup_date'];
         $dropoffDate = $row['dropoff_date'];
+        $state = $row['state'];
+        $city = $row['city'];
     } else {
         $message = '<p class="alert alert-danger">Booking not found.</p>';
     }
@@ -95,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
 
                         <form action="" method="post">
-                        <div class="form-group">
+                            <div class="form-group">
                                 <label>Full Name*</label>
                                 <input class="form-control" name="full_name" value="<?= htmlspecialchars($fullName) ?>" required>
                             </div>
@@ -137,8 +139,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="form-group">
                                 <label>Status*</label>
                                 <select class="form-control" name="status" required>
+                                    <option value="Refunded" <?= $status == "Refunded" ? "selected" : "" ?>>Refunded</option>
                                     <option value="Pending" <?= $status == "Pending" ? "selected" : "" ?>>Pending</option>
-                                    <option value="Paid" <?= $status == "Paid" ? "selected" : "" ?>>Paid</option>
+                                    <option value="Completed" <?= $status == "Completed" ? "selected" : "" ?>>Completed</option>
+                                    <option value="Confirmed" <?= $status == "Confirmed" ? "selected" : "" ?>>Confirmed</option>
                                     <option value="Cancelled" <?= $status == "Cancelled" ? "selected" : "" ?>>Cancelled</option>
                                 </select>
                             </div>
@@ -147,13 +151,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>State*</label>
-                                        <input class="form-control" name="state" placeholder="State" required>
+                                        <input class="form-control" name="state" placeholder="State" value="<?= htmlspecialchars($state) ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>City*</label>
-                                        <input class="form-control" name="city" placeholder="City" required>
+                                        <input class="form-control" name="city" placeholder="City" value="<?= htmlspecialchars($city) ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +226,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </form>
 
                         <div class="mt-3">
-                            <a href="bookings.php"><< Back to Bookings Management</a>
+                            <a href="bookings.php">
+                                << Back to Bookings Management</a>
                         </div>
                     </div>
                 </div>

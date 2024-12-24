@@ -2,7 +2,7 @@
 $title = "Sign Up";
 require_once("includes/header.php");
 
-session_start();
+require_once "config.php";
 include "db_conn.php";
 
 $error = [];
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     date_default_timezone_set('Asia/Kuala_Lumpur');
                     $date = date("Y-m-d H:i:s");
 
-                    $status = "Pending";
+                    $status = "Unverified";
 
                     $stmt->bind_param("ssssssss", $name, $username, $phonenum, $email, $address, $hashedPassword, $status, $date);
 

@@ -27,6 +27,11 @@ if (isset($_GET['receiptid'])) {
         $total = $row['total'];
         $status = $row['status'];
 
+        $pickup_location = $row['pickup_location'];
+        $pickup_date = $row['pickup_date'];
+        $dropoff_location = $row['dropoff_location'];
+        $dropoff_date = $row['dropoff_date'];
+
         $total_without_rm = (float)str_replace(['RM', ',', ' '], '', $total);
         $deposit_without_rm = (float)str_replace(['RM', ',', ' '], '', $deposit_rm);
 
@@ -79,6 +84,8 @@ if (isset($_GET['receiptid'])) {
                                  echo 'bg-danger';
                                 } elseif ($status === 'Pending') {
                                 echo 'bg-secondary';
+                                } elseif ($status === 'Refunded') {
+                                echo 'bg-primary';
                                 } else {
                                 echo 'bg-success';
                                     } ?> font-size-12 ms-2"><?php echo htmlspecialchars($status); ?></span>
@@ -119,57 +126,80 @@ if (isset($_GET['receiptid'])) {
                         </div>
 
                         <div class="py-2">
-                            <h5 class="font-size-15">Order Summary</h5>
-
-                            <div class="table-responsive">
-                                <table class="table align-middle table-nowrap table-centered mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 70px;">No.</th>
-                                            <th>Item</th>
-                                            <th>Price (daily)</th>
-                                            <th>Days Rented</th>
-                                            <th class="text-end" style="width: 120px;">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">01</th>
-                                            <td>
-                                                <div>
-                                                    <h5 class="text-truncate font-size-14 mb-1"><?php echo htmlspecialchars($cars_name) ?></h5>
-                                                    <p class="text-muted mb-0">Rented by <?php echo htmlspecialchars($clientname) ?></p>
-                                                </div>
-                                            </td>
-                                            <td><?php echo htmlspecialchars($price) ?></td>
-                                            <td><?php echo htmlspecialchars($days_rented) ?></td>
-                                            <td class="text-end"><?php echo $total_price_rm ?></td>
-                                        </tr>
-
-                                        <tr>
-                                            <th scope="row" colspan="4" class="text-end">Sub Total</th>
-                                            <td class="text-end"><?php echo $total_price_rm ?></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" colspan="4" class="border-0 text-end">Tax</th>
-                                            <td class="border-0 text-end"><?php echo $deposit_rm ?></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" colspan="4" class="border-0 text-end">Total</th>
-                                            <td class="border-0 text-end">
-                                                <h6 class="m-0 fw-semibold"><?php echo $total ?></h6>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="d-print-none mt-4">
-                                <div class="float-end">
-                                    <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                                    <form action="../email-receipt.php?bookingid=<?php echo $id ?>" method="POST" class="mt-3" style="display: inline;">
-                                        <button type="submit" class="btn btn-primary w-md">Send</button>
-                                    </form>
+                            <h5 class="font-size-16 mb-3">Pickup and Dropoff Details</h5>
+                            <div class="row">
+                                <div class="col-sm-6 ">
+                                    <div class="text-muted">
+                                        <h5 class="font-size-16 mb-1">Pickup Location:</h5>
+                                        <p class="mb-3"><?php echo htmlspecialchars($pickup_location) ?></p>
+                                        <h5 class="font-size-16 mb-1">Pickup Date:</h5>
+                                        <p class="mb-1"><?php echo htmlspecialchars($pickup_date) ?></p>
+                                    </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="text-muted text-sm-end">
+                                        <h5 class="font-size-16 mb-1">Dropoff Location:</h5>
+                                        <p class="mb-3"><?php echo htmlspecialchars($dropoff_location) ?></p>
+                                        <h5 class="font-size-16 mb-1">Dropoff Date:</h5>
+                                        <p class="mb-1"><?php echo htmlspecialchars($dropoff_date) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <h5 class="font-size-15">Order Summary</h5>
+
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap table-centered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70px;">No.</th>
+                                        <th>Item</th>
+                                        <th>Price (daily)</th>
+                                        <th>Days Rented</th>
+                                        <th class="text-end" style="width: 120px;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">01</th>
+                                        <td>
+                                            <div>
+                                                <h5 class="text-truncate font-size-14 mb-1"><?php echo htmlspecialchars($cars_name) ?></h5>
+                                                <p class="text-muted mb-0">Rented by <?php echo htmlspecialchars($clientname) ?></p>
+                                            </div>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($price) ?></td>
+                                        <td><?php echo htmlspecialchars($days_rented) ?></td>
+                                        <td class="text-end"><?php echo $total_price_rm ?></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row" colspan="4" class="text-end">Sub Total</th>
+                                        <td class="text-end"><?php echo $total_price_rm ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Deposit</th>
+                                        <td class="border-0 text-end"><?php echo $deposit_rm ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                        <td class="border-0 text-end">
+                                            <h6 class="m-0 fw-semibold"><?php echo $total ?></h6>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-print-none mt-4">
+                            <div class="float-end">
+                                <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                <form action="../email-receipt.php?bookingid=<?php echo $id ?>" method="POST" class="mt-3" style="display: inline;">
+                                    <button type="submit" name="send_receipt" class="btn btn-primary">
+                                        <i class="fa fa-envelope"></i> Send Receipt
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -177,8 +207,7 @@ if (isset($_GET['receiptid'])) {
             </div>
         </div>
     </div>
-
 </main>
-<?php
-require_once("includes/footerUsers.php");
-?>
+
+<?php include_once("includes/footerUsers.php"); ?>
+

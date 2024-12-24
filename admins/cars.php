@@ -25,12 +25,12 @@ if (isset($_POST['save'])) {
     $allowed_extensions = array('jpeg', 'jpg', 'png');
 
     if (in_array($filename_extension, $allowed_extensions)) {
-        if (!is_dir('../imgs/')) {
-            mkdir('../imgs/', 0777, true);
+        if (!is_dir('../imgs/cars/')) {
+            mkdir('../imgs/cars/', 0777, true);
         }
 
         $unique_filename = uniqid('car_', true) . '.' . $filename_extension;
-        $upload_image = '../imgs/' . $unique_filename;
+        $upload_image = '../imgs/cars/' . $unique_filename;
 
         if (move_uploaded_file($imagefiletemp, $upload_image)) {
             $price_with_RM = 'RM ' . number_format($price, 2);
@@ -67,7 +67,7 @@ if (isset($_POST['save'])) {
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <?= $message ?>
                     <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group mb-2">
@@ -110,14 +110,14 @@ if (isset($_POST['save'])) {
                     </form>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <h2 class="text-center mb-4">Cars</h2>
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
                                 <th>Image</th>
-                                <th>Name</th>
+                                <th>Car Name</th>
                                 <th>Price</th>
                                 <th>Seats</th>
                                 <th>Transmission</th>
@@ -154,8 +154,8 @@ if (isset($_POST['save'])) {
                                     <td>' . $state . '</td>
                                     <td>' . $city . '</td>
                                     <td>
-                                        <a href="cars-update.php?updateid=' . $id . '" class="btn btn-primary btn-sm">Update</a>
-                                        <a href="cars-delete.php?deleteid=' . $id . '" class="btn btn-danger btn-sm">Delete</a>
+                                        <a title="Update" href="cars-update.php?updateid=' . $id . '" class="ms-2"><i class="text-warning bi bi-pencil-fill"></i></a>
+                                        <a title="Delete" href="cars-delete.php?deleteid=' . $id . '" class="ms-2"><i class="bi text-danger bi-trash3-fill"></i></a>
                                     </td>
                                 </tr>';
                                 }

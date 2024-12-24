@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"] ?? '';
     $confirmpassword = $_POST["confirmpassword"] ?? '';
 
-    if (isset($idtop) && is_numeric($idtop)) {  
+    if (isset($idtop) && is_numeric($idtop)) {
         $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
 
@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <main>
+
     <head>
         <link href="includes/css/settings.css" rel="stylesheet" />
     </head>
@@ -99,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="row">
                 <div class="col-lg-8">
                     <?= $message ?>
-                    
+
                     <div class="card mb-4">
                         <div class="card-header">Change Password</div>
                         <div class="card-body">
@@ -123,10 +124,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 <div class="col-lg-4">
                     <div class="card mb-4">
+                    <form action="settings-delete.php" method="POST" class="">
                         <div class="card-header">Delete Account</div>
                         <div class="card-body">
                             <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below.</p>
                             <button class="btn btn-danger-soft text-danger" type="button">I understand, delete my account</button>
+                            </form>
                         </div>
                     </div>
                 </div>

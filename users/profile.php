@@ -21,7 +21,6 @@ if (isset($idtop) && $idtop) {
         $ic_no = $row['ic_no'];
         $driver_no = $row['driver_no'];
         $date = $row['date'];
-
     } else {
         $message = '<p class="alert alert-danger">User not found.</p>';
     }
@@ -67,9 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <main>
+
     <head>
         <link href="includes/css/profile.css" rel="stylesheet" />
     </head>
+
     <body>
         <div>
             <div style="position: relative;">

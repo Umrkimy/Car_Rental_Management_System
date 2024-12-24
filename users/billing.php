@@ -2,6 +2,68 @@
 $title = 'Billing';
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
+
+$message = "";
+
+$stmt = $conn->prepare("SELECT total FROM bookings WHERE user_name = ?");
+$stmt->bind_param("s", $usernametop);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$total = 0;
+$formatted_total = 'RM 0.00';
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $price_string = $row['total'];
+        $total_without_rm = (float)str_replace(',', '', str_replace('RM', '', $price_string));
+        $total += $total_without_rm; 
+    }
+    $formatted_total = 'RM ' . number_format($total, 2);
+}
+
+$stmt = $conn->prepare("SELECT deposit FROM bookings WHERE user_name = ?");
+$stmt->bind_param("s", $usernametop);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$deposit = 0;
+$formatted_deposit = 'RM 0.00';
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $deposit_string = $row['deposit'];
+        $deposit_without_rm = (float)str_replace(',', '', str_replace('RM', '', $deposit_string));
+        $deposit += $deposit_without_rm;
+    }
+    $formatted_deposit = 'RM ' . number_format($deposit, 2);
+}
+
+$stmt = $conn->prepare("SELECT refund_total FROM bookings WHERE user_name = ?");
+$stmt->bind_param("s", $usernametop);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$refund = 0;
+$formatted_refund = 'RM 0.00';
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $refund_string = $row['refund_total'];
+        $refund_without_rm = (float)str_replace(',', '', str_replace('RM', '', $refund_string));
+        $refund += $refund_without_rm;
+    }
+    $formatted_refund = 'RM ' . number_format($refund, 2);
+}
+
+if (isset($idtop) && $idtop) {
+    $stmt = $conn->prepare("SELECT * FROM bookings WHERE id = ? AND status = ?");
+    $pendingStatus = "Pending";
+    $stmt->bind_param("is", $idtop, $pendingStatus);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $message = '<p class="alert alert-warning">Your booking is pending confirmation from the client. You may cancel up to one day before the pickup date to receive a full refund. After that, the deposit will be non-refundable.</p>';
+    }
+}
 ?>
 
 <main>
@@ -48,45 +110,24 @@ include "../db_conn.php";
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-primary">
                         <div class="card-body">
-                            <div class="small text-muted">Current monthly bill</div>
-                            <div class="h3">$20.00</div>
-                            <a class="text-arrow-icon small" href="#!">
-                                Switch to yearly billing
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                            <div class="small text-muted">Total Amount</div>
+                            <div class="h3"><?php echo $formatted_total ?></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-secondary">
                         <div class="card-body">
-                            <div class="small text-muted">Next payment due</div>
-                            <div class="h3">July 15</div>
-                            <a class="text-arrow-icon small text-secondary" href="#!">
-                                View payment history
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                            <div class="small text-muted">Deposit</div>
+                            <div class="h3"><?php echo $formatted_deposit ?></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-success">
                         <div class="card-body">
-                            <div class="small text-muted">Current plan</div>
-                            <div class="h3 d-flex align-items-center">Freelancer</div>
-                            <a class="text-arrow-icon small text-success" href="#!">
-                                Upgrade plan
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                            <div class="small text-muted">Total Refunded</div>
+                            <div class="h3 d-flex align-items-center"><?php echo $formatted_refund ?></div>
                         </div>
                     </div>
                 </div>
@@ -94,6 +135,7 @@ include "../db_conn.php";
 
             <div class="card mb-4">
                 <div class="card-header">Billing History</div>
+                <?= $message ?>
                 <div class="card-body p-0">
                     <div class="table-responsive table-billing-history">
                         <table class="table mb-0">
@@ -102,7 +144,8 @@ include "../db_conn.php";
                                     <th class="border-gray-200" scope="col">Invoice No</th>
                                     <th class="border-gray-200" scope="col">Car</th>
                                     <th class="border-gray-200" scope="col">Days rented</th>
-                                    <th class="border-gray-200" scope="col">Receipt Date</th>
+                                    <th class="border-gray-200" scope="col">Pickup Date & Time</th>
+                                    <th class="border-gray-200" scope="col">Receipt Created</th>
                                     <th class="border-gray-200" scope="col">Amount</th>
                                     <th class="border-gray-200" scope="col">Status</th>
                                     <th class="border-gray-200" scope="col">Action</th>
@@ -110,10 +153,10 @@ include "../db_conn.php";
                             </thead>
                             <tbody>
                                 <?php
-                                $stmt = $conn->prepare("SELECT id, invoice_no, cars_name, days_rented, invoice_date, total, status FROM bookings WHERE user_name = ?");
-                                $stmt->bind_param("s", $usernametop);
-                                $stmt->execute();
-                                $result = $stmt->get_result();
+                            $stmt = $conn->prepare("SELECT id, invoice_no, cars_name, days_rented, invoice_date, total, status,pickup_date FROM bookings WHERE user_name = ?");
+                            $stmt->bind_param("s", $usernametop);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
@@ -122,15 +165,23 @@ include "../db_conn.php";
                                                 <td>#' . htmlspecialchars($row['invoice_no']) . '</td>
                                                 <td>' . htmlspecialchars($row['cars_name']) . '</td>
                                                 <td>' . htmlspecialchars($row['days_rented']) . ' </td>
+                                                <td>' . htmlspecialchars($row['pickup_date']) . ' </td>
                                                 <td>' . htmlspecialchars($row['invoice_date']) . '</td>
                                                 <td>' . htmlspecialchars(($row['total'])) . '</td>
-                                                <td>
-                                                <span class="badge bg-' .
-                                                    ($row['status'] === 'Paid' ? 'success' : ($row['status'] === 'Cancelled' ? 'danger' : 'secondary'))
-                                                . '">' . htmlspecialchars($row['status']) . '</span>
+                                                  <td>
+        <span class="badge bg-' .
+                                            ($row['status'] === 'Confirmed' ? 'success' : ($row['status'] === 'Cancelled' ? 'danger' : ($row['status'] === 'Refunded' ? 'primary' : 'secondary')))
+                                            . '">' . htmlspecialchars($row['status']) . '</span>
                                                 </td>
                                                 <td >
-                                                <a href="billing-receipt.php?receiptid=' . $id . '" class=""><i class="bi bi-three-dots text-secondary"></i></a>
+                                                <a title="Receipt" href="billing-receipt.php?receiptid=' . $id . '" class=""><i class="bi bi-eye-fill text-success"></i></a>';
+                                        if ($row['status'] === 'Pending') {
+                                            echo ' <a title="Cancel" href="cancel-booking.php?invoiceid=' . $id . '" class="ms-3 "><i class="bi bi-file-excel-fill text-danger"></i></a>';
+                                        }
+                                        if ($row['status'] === 'Refunded') {
+                                            echo ' <a title="Refunded Receipt" href="billing-refunded.php?receiptid=' . $id . '" class="ms-3"><i class="bi bi-eye-fill text-primary"></i></a>';
+                                        }
+                                        echo '
                                                 </td>
                                             </tr>';
                                     }

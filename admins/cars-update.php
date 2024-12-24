@@ -48,15 +48,20 @@ if (isset($_GET['updateid'])) {
             $allowed_extensions = array('jpeg', 'jpg', 'png');
 
             if (in_array($filename_extension, $allowed_extensions)) {
-                if (!is_dir('../imgs/')) {
-                    mkdir('../imgs/', 0777, true);
+                if (!is_dir('../imgs/cars/')) {
+                    mkdir('../imgs/cars/', 0777, true);
                 }
 
                 $unique_filename = uniqid('car_', true) . '.' . $filename_extension;
-                $upload_image = '../imgs/' . $unique_filename;
+                $upload_image = '../imgs/cars/' . $unique_filename;
+
+                if ($image != '' && file_exists($image)) {
+                    unlink($image);
+                }
 
                 if (move_uploaded_file($imagefiletemp, $upload_image)) {
                     $updated_image = $upload_image;
+                    $image = $updated_image;
                 } else {
                     $message = '<div class="alert alert-danger text-center">Failed to upload the new image. Keeping the current image.</div>';
                 }

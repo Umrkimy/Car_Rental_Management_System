@@ -1,10 +1,11 @@
 body {
     background-blend-mode: overlay;
     overflow-x: hidden;
-    min-height: 100vh;  
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
     color: #ffffff;
+    scroll-snap-type: y proximity;
 }
 
 .darkbody{
@@ -19,6 +20,10 @@ body {
 
 .gap{
     padding-top: 56px;
+}
+
+section{
+    scroll-snap-align: start;
 }
 
 .navbar{
@@ -145,6 +150,3 @@ footer {
 #footer2 {
     background: #000000;
 }
-
-
-

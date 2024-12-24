@@ -59,7 +59,7 @@ require_once("includes/headerUsers.php");
                         of modern innovation. Whether you're exploring new destinations or simply seeking convenience, 
                         Carbook is your companion for every journey.
                     </p>
-                    <a href="#" class="btn btn-primary px-5 py-3 mt-3">Explore Vehicles</a>
+                    <a href="cars.php" class="btn btn-primary px-5 py-3 mt-3">Explore Vehicles</a>
                 </div>
             </div>
         </div>

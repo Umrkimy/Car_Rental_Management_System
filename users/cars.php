@@ -119,41 +119,25 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                     <div class="container text-dark mt-5">
                         <div class="row">
                             <?php
-
                             if ($result && mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $name = str_replace(' ', '_', $row['name']);
                                     $id = $row['id'];
                                     $isAvailable = true;
 
-                                    $bookingQuery = "SELECT cars_name FROM bookings WHERE id = ?";
-                                    $bookingStmt = mysqli_prepare($conn, $bookingQuery);
-                                    mysqli_stmt_bind_param($bookingStmt, "i", $id);
-                                    mysqli_stmt_execute($bookingStmt);
-                                    $bookingResult = mysqli_stmt_get_result($bookingStmt);
-
-                                    if ($bookingRow = mysqli_fetch_assoc($bookingResult)) {
-                                        $carsName = $bookingRow['cars_name'];
-                                    } else {
-                                        $carsName = null;
-                                    }
-
                                     if ($pickup && $dropoff) {
                                         $availabilityQuery = "
-SELECT * FROM bookings 
-WHERE cars_name = ? 
-AND (
-(? BETWEEN pickup_date AND dropoff_date) OR 
-(? BETWEEN pickup_date AND dropoff_date) OR
-(pickup_date BETWEEN ? AND ?) OR 
-(dropoff_date BETWEEN ? AND ?)
-)
-";
+            SELECT * FROM bookings 
+            WHERE cars_name = ? 
+            AND (
+                (? BETWEEN pickup_date AND dropoff_date) OR 
+                (? BETWEEN pickup_date AND dropoff_date) OR
+                (pickup_date BETWEEN ? AND ?) OR 
+                (dropoff_date BETWEEN ? AND ?)
+            )";
 
                                         $availabilityStmt = mysqli_prepare($conn, $availabilityQuery);
-
-                                        mysqli_stmt_bind_param($availabilityStmt, "sssssss", $carsName, $pickup, $dropoff, $pickup, $dropoff, $pickup, $dropoff);
-
+                                        mysqli_stmt_bind_param($availabilityStmt, "sssssss", $row['name'], $pickup, $dropoff, $pickup, $dropoff, $pickup, $dropoff);
                                         mysqli_stmt_execute($availabilityStmt);
                                         $availabilityResult = mysqli_stmt_get_result($availabilityStmt);
 
@@ -161,35 +145,37 @@ AND (
                                             $isAvailable = false;
                                         }
                                     }
+
                                     if ($isAvailable) {
                                         echo '
-    <div class="col-md-4 col-sm-6 mb-4 ">
-        <div class="card border-0 shadow-sm hover-shadow h-100">
-            <div class="row g-0">
-                <div class="col-md-12">
-                    <img src="' . htmlspecialchars($row['image']) . '" class="img-fluid rounded-start" alt="' . htmlspecialchars($row['name']) . '" style="height: 200px; object-fit: cover;">
-                </div>
-                <div class="col-md-12">
-                    <div class="card-body">
-                        <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
-                        <p class="text-muted mb-1">Rented by: <strong>' . htmlspecialchars($row['client_name']) . '</strong></p>
-                         <p class="mb-1">Price (Daily): <strong>' . htmlspecialchars($row['price']) . ' </strong></p>
-                             <p class="mb-1">Seats: <strong>' . htmlspecialchars($row['seats']) . ' </strong></p>
-                         <p class="mb-1">Transmission: <strong>' . htmlspecialchars($row['trans']) . '</strong></p>
-                         <p class="mb-1">State: <strong>' . htmlspecialchars($row['state']) . '</strong></p>
-                         <p class="mb-1">City: <strong>' . htmlspecialchars($row['city']) . '</strong></p>
-                        <a href="booking.php?bookingid=' . urlencode($id) . '" class="btn btn-success text-white shadow-none mt-2">Book Now</a>
+            <div class="col-md-4 col-sm-6 mb-4 ">
+                <div class="card border-0 shadow-sm hover-shadow h-100">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <img src="' . htmlspecialchars($row['image']) . '" class="img-fluid rounded-start" alt="' . htmlspecialchars($row['name']) . '" style="height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
+                                <p class="text-muted mb-1">Renter: <a href="profile_client.php?clientname=' . htmlspecialchars($row['client_name']) . '"> <strong>' . htmlspecialchars($row['client_name']) . '</strong></a> </p>
+                                <p class="mb-1">Price (Daily): <strong>' . htmlspecialchars($row['price']) . ' </strong></p>
+                                <p class="mb-1">Seats: <strong>' . htmlspecialchars($row['seats']) . ' </strong></p>
+                                <p class="mb-1">Transmission: <strong>' . htmlspecialchars($row['trans']) . '</strong></p>
+                                <p class="mb-1">State: <strong>' . htmlspecialchars($row['state']) . '</strong></p>
+                                <p class="mb-1">City: <strong>' . htmlspecialchars($row['city']) . '</strong></p>
+                                <a href="booking.php?bookingid=' . urlencode($id) . '" class="btn btn-success text-white shadow-none mt-2">Book Now</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>';
+            </div>';
                                     }
                                 }
                             } else {
                                 echo '<p class="text-center">No Cars available at the moment.</p>';
                             }
                             ?>
+
 
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">

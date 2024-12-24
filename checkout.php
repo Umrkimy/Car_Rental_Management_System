@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once "config.php";
 require __DIR__ . "/vendor/autoload.php";
 include "db_conn.php";
 
@@ -12,8 +12,8 @@ if (isset($_GET['bookingid'])) {
     $total_in_sen = $total * 100;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $payment_method = "Online Transaction";
-        $status = "Paid";
+        $payment_method = $_POST['payment_method'];
+        $status = "Pending";
     
         $_SESSION['info'] = [
             'user_name' => $_POST['user_name'],
@@ -35,6 +35,11 @@ if (isset($_GET['bookingid'])) {
 
     if ($row = mysqli_fetch_assoc($result)) {
         $name = $row['name'];
+    }
+
+    if ($payment_method == 'Cash') {
+        header("Location: cash.php?bookingid=" . $id);
+        exit;
     }
 
 }
@@ -61,6 +66,10 @@ $checkout_session = \Stripe\Checkout\Session::create([
         ],
     ]
 ]);
+
+$_SESSION['api'] = [
+    'stripe_id' => $checkout_session->id
+];
 
 http_response_code(303);
 header("Location: " . $checkout_session->url);

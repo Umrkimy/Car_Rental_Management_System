@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . "/vendor/autoload.php";
 
-session_start();
+require_once "config.php";
 include "db_conn.php";
 
 $google = new Google\Client();
@@ -24,7 +24,7 @@ $userinfo = $oauth->userinfo->get();
 
 $email = $userinfo->email;
 $username = $userinfo->name;
-$status = "Pending";
+$status = "Unverified";
 
 date_default_timezone_set('Asia/Kuala_Lumpur');
 $date = date("Y-m-d H:i:s");
