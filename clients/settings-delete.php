@@ -4,7 +4,7 @@ include "../db_conn.php";
 if (isset($_GET['deleteid'])) {
     $id = $_GET['deleteid'];
 
-        $delete_sql = "DELETE FROM users WHERE id = ?";
+        $delete_sql = "DELETE FROM clients WHERE id = ?";
         $delete_stmt = mysqli_prepare($conn, $delete_sql);
 
         if ($delete_stmt) {

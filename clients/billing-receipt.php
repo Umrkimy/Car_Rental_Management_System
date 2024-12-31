@@ -2,7 +2,7 @@
 ob_start();
 
 $title = "Booking Confirmation";
-require_once("includes/headerUsers.php");
+require_once("includes/headerClients.php");
 include "../db_conn.php";
 
 if (isset($_GET['receiptid'])) {
@@ -180,5 +180,5 @@ if (isset($_GET['receiptid'])) {
 
 </main>
 <?php
-require_once("includes/footerUsers.php");
+require_once("includes/footerClients.php");
 ?>

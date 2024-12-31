@@ -7,6 +7,8 @@ $pickup = isset($_GET['pickup']) ? $_GET['pickup'] : null;
 $dropoff = isset($_GET['dropoff']) ? $_GET['dropoff'] : null;
 $search = isset($_GET['search']) ? $_GET['search'] : null;
 $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
+$state = isset($_GET['state']) ?  $_GET['state'] : null;
+$city = isset($_GET['city']) ?  $_GET['city'] : null;
 ?>
 
 <main>
@@ -68,6 +70,14 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                                         <label class="form-label">Seats</label>
                                         <input type="number" name="seats" class="form-control shadow-none" value="<?php echo htmlspecialchars($seats); ?>">
                                     </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">State</label>
+                                        <input type="text" name="state" class="form-control shadow-none" value="<?php echo htmlspecialchars($state); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" name="city" class="form-control shadow-none" value="<?php echo htmlspecialchars($city); ?>">
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-dark w-100">Check</button>
@@ -98,6 +108,18 @@ $seats = isset($_GET['seats']) ? (int) $_GET['seats'] : null;
                         $sql .= " AND seats >= ?";
                         $params[] = $seats;
                         $types .= "i";
+                    }
+
+                    if ($city) {
+                        $sql .= " AND city LIKE ?";
+                        $params[] = "%$city%";
+                        $types .= "s";
+                    }
+                    
+                    if ($state) {
+                        $sql .= " AND state LIKE ?";
+                        $params[] = "%$state%";
+                        $types .= "s";
                     }
 
                     $sql .= " LIMIT ? OFFSET ?";

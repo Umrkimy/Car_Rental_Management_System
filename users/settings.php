@@ -21,7 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if ($row = mysqli_fetch_assoc($result)) {
                 if (password_verify($currentpassword, $row['password'])) {
-                    if ($password === $confirmpassword) {
+                    if ($password === $currentpassword) {
+                        $message = '<p class="alert alert-danger">New password cannot be the same as the current password. Please choose a different password.</p>';
+                    } elseif ($password === $confirmpassword) {
                         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                         $update_sql = "UPDATE users SET password = ? WHERE id = ?";
@@ -46,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $message = '<p class="alert alert-danger">Current password is incorrect. Please try again.</p>';
                 }
             } else {
-                $message = '<p class="alert alert-danger">User not found. Please try again.</p>';
+                $message = '<p class="alert alert-danger">User  not found. Please try again.</p>';
             }
         } else {
             $message = '<p class="alert alert-danger">Error preparing the query.</p>';
@@ -124,11 +126,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 <div class="col-lg-4">
                     <div class="card mb-4">
-                    <form action="settings-delete.php" method="POST" class="">
                         <div class="card-header">Delete Account</div>
                         <div class="card-body">
                             <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below.</p>
-                            <button class="btn btn-danger-soft text-danger" type="button">I understand, delete my account</button>
+                            <a class="btn btn-danger-soft text-danger" href="settings-delete.php?deleteid=<?php echo $idtop; ?>">I understand, delete my account</a>
                             </form>
                         </div>
                     </div>
