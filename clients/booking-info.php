@@ -1,6 +1,6 @@
 <?php
 $title = "Bookings Info";
-require_once("includes/headerAdmins.php");
+require_once("includes/headerClients.php");
 include "../db_conn.php";
 
 if (!isset($_GET['infoid'])) {
@@ -11,8 +11,36 @@ if (!isset($_GET['infoid'])) {
 $id = str_replace('_', ' ', $_GET['infoid']);
 ?>
 
-<main class="mt-5 pt-3">
-    <div class="container mt-5">
+<main >
+    <body>
+        <div>
+            <div style="position: relative;">
+                <img src="../imgs/bg4.jpg" class="bg-img4 w-100" alt="Background image">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row no-gutters align-items-end justify-content-start">
+                        <div class="col-md-9 ftco-animate pb-5 text-overlay">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb fs-10 fw-bold text-uppercase">
+                                    <div class="mr-5">
+                                        <a href="index.php" class="text-decoration-none home-link">Home
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                    <a class="text-decoration-none text-light">Booking Info
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </ol>
+                            </nav>
+                            <h1 class="fst-italic text-capitalize text-white">Bookings Info</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <div class="container mt-5 mb-5">
         <div class="card">
             <div class="card-header">
                 <h1 class="text-center my-3">Booking Information</h1>
@@ -51,7 +79,7 @@ $id = str_replace('_', ' ', $_GET['infoid']);
                 ?>
                     <div class="row">
                         <div class="col-md-6">
-                            <h3 class="text-center">Personal Details</h3>
+                            <h3 class="text-center">Users Details</h3>
                             <table class="table table-striped table-bordered">
                                 <tbody>
                                     <?php foreach ($personalDetails as $key => $value): ?>
@@ -87,3 +115,5 @@ $id = str_replace('_', ' ', $_GET['infoid']);
         </div>
     </div>
 </main>
+
+<?php require_once("includes/footerClients.php"); ?>

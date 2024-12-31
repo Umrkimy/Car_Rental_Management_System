@@ -38,6 +38,7 @@ if (isset($_GET['receiptid'])) {
 
         $total_without_rm = (float)str_replace(['RM', ',', ' '], '', $total);
         $deposit_without_rm = (float)str_replace(['RM', ',', ' '], '', $deposit_rm);
+        $refund_without_rm = (float)str_replace(['RM', ',', ' '], '', $refund_total);
 
         $price_withour_rm = $total_without_rm / $days_rented;
         $total_price = $total_without_rm - $deposit_without_rm;
@@ -139,6 +140,7 @@ if (isset($_GET['receiptid'])) {
                                         <th>Item</th>
                                         <th>Price (daily)</th>
                                         <th>Days Rented</th>
+                                        <th>Deposit</th>
                                         <th class="text-end" style="width: 120px;">Total</th>
                                     </tr>
                                 </thead>
@@ -153,21 +155,22 @@ if (isset($_GET['receiptid'])) {
                                         </td>
                                         <td><?php echo htmlspecialchars($price) ?></td>
                                         <td><?php echo htmlspecialchars($days_rented) ?></td>
+                                        <td><?php echo htmlspecialchars($deposit_rm) ?></td>
                                         <td class="text-end"><?php echo $total_price_rm ?></td>
                                     </tr>
 
                                     <tr>
-                                        <th scope="row" colspan="4" class="text-end">Total</th>
+                                        <th scope="row" colspan="5" class="text-end">Total</th>
                                         <td class="text-end"><?php echo $total ?></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="4" class="border-0 text-end">Sub total</th>
+                                        <th scope="row" colspan="5" class="border-0 text-end">Sub total</th>
                                         <td class="border-0 text-end"><?php echo $total_price_rm ?></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="4" class="border-0 text-end">Refunded Total</th>
+                                        <th scope="row" colspan="5" class="border-0 text-end">Refunded Total</th>
                                         <td class="border-0 text-end">
-                                            <h6 class="m-0 fw-semibold"><?php echo $deposit_rm ?></h6>
+                                            <h6 class="m-0 fw-semibold"><?php echo $refund_total ?></h6>
                                         </td>
                                     </tr>
                                 </tbody>

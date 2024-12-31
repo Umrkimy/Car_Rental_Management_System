@@ -12,14 +12,15 @@
                         <div class="col-6 col-lg-4">
                             <h4 class="text-white footer-title-01">Car Rental</h4>
                             <ul class="list-unstyled footer-link-01 m-0">
-                                <li><a class="text-white text-opacity-75" href="cars.php">Cars</a></li>
+                                <li><a class="text-white text-opacity-75" href="manage.php">Cars Manage</a></li>
+                                <li><a class="text-white text-opacity-75" href="booking.php">Bookings Manage</a></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-4">
                             <h5 class="text-white footer-title-01">About</h5>
                             <ul class="list-unstyled footer-link-01 m-0">
                                 <li><a class="text-white text-opacity-75" href="about.php">About us</a></li>
-                                <li><a class="text-white text-opacity-75" href="#">Privacy Policy</a></li>
+                                <li><a class="text-white text-opacity-75" href="term.php">Term & Conditions</a></li>
 
                             </ul>
                         </div>
@@ -61,7 +62,7 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end py-1">
                     <ul class="nav justify-content-center justify-content-md-end list-unstyled footer-link-01 m-0">
-                        <li class="p-0 mx-3 ms-md-0 me-md-3"><a href="#" class="text-white text-opacity-75">Privace &amp; Policy</a></li>
+                        <li class="p-0 mx-3 ms-md-0 me-md-3"><a href="term.php" class="text-white text-opacity-75">Term &amp; Conditions</a></li>
                     </ul>
                 </div>
             </div>

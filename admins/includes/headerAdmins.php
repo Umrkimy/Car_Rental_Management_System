@@ -60,6 +60,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="../auto-refund.php">Auto Refund</a></li>
+                <li><a class="dropdown-item" href="../auto-booking.php">Auto Booking</a></li>
                 <li>
                   <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
@@ -149,6 +150,12 @@
               <a href="bookings.php" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-calendar"></i></span>
                 <span>Bookings</span>
+              </a>
+            </li>
+            <li>
+              <a href="refunds.php" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-calendar-fill"></i></span>
+                <span>Refunds</span>
               </a>
             </li>
           </ul>

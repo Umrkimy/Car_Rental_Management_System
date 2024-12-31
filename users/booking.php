@@ -51,6 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         unset($_SESSION['info']['email']);
         unset($_SESSION['info']['status']);
 
+        unset($_SESSION['inserted_booking']);
+
             if (strtotime($pickup_date) >= strtotime($drop_date)) {
                 $error_message = "Pick-up date and time must be earlier than drop date and time.";
             } else {

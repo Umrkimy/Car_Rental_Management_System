@@ -20,6 +20,8 @@ if (isset($idtop) && $idtop) {
         $message = '<p class="alert alert-warning">You need to verify your account before you can insert your cars.</p>';
     } else if ($status === "Pending") {
         $message = '<p class="alert alert-warning">Your Account is going through verifying process. It will usually take one day.</p>';
+    } else if ($status === "Rejected") {
+        $message = '<p class="alert alert-danger">Your account has been rejected from admins. please reverify your your account to be verified.</p>';
     }
 }
 ?>
@@ -61,7 +63,7 @@ if (isset($idtop) && $idtop) {
                     <div class="card-body">
                         <?= $message ?>
                         <div class="container mb-3 d-flex justify-content-end">
-                            <?php if ($status !== "Unverified" && $status !== "Pending"): ?>
+                            <?php if ($status !== "Unverified" && $status !== "Pending" && $status !== "Rejected"): ?>
                                 <a href="cars-add.php" class="btn btn-success">Add Cars</a>
                             <?php endif; ?>
                         </div>

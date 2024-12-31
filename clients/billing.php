@@ -2,6 +2,38 @@
 $title = 'Billing';
 require_once("includes/headerClients.php");
 include "../db_conn.php";
+
+$stmt = $conn->prepare("SELECT total, deposit, status FROM bookings WHERE client_name = ?");
+$stmt->bind_param("s", $clientnametop);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$total = 0;
+$deposit = 0;
+$profit = 0;
+$formatted_total = 'RM 0.00';
+$formatted_deposit = 'RM 0.00';
+$formatted_profit = 'RM 0.00';
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $price_string = $row['total'];
+        $total_without_rm = (float)str_replace(',', '', str_replace('RM', '', $price_string));
+        $total += $total_without_rm;
+
+        $deposit_string = $row['deposit'];
+        $deposit_without_rm = (float)str_replace(',', '', str_replace('RM', '', $deposit_string));
+        $deposit += $deposit_without_rm;
+
+        
+        if (strtolower($row['status']) === 'completed') {
+            $profit += $total_without_rm - $deposit_without_rm - (0.05 * $total_without_rm);
+        }
+    }
+    $formatted_total = 'RM ' . number_format($total, 2);
+    $formatted_deposit = 'RM ' . number_format($deposit, 2);
+    $formatted_profit = 'RM ' . number_format($profit, 2);
+}
 ?>
 
 <main>
@@ -48,45 +80,24 @@ include "../db_conn.php";
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-primary">
                         <div class="card-body">
-                            <div class="small text-muted">Card 1</div>
-                            <div class="h3">Card 1</div>
-                            <a class="text-arrow-icon small" href="#!">
-                            Card 1
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                            <div class="small text-muted">Total Amount</div>
+                            <div class="h3"><?php echo $formatted_total ?></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-secondary">
                         <div class="card-body">
-                            <div class="small text-muted">Card 2</div>
-                            <div class="h3">Card 2</div>
-                            <a class="text-arrow-icon small text-secondary" href="#!">
-                               Card 2
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                            <div class="small text-muted">Total Deposit</div>
+                            <div class="h3"><?php echo $formatted_deposit ?></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 border-start-lg border-start-success">
                         <div class="card-body">
-                            <div class="small text-muted">Card 3</div>
-                            <div class="h3 d-flex align-items-center">Card 3</div>
-                            <a class="text-arrow-icon small text-success" href="#!">
-                            Card 3
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                            <div class="small text-muted">Total Profit</div>
+                            <div class="h3"><?php echo $formatted_profit ?></div>
                         </div>
                     </div>
                 </div>
@@ -101,6 +112,7 @@ include "../db_conn.php";
                                 <tr>
                                     <th class="border-gray-200" scope="col">Invoice No</th>
                                     <th class="border-gray-200" scope="col">Car</th>
+                                    <th class="border-gray-200" scope="col">Username</th>
                                     <th class="border-gray-200" scope="col">Days rented</th>
                                     <th class="border-gray-200" scope="col">Receipt Date</th>
                                     <th class="border-gray-200" scope="col">Amount</th>
@@ -110,8 +122,8 @@ include "../db_conn.php";
                             </thead>
                             <tbody>
                                 <?php
-                                $stmt = $conn->prepare("SELECT id, invoice_no, cars_name, days_rented, invoice_date, total, status FROM bookings WHERE user_name = ?");
-                                $stmt->bind_param("s", $usernametop);
+                                $stmt = $conn->prepare("SELECT id, invoice_no, cars_name, days_rented, invoice_date, user_name, total, status FROM bookings WHERE client_name = ?");
+                                $stmt->bind_param("s", $clientnametop);
                                 $stmt->execute();
                                 $result = $stmt->get_result();
 
@@ -119,20 +131,21 @@ include "../db_conn.php";
                                     while ($row = $result->fetch_assoc()) {
                                         $id = $row['id'];
                                         echo '<tr>
-                                                <td>#' . htmlspecialchars($row['invoice_no']) . '</td>
-                                                <td>' . htmlspecialchars($row['cars_name']) . '</td>
-                                                <td>' . htmlspecialchars($row['days_rented']) . ' </td>
-                                                <td>' . htmlspecialchars($row['invoice_date']) . '</td>
-                                                <td>' . htmlspecialchars(($row['total'])) . '</td>
-                                                <td>
-                                                <span class="badge bg-' .
-                                                    ($row['status'] === 'Confirmed' ? 'success' : ($row['status'] === 'Cancelled' ? 'danger' : 'secondary'))
-                                                . '">' . htmlspecialchars($row['status']) . '</span>
-                                                </td>
-                                                <td >
-                                                <a href="billing-receipt.php?receiptid=' . $id . '" class=""><i class="bi bi-three-dots text-secondary"></i></a>
-                                                </td>
-                                            </tr>';
+        <td>#' . htmlspecialchars($row['invoice_no']) . '</td>
+        <td>' . htmlspecialchars($row['cars_name']) . '</td>
+        <td>' . htmlspecialchars($row['user_name']) . '</td>
+        <td>' . htmlspecialchars($row['days_rented']) . ' </td>
+        <td>' . htmlspecialchars($row['invoice_date']) . '</td>
+        <td>' . htmlspecialchars(($row['total'])) . '</td>
+        <td>
+            <span class="badge bg-' .
+                                            ($row['status'] === 'Confirmed' ? 'info' : ($row['status'] === 'Cancelled' ? 'danger' : ($row['status'] === 'Completed' ? 'success' : ($row['status'] === 'Refunded' ? 'primary' : 'secondary'))))
+                                            . '">' . htmlspecialchars($row['status']) . '</span>
+        </td>
+        <td>
+            <a href="billing-receipt.php?receiptid=' . htmlspecialchars($id) . '" class=""><i class="bi bi-three-dots text-secondary"></i></a>
+        </td>
+    </tr>';
                                     }
                                 } else {
                                     echo '<tr><td colspan="4" class="text-center">No billing history available</td></tr>';
