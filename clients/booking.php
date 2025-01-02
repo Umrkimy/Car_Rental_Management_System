@@ -17,11 +17,9 @@ if (isset($idtop) && $idtop) {
     }
 
     if ($status === "Unverified") {
-        $message = '<p class="alert alert-warning">You need to verify your account in profile page to manage bookings.</p>';
+        $message = '<p class="alert alert-warning">You need to verify your account to manage bookings.</p>';
     } else if ($status === "Pending") {
         $message = '<p class="alert alert-warning">Your account is under verification. It usually takes one day.</p>';
-    } else if ($status === "Rejected") {
-        $message = '<p class="alert alert-danger">Your account has been rejected from admins. please reverify your your account to be verified.</p>';
     }
 }
 ?>
@@ -59,9 +57,6 @@ if (isset($idtop) && $idtop) {
         <div class="card-body mt-5 mb-5">
             <div class="container mt-5 mb-5">
                 <div class="card shadow-lg">
-                <div class="card-header ">
-                <h1 class="text-center my-3">Booking Information</h1>
-            </div>
                     <div class="card-body">
                         <?= $message ?>
                         <div class="table-responsive">
@@ -96,20 +91,17 @@ if (isset($idtop) && $idtop) {
                                                 $enddate = $row['dropoff_date'];
                                                 $status = $row['status'];
 
-                                                echo "<tr>
-                                                    <td>$invoice</td>
-                                                    <td>$username</td>
-                                                    <td>$carname</td>
-                                                    <td>$startdate</td>
-                                                    <td>$enddate</td>
-                                                    <td>" . ucfirst($status) . "</td>
+                                                echo '<tr>
+                                                    <td>' . $invoice . '</td>
+                                                    <td>' . $username . '</td>
+                                                    <td>' . $carname . '</td>
+                                                    <td>' . $startdate . '</td>
+                                                    <td>' . $enddate . '</td>
+                                                    <td>' . ucfirst($status) . '</td>
                                                     <td>
-                                                        <a title='View' href='booking-info.php?infoid=$id' class='ms-3'><i class='text-primary bi bi-eye-fill'></i></a>";
-                                                if ($status === 'Confirmed') {
-                                                    echo "<a title='Cancel Booking' href='booking-cancel.php?cancelid=$id' class='ms-3'><i class='bi bi-file-excel-fill text-danger'></i></a>";
-                                                }
-                                                echo "</td>
-                                                </tr>";
+                                                        <a title="View" href="booking-info.php?infoid=' . $id . '" class="ms-3"><i class="text-primary bi bi-eye-fill"></i></a>
+                                                        </td>
+                                                </tr>';
                                             }
                                         } else {
                                             echo '<tr><td colspan="7">No pending bookings found.</td></tr>';
@@ -167,7 +159,7 @@ if (isset($idtop) && $idtop) {
                                                     <td>' . ucfirst($status) . '</td>
                                                     <td>
                                                         <a title="Confirm" href="booking-confirm.php?confirmid=' . $id . '" class="ms-3"><i class="text-success bi bi-check-circle-fill"></i></a>
-                                                        <a title="Cancel" href="booking-cancel.php?cancelid=' . $id . '" class="ms-3"><i class="text-danger bi bi-file-excel-fill"></i></a>
+                                                        <a title="Cancel" href="booking-delete.php?cancelid=' . $id . '" class="ms-3"><i class="text-danger bi bi-file-excel-fill"></i></a>
                                                     </td>
                                                 </tr>';
                                             }
@@ -182,8 +174,6 @@ if (isset($idtop) && $idtop) {
                     </div>
                 </div>
             </div>
-        </div>
-
 </main>
 
 <?php require_once("includes/footerClients.php"); ?>

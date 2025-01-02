@@ -65,7 +65,7 @@ require_once("includes/headerClients.php");
                         </div>
                     </div>
                     <div class="col-md-8 block-9 mb-md-5">
-                        <form action="email-support.php" method="POST" class="bg-light p-5 contact-form">
+                        <form action="../email-support.php" method="POST" class="bg-light p-5 contact-form">
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="name" placeholder="Your Name" required>
                             </div>

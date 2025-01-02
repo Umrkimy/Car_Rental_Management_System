@@ -46,8 +46,7 @@ $id = str_replace('_', ' ', $_GET['infoid']);
                         "Pickup Date" => $row['pickup_date'],
                         "Dropoff Date" => $row['dropoff_date'],
                         "State" => $row['state'],  
-                        "City" => $row['city'],
-                        "Stripe ID" => $row['stripe_id']     
+                        "City" => $row['city']    
                     ];
                 ?>
                     <div class="row">
