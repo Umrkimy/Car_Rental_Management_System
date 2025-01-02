@@ -5,6 +5,8 @@ $title = "Booking Confirmation";
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
 
+$message = '<p class="alert alert-warning">Please make sure You bring your IC/Passport and Driver License To the pickup location</p>';
+
 if (isset($_GET['bookingid'])) {
     $id = $_GET['bookingid'];
 
@@ -62,6 +64,7 @@ if (isset($_GET['bookingid'])) {
     <div class="container mt-5 text-dark">
         <form action="../checkout.php?bookingid=<?php echo $id ?>" method="POST" class="p-4 bg-light border rounded">
             <h2 class="mb-4">Billing Details</h2>
+            <?= $message ?>
 
             <div class="mb-3">
                 <label for="full_name" class="form-label">Full Name<span class="text-danger">*</span></label>

@@ -96,17 +96,20 @@ if (isset($idtop) && $idtop) {
                                                 $enddate = $row['dropoff_date'];
                                                 $status = $row['status'];
 
-                                                echo '<tr>
-                                                    <td>' . $invoice . '</td>
-                                                    <td>' . $username . '</td>
-                                                    <td>' . $carname . '</td>
-                                                    <td>' . $startdate . '</td>
-                                                    <td>' . $enddate . '</td>
-                                                    <td>' . ucfirst($status) . '</td>
+                                                echo "<tr>
+                                                    <td>$invoice</td>
+                                                    <td>$username</td>
+                                                    <td>$carname</td>
+                                                    <td>$startdate</td>
+                                                    <td>$enddate</td>
+                                                    <td>" . ucfirst($status) . "</td>
                                                     <td>
-                                                        <a title="View" href="booking-info.php?infoid=' . $id . '" class="ms-3"><i class="text-primary bi bi-eye-fill"></i></a>
-                                                        </td>
-                                                </tr>';
+                                                        <a title='View' href='booking-info.php?infoid=$id' class='ms-3'><i class='text-primary bi bi-eye-fill'></i></a>";
+                                                if ($status === 'Confirmed') {
+                                                    echo "<a title='Cancel Booking' href='booking-cancel.php?cancelid=$id' class='ms-3'><i class='bi bi-file-excel-fill text-danger'></i></a>";
+                                                }
+                                                echo "</td>
+                                                </tr>";
                                             }
                                         } else {
                                             echo '<tr><td colspan="7">No pending bookings found.</td></tr>';
@@ -122,7 +125,7 @@ if (isset($idtop) && $idtop) {
                     <div class="container mb-4">
         <h2 class="text-center text-dark">Pending Bookings for Clients</h2>
         </div>
-                        <?= $message ?>
+                        
                         <div class="table-responsive">
                             <table class="table table-hover table-striped align-middle text-center">
                                 <thead class="table-dark">

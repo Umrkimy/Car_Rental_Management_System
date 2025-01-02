@@ -35,6 +35,7 @@ if ($id) {
         $dropoffDate = $row['dropoff_date'];
         $state = $row['state'];
         $city = $row['city'];
+        $stripeid = $row['stripe_id'];
     } else {
         $message = '<p class="alert alert-danger">Booking not found.</p>';
     }
@@ -63,9 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dropoffLocation = trim($_POST["dropoff_location"]);
     $pickupDate = trim($_POST["pickup_date"]);
     $dropoffDate = trim($_POST["dropoff_date"]);
+    $stripeid = trim($_POST["stripe_id"]);
 
-    $stmt = $conn->prepare("UPDATE bookings SET city = ?,state = ?,full_name = ?, client_name = ?, user_name = ?, phone_num = ?, email = ?, ic_no = ?, driver_no = ?, cars_name = ?, status = ?, invoice_no = ?, days_rented = ?, total = ?, deposit = ?, pickup_location = ?, dropoff_location = ?, pickup_date = ?, dropoff_date = ?, payment_method = ? WHERE id = ?");
-    $stmt->bind_param("ssssssssssssssssssssi", $state, $city, $fullName, $clientName, $userName, $phoneNum, $email, $icNo, $driverNo, $carName, $status, $invoiceNo, $daysRented, $totalPrice, $deposit, $pickupLocation, $dropoffLocation, $pickupDate, $dropoffDate, $paymentMethod, $id);
+    $stmt = $conn->prepare("UPDATE bookings SET city = ?,state = ?,full_name = ?, client_name = ?, user_name = ?, phone_num = ?, email = ?, ic_no = ?, driver_no = ?, cars_name = ?, status = ?, invoice_no = ?, days_rented = ?, total = ?, deposit = ?, pickup_location = ?, dropoff_location = ?, pickup_date = ?, dropoff_date = ?, payment_method = ?, stripe_id = ? WHERE id = ?");
+    $stmt->bind_param("sssssssssssssssssssssi", $state, $city, $fullName, $clientName, $userName, $phoneNum, $email, $icNo, $driverNo, $carName, $status, $invoiceNo, $daysRented, $totalPrice, $deposit, $pickupLocation, $dropoffLocation, $pickupDate, $dropoffDate, $paymentMethod, $stripeid, $id);
 
     if ($stmt->execute()) {
         $message = '<p class="alert alert-success">Booking updated successfully.</p>';
@@ -218,6 +220,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="form-group">
                                 <label>Dropoff Date*</label>
                                 <input class="form-control" name="dropoff_date" type="datetime-local" value="<?= htmlspecialchars($dropoffDate) ?>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Stripe ID*</label>
+                                <input class="form-control" name="stripe_id" type="text" value="<?= htmlspecialchars($stripeid) ?>" required>
                             </div>
 
                             <div class="form-group text-center mt-4">

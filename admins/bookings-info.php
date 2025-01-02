@@ -12,7 +12,7 @@ $id = str_replace('_', ' ', $_GET['infoid']);
 ?>
 
 <main class="mt-5 pt-3">
-    <div class="container mt-5">
+    <div class="container mt-5 " style="max-width: 100%; padding: 1rem;">
         <div class="card">
             <div class="card-header">
                 <h1 class="text-center my-3">Booking Information</h1>
@@ -46,7 +46,8 @@ $id = str_replace('_', ' ', $_GET['infoid']);
                         "Pickup Date" => $row['pickup_date'],
                         "Dropoff Date" => $row['dropoff_date'],
                         "State" => $row['state'],  
-                        "City" => $row['city']    
+                        "City" => $row['city'],
+                        "Stripe ID" => $row['stripe_id']     
                     ];
                 ?>
                     <div class="row">

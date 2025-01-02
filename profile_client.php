@@ -75,7 +75,6 @@ if (isset($_GET['clientname'])) {
                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Clients</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Client Profile</li>
                     </ol>
                 </nav>

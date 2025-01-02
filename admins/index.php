@@ -11,7 +11,7 @@ $user_count_result = mysqli_query($conn, $user_count_sql);
 $user_count = 0;
 if ($user_count_result) {
   $row = mysqli_fetch_assoc($user_count_result);
-  $user_count = $row['user_count']; 
+  $user_count = $row['user_count'];
 }
 
 $client_count_sql = "SELECT COUNT(*) AS client_count FROM clients";
@@ -19,37 +19,40 @@ $client_count_result = mysqli_query($conn, $client_count_sql);
 $client_count = 0;
 if ($client_count_result) {
   $row = mysqli_fetch_assoc($client_count_result);
-  $client_count = $row['client_count']; 
+  $client_count = $row['client_count'];
 }
 
-$car_count_sql = "SELECT COUNT(*) AS car_count FROM cars";  
+$car_count_sql = "SELECT COUNT(*) AS car_count FROM cars";
 $car_count_result = mysqli_query($conn, $car_count_sql);
 $car_count = 0;
 if ($car_count_result) {
   $row = mysqli_fetch_assoc($car_count_result);
-  $car_count = $row['car_count']; 
+  $car_count = $row['car_count'];
 
   $rejected_count_sql = "SELECT COUNT(*) AS rejected_count FROM clients WHERE status = 'rejected'";
-$rejected_count_result = mysqli_query($conn, $rejected_count_sql);
-$rejected_count = 0;
+  $rejected_count_result = mysqli_query($conn, $rejected_count_sql);
+  $rejected_count = 0;
 
-if ($rejected_count_result) {
-  $row = mysqli_fetch_assoc($rejected_count_result);
-  $rejected_count = $row['rejected_count']; 
-}
+  if ($rejected_count_result) {
+    $row = mysqli_fetch_assoc($rejected_count_result);
+    $rejected_count = $row['rejected_count'];
+  }
 }
 
 
 ?>
 
 <main class="mt-5 pt-3">
-<head><link href="includes/css/card.css" rel="stylesheet" /></head>
+
+  <head>
+    <link href="includes/css/card.css" rel="stylesheet" />
+  </head>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <h4>Dashboard</h4>
       </div>
-</div>
+    </div>
 
     <div class="row">
       <div class="col-md-3 mb-3">
@@ -61,7 +64,7 @@ if ($rejected_count_result) {
         </div>
       </div>
 
-       <div class="col-md-3 mb-3">
+      <div class="col-md-3 mb-3">
         <div class="card bg-success text-white h-100">
           <div class="card-body py-5">
             <h5>Client Count</h5>
@@ -179,44 +182,38 @@ if ($rejected_count_result) {
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12 mb-3">
-        <div class="card">
-          <div class="card-header">
-            <span><i class="bi bi-table me-2"></i></span> Pending Account
-          </div>
-          <div class="card-body">
 
-              <div class="mb-3">
-                <div class="card h-100">
-                  <div class="card-header">
-                    <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-                    Pending Clients
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Clientname</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Operations</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php
-                          $sql = "SELECT * FROM clients WHERE status = 'Pending' ORDER BY id DESC LIMIT 3";
-                          $result = mysqli_query($conn, $sql);
-                          if ($result) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                              $id = $row['id'];
-                              $client_name = $row['client_name'];
-                              $email = $row['email'];
-                              $status = $row['status'];
 
-                              echo '<tr>
+    <div class="mb-3">
+      <div class="card h-100">
+        <div class="card-header">
+          <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+          Pending Clients
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Clientname</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Operations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $sql = "SELECT * FROM clients WHERE status = 'Pending' ORDER BY id DESC LIMIT 3";
+                $result = mysqli_query($conn, $sql);
+                if ($result) {
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    $id = $row['id'];
+                    $client_name = $row['client_name'];
+                    $email = $row['email'];
+                    $status = $row['status'];
+
+                    echo '<tr>
                           <td>' . $id . '</td>
                           <td>' . $client_name . '</td>
                           <td>' . $email . '</td>
@@ -227,22 +224,18 @@ if ($rejected_count_result) {
                             </center>
                           </td>
                         </tr>';
-                            }
-                          } else {
-                            echo '<tr><td colspan="5" class="text-center">No pending clients found.</td></tr>';
-                          }
-                          ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                  }
+                } else {
+                  echo '<tr><td colspan="5" class="text-center">No pending clients found.</td></tr>';
+                }
+                ?>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
   </div>
 </main>

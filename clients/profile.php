@@ -37,6 +37,10 @@ if ($status === "Unverified") {
     $message = '<p class="alert alert-warning">You need to verify your account before you can insert your cars.</p>';
 }
 
+if ($status === "Pending") {
+    $message = '<p class="alert alert-warning">Your account is under verification. It usually takes one day.</p>';
+}
+
 if ($status === "Rejected") {
     $message = '<p class="alert alert-danger">Your account has been rejected from admins. please reverify your your account to be verified.</p>';
 }

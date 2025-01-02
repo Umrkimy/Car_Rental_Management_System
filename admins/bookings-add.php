@@ -185,6 +185,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <input class="form-control" name="dropoff_date" type="datetime-local" required>
                             </div>
 
+                            <div class="form-group">
+                                <label>Stripe ID*</label>
+                                <input class="form-control" name="stripe_id" type="text" required>
+                            </div>
+
                             <div class="form-group text-center mt-4">
                                 <button class="btn btn-primary btn-lg" type="submit">Add Booking</button>
                             </div>
