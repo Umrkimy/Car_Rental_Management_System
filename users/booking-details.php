@@ -94,6 +94,8 @@ if (isset($_GET['bookingid'])) {
 
             <div class="mb-4">
                 <label class="form-label fw-bold">Payment Method<span class="text-danger">*</span></label><br>
+                <input type="radio" id="cash" name="payment_method" value="Cash" required>
+                <label for="cash">Cash</label><br>
                 <input type="radio" id="online" name="payment_method" value="Online Transaction" required>
                 <label for="online">Online Transaction</label><br>
             </div>

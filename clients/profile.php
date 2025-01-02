@@ -37,10 +37,6 @@ if ($status === "Unverified") {
     $message = '<p class="alert alert-warning">You need to verify your account before you can insert your cars.</p>';
 }
 
-if ($status === "Rejected") {
-    $message = '<p class="alert alert-danger">Your account has been rejected from admins. please reverify your your account to be verified.</p>';
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = isset($_POST["full_name"]) ? trim($_POST["full_name"]) : '';
     $username = isset($_POST["user_name"]) ? trim($_POST["user_name"]) : '';
@@ -51,10 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bank_no = isset($_POST["bank_no"]) ? trim($_POST["bank_no"]) : '';
     $bank = isset($_POST["bank_type"]) ? trim($_POST["bank_type"]) : '';
     $address = isset($_POST["address"]) ? trim($_POST["address"]) : '';
-    if ($status === "Unverified") {
-        $status = "Pending";
-    }
+    $status = "Pending";
 
+    // Image handling
     $image = isset($_FILES['file']) ? $_FILES['file'] : null;
     $upload_image = null;
 
@@ -102,8 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sssssssssssi", $name, $username, $email, $phonenum, $ic_no, $driver_no, $bank_no, $bank, $upload_image, $address, $status, $idtop);
 
             if ($stmt->execute()) {
-                $_SESSION['user_name'] = $username;
-
                 $message = '<p class="alert alert-success">Profile updated successfully.</p>';
             } else {
                 $message = '<p class="alert alert-danger">Failed to update profile. Please try again.</p>';

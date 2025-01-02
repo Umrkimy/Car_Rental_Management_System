@@ -17,8 +17,6 @@ if ($result->num_rows == 0) {
     exit;
 }
 
-$refunds_processed = 0;
-
 while ($row = $result->fetch_assoc()) {
     $id = $row['id'];
     $stripe_id = $row['stripe_id'];
@@ -45,6 +43,7 @@ while ($row = $result->fetch_assoc()) {
             'amount' => $deposit_in_cent,
         ]);
 
+        $current_utc_time = date('Y-m-d H:i:s');
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $kuala_lumpur_time = date('Y-m-d H:i:s');
 
@@ -52,9 +51,10 @@ while ($row = $result->fetch_assoc()) {
         $update_stmt = $conn->prepare($update_query);
         $update_stmt->bind_param("ssss", $refund->id, $kuala_lumpur_time, $depositRM, $id);
         $update_stmt->execute();
-        $update_stmt->close();
 
-        $refunds_processed++;
+
+        header("Location: admins");
+        exit;
     } catch (\Stripe\Exception\ApiErrorException $e) {
         echo "Error processing refund for booking ID " . $id . ": " . $e->getMessage() . "<br>";
     }
@@ -62,12 +62,3 @@ while ($row = $result->fetch_assoc()) {
 
 $stmt->close();
 $conn->close();
-
-if ($refunds_processed > 0) {
-    header("Location: admins");
-    exit;
-} else {
-    header("Location: admins");
-    exit;
-}
-?>

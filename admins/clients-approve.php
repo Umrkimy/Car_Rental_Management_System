@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'verified') {
         $status = 'Verified';
-    } elseif ($action === 'rejected') {
+    } elseif ($action === 'reject') {
         $status = 'Rejected';
     } else {
         echo "Invalid action.";

@@ -5,35 +5,51 @@ include "../db_conn.php";
 
 $message = "";
 
-$stmt = $conn->prepare("SELECT total, deposit, refund_total FROM bookings WHERE user_name = ?");
+$stmt = $conn->prepare("SELECT total FROM bookings WHERE user_name = ?");
 $stmt->bind_param("s", $usernametop);
 $stmt->execute();
 $result = $stmt->get_result();
 
 $total = 0;
-$deposit = 0;
-$refund = 0;
 $formatted_total = 'RM 0.00';
-$formatted_deposit = 'RM 0.00';
-$formatted_refund = 'RM 0.00';
-
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        
         $price_string = $row['total'];
         $total_without_rm = (float)str_replace(',', '', str_replace('RM', '', $price_string));
-        $total += $total_without_rm;
-        
+        $total += $total_without_rm; 
+    }
+    $formatted_total = 'RM ' . number_format($total, 2);
+}
+
+$stmt = $conn->prepare("SELECT deposit FROM bookings WHERE user_name = ?");
+$stmt->bind_param("s", $usernametop);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$deposit = 0;
+$formatted_deposit = 'RM 0.00';
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
         $deposit_string = $row['deposit'];
         $deposit_without_rm = (float)str_replace(',', '', str_replace('RM', '', $deposit_string));
         $deposit += $deposit_without_rm;
+    }
+    $formatted_deposit = 'RM ' . number_format($deposit, 2);
+}
 
+$stmt = $conn->prepare("SELECT refund_total FROM bookings WHERE user_name = ?");
+$stmt->bind_param("s", $usernametop);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$refund = 0;
+$formatted_refund = 'RM 0.00';
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
         $refund_string = $row['refund_total'];
         $refund_without_rm = (float)str_replace(',', '', str_replace('RM', '', $refund_string));
         $refund += $refund_without_rm;
     }
-    $formatted_total = 'RM ' . number_format($total, 2);
-    $formatted_deposit = 'RM ' . number_format($deposit, 2);
     $formatted_refund = 'RM ' . number_format($refund, 2);
 }
 
@@ -152,23 +168,17 @@ if (isset($idtop) && $idtop) {
                                                 <td>' . htmlspecialchars($row['pickup_date']) . ' </td>
                                                 <td>' . htmlspecialchars($row['invoice_date']) . '</td>
                                                 <td>' . htmlspecialchars(($row['total'])) . '</td>
-                                                   <td>
-            <span class="badge bg-' .
-                                            ($row['status'] === 'Confirmed' ? 'info' : ($row['status'] === 'Cancelled' ? 'danger' : ($row['status'] === 'Completed' ? 'success' : ($row['status'] === 'Refunded' ? 'primary' : 'secondary'))))
+                                                  <td>
+        <span class="badge bg-' .
+                                            ($row['status'] === 'Confirmed' ? 'success' : ($row['status'] === 'Cancelled' ? 'danger' : ($row['status'] === 'Refunded' ? 'primary' : 'secondary')))
                                             . '">' . htmlspecialchars($row['status']) . '</span>
-        </td>
+                                                </td>
                                                 <td >
                                                 <a title="Receipt" href="billing-receipt.php?receiptid=' . $id . '" class=""><i class="bi bi-eye-fill text-success"></i></a>';
                                         if ($row['status'] === 'Pending') {
-                                            echo ' <a title="Cancel Booking " href="cancel-booking.php?invoiceid=' . $id . '" class="ms-3 "><i class="bi bi-file-excel-fill text-danger"></i></a>';
-                                        }
-                                        if ($row['status'] === 'Confirmed') {
-                                            echo ' <a title="Cancel Booking" href="cancel-booking.php?invoiceid=' . $id . '" class="ms-3 "><i class="bi bi-file-excel-fill text-danger"></i></a>';
+                                            echo ' <a title="Cancel" href="cancel-booking.php?invoiceid=' . $id . '" class="ms-3 "><i class="bi bi-file-excel-fill text-danger"></i></a>';
                                         }
                                         if ($row['status'] === 'Refunded') {
-                                            echo ' <a title="Refunded Receipt" href="billing-refunded.php?receiptid=' . $id . '" class="ms-3"><i class="bi bi-eye-fill text-primary"></i></a>';
-                                        }
-                                        if ($row['status'] === 'Cancelled') {
                                             echo ' <a title="Refunded Receipt" href="billing-refunded.php?receiptid=' . $id . '" class="ms-3"><i class="bi bi-eye-fill text-primary"></i></a>';
                                         }
                                         echo '
