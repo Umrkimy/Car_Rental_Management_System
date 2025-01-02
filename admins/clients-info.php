@@ -14,54 +14,64 @@ if (isset($_GET['infoid'])) {
 
 <main class="mt-5 pt-3">
 <div class="container mt-5">
-        <div class="card">
-            <div class="card-header">
-                <h1 class="text-center my-3">Clients Information</h1>
-            </div>
-            <div class="card-body">
-                <?php
-                $sql = "SELECT * FROM clients WHERE id='$id'";
-                $result = mysqli_query($conn, $sql);
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center my-3">User info</h1>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Username</th>
 
-                if ($result && $row = mysqli_fetch_assoc($result)) {
+                            <th scope="col">Email</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Password</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT * FROM clients WHERE id='$id'";
+                        $result = mysqli_query($conn, $sql);
+                        if ($result) {
+                            if ($row = mysqli_fetch_assoc($result)) {
+                                $name = $row['full_name'];
+                                $email = $row['email'];
+                                $phonenum = $row['phone_num'];
+                                $clientname = $row['client_name'];
+                                $status = $row['status'];
+                                $date = $row['date'];
+                                $password = $row['password'];
 
-                    $bookingDetails = [
-                        "ID" => $row['id'],
-                        "Client name" => $row['client_name'],
-                        "Full name" => $row['full_name'],
-                        "Email" => $row['email'],
-                        "Phone Number" => $row['phone_num'],
-                        "Status" => $row['status'],
-                        "Address" => $row['address'],
-                        "IC No" => $row['ic_no'],
-                        "Driver No" => $row['driver_no'],
-                        "Bank No" => $row['bank_no'],
-                        "Bank Type" => $row['bank_type'],
-                        "Date Created" => $row['date'],   
-                    ];
-                ?>
-                    <div class="row justify-content-center">
-                        <div class=" col-md-9">
-                            <table class="table table-striped table-bordered">
-                                <tbody>
-                                    <?php foreach ($bookingDetails as $key => $value): ?>
-                                        <tr>
-                                            <th><?php echo $key; ?></th>
-                                            <td><?php echo $value; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                <?php
-                } else {
-                    $errorMessage = $result ? "No booking found with this ID." : "Error fetching booking details: " . mysqli_error($conn);
-                    echo "<p class='text-center text-danger'>{$errorMessage}</p>";
-                }
-                ?>
+                                echo '<tr>
+                                    <td>' . $id . '</td>
+                                    <td>' . $clientname . '</td>
+                                    <td>' . $email . '</td>
+                                    <td>' . $name . '</td>
+                                    <td>' . $phonenum . '</td>
+                                    <td>' . $status . '</td>
+                                    <td>' . $date . '</td>
+                                    <td>' . $password . '</td>
+                                    
+                                    
+                                </tr>';
+                            } else {
+                                echo '<tr><td colspan="11" class="text-center">No booking found with this ID.</td></tr>';
+                            }
+                        } else {
+                            echo '<tr><td colspan="11" class="text-center">Error fetching booking details: ' . mysqli_error($conn) . '</td></tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 </main>
 

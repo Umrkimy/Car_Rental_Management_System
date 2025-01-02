@@ -3,8 +3,6 @@ $title = 'Home';
 require_once("includes/headerUsers.php");
 include "../db_conn.php";
 
-unset($_SESSION['inserted_booking']);
-
 $user_count_sql = "SELECT COUNT(*) AS user_count FROM users";
 $user_count_result = mysqli_query($conn, $user_count_sql);
 $user_count = 0;

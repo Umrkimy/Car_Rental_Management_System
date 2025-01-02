@@ -55,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("ssssssi", $name, $username, $email, $phonenum, $ic_no, $driver_no, $idtop);
 
             if ($stmt->execute()) {
-                $_SESSION['user_name'] = $username;
                 $message = '<p class="alert alert-success">Profile updated successfully.</p>';
             } else {
                 $message = '<p class="alert alert-danger">Failed to update profile. Please try again.</p>';
