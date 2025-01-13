@@ -143,7 +143,7 @@ if ($result->num_rows > 0) {
                                             . '">' . htmlspecialchars($row['status']) . '</span>
         </td>
         <td>
-            <a href="billing-receipt.php?receiptid=' . htmlspecialchars($id) . '" class=""><i class="bi bi-three-dots text-secondary"></i></a>
+            <a title=Receipt href="billing-receipt.php?receiptid=' . htmlspecialchars($id) . '" class=""><i class="bi bi-eye-fill text-primary"></i></a>
         </td>
     </tr>';
                                     }

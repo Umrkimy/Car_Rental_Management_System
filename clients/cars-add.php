@@ -78,7 +78,7 @@ if (isset($_POST['save'])) {
                                     </a>
                                 </ol>
                             </nav>
-                            <h1 class="fst-italic text-capitalize text-white">Add cars</h1>
+                            <h1 class="fst-italic text-capitalize text-white">Add Cars</h1>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@ if (isset($_POST['save'])) {
         <div class="container d-flex justify-content-center align-items-center mt-5 mb-5" >
     <div class="card" style="width: 80rem;">
         <div class="card-header text-center">
-            <h1>Add car</h1>
+            <h1>Add Cars</h1>
         </div>
         <div class="card-body">
             <?= $message ?>

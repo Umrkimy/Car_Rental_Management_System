@@ -166,8 +166,8 @@ if (isset($_GET['receiptid'])) {
                             <div class="d-print-none mt-4">
                                 <div class="float-end">
                                     <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                                    <form action="../email-receipt.php?bookingid=<?php echo $id ?>" method="POST" class="mt-3" style="display: inline;">
-                                        <button type="submit" class="btn btn-primary w-md">Send</button>
+                                    <form action="email-receipt.php?bookingid=<?php echo $id ?>" method="POST" class="mt-3" style="display: inline;">
+                                        <button type="submit" class="btn btn-primary w-md">Send Receipt</button>
                                     </form>
                                 </div>
                             </div>

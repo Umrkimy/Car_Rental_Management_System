@@ -58,7 +58,6 @@ if (isset($_GET['cancelid'])) {
                 $updateStmt->bind_param("ssss", $refund->id, $kuala_lumpur_time, $totalAmountRM, $invoiceid);
                 $updateStmt->execute();
 
-                // Sending cancellation email
                 $mail = require __DIR__ . "/../mailer.php";
 
                 try {
@@ -74,7 +73,7 @@ if (isset($_GET['cancelid'])) {
                         <p>We regret to inform you that your booking has been canceled. Here are the details:</p>
                         <hr>
                         <p><strong>Booking ID:</strong> $invoiceid</p>
-                        <p><strong>Refund Amount:</strong> RM $totalAmountRM</p>
+                        <p><strong>Refund Amount:</strong> $totalAmountRM</p>
                         <p><strong>Date of Cancellation:</strong> $kuala_lumpur_time</p>
                         <hr>
                         <p style="text-align: center;">We apologize for any inconvenience caused. Please contact us for further assistance.</p>
